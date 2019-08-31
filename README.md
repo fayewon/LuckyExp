@@ -5,7 +5,7 @@
 
 # requirements:
 * JDK1.8
-
+```java
 @Test
 	public void test3() {
 		List<Dog> list = new ArrayList<Dog>();
@@ -28,3 +28,4 @@
 			System.out.println(dog.getFour());
 		}
 	}
+```
