@@ -6,6 +6,33 @@
 # requirements:
 * JDK1.8
 ```java
+public class Dog implements Serializable{
+	@BindObject
+	private Cat cat;
+	@BindObject
+	private Rabbit rabbit;
+	@BindDouble(key = "A")
+	private Double one;
+	@BindDouble(key = "B")
+	private Double two;
+	@BindDouble(key = "C")
+	@Calculation(formula= {"A+B*D","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	private Double three;
+	@BindDouble(key = "D")
+	@Calculation(formula= {"A+B","M * roundUp(max(A,2,3,4)/2.1)"})
+	private Double four;
+	@BindDouble(key = "E")
+	private Double five;
+	@BindDouble(key = "F")
+	private Double six;
+	@BindDouble(key = "G")
+	private Double seven;
+	@BindDouble(key = "H")
+	private Double eight;
+	@BindDouble(key = "I")
+	private Double nine;
+	@BindDouble(key = "J")
+	private Double ten;
 /**
 	 * 自动计算
 	*
