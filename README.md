@@ -33,6 +33,29 @@ public class Dog implements Serializable{
 	private Double nine;
 	@BindDouble(key = "J")
 	private Double ten;
+public class Cat implements Serializable{
+	@BindDouble(key = "K")
+	private Double eleven;
+	@BindDouble(key = "L")
+	private Double twelve;
+	@BindDouble(key = "M")
+	private Double thirteen;
+	@BindDouble(key = "N")
+	private Double fourteen;
+	@Calculation(formula= {"A+B*D+P","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@BindDouble(key = "O")
+	private Double fifteen;
+	@BindDouble(key = "P")
+	private Double sixteen;
+	@Calculation(formula= {"A+B*D*K","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@BindDouble(key = "Q")
+	private Double seventeen;
+	@BindDouble(key = "R")
+	private Double eighteen;
+	@BindDouble(key = "S")
+	private Double nineteen;
+	@BindDouble(key = "T")
+	private Double twenty;
 /**
 	 * 自动计算
 	*
