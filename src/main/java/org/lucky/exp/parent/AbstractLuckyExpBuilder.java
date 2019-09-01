@@ -56,7 +56,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	/**参数名**/
     protected  final Set<String> variableNames = new HashSet<String>(4);
     /**参数**/
-    protected  final Map<String, Double> variables = new HashMap<String, Double>(); 
+    protected  final Map<String, Double> variables = new HashMap<String, Double>(0); 
     /**计算公式和输入结果**/
     protected  final List<Map<Condition, Object>> passExps = new LinkedList<Map<Condition, Object>>(); 
     /**待计算公式和输入结果**/
