@@ -209,5 +209,5 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @date 2019年8月31日
 	* @param valiResult 带回调函数错误结果集
 	 */
-	public  abstract boolean result(ExecutorService executor,OperResult operResult);
+	public  abstract void  result(ExecutorService executor,OperResult operResult);
 }

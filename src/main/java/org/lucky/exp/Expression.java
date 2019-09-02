@@ -269,18 +269,17 @@ public class Expression {
     	} 
     	return false;
     }
-    public boolean result(ExecutorService executor,OperResult operResult){
+    public void result(ExecutorService executor,OperResult operResult){
     	if(!passExps.isEmpty()) {
     		try {
 				if(convertToBean(passExps,operResult)) {
 					if(convertToBean(waitExps,operResult)) {
 						operResult.setObject(executor,entity,true);	
-						return true;
+					}else {
+						operResult.setObject(executor,entity,true);
 					}
-					return true;
 				}else {
 					operResult.setObject(executor,entity,false);
-					return false;
 				}
 			} catch (CallBackException e) {
 				operResult.setObject(executor,entity,false);
@@ -289,6 +288,5 @@ public class Expression {
     	}else {
     		operResult.setObject(executor,entity,false);
     	}
-    	return false;
     }
 }
