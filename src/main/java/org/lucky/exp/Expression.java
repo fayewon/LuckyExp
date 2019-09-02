@@ -230,6 +230,7 @@ public class Expression {
 					field.set(exp.get(Condition.entity), result);
 					BindDouble bind = field.getAnnotation(BindDouble.class);
 					if (bind != null) {
+						//从get中获取结果变量，get方法逻辑返回的值给下一个结果计算
 						PropertyDescriptor pd = new PropertyDescriptor(field.getName(),  
 								exp.get(Condition.entity).getClass());  
 						Method getMethod = pd.getReadMethod();
