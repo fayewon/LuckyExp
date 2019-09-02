@@ -52,6 +52,8 @@ import org.lucky.exp.tokenizer.NumberToken;
 import org.lucky.exp.tokenizer.OperatorToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
+import org.lucky.exp.util.LinkedStack;
+import org.lucky.exp.util.ArrayStack;
 
 /**
  * 
@@ -154,7 +156,7 @@ public class Expression {
      * @throws CallBackException 
      */
     private double evaluate(Token[] tokens,Field field) throws CallBackException {
-        final ArrayStack output = new ArrayStack();
+        final LinkedStack<Double> output = new LinkedStack<Double>();
         for (int i = 0; i < tokens.length; i++) {
             Token t = tokens[i];
             if (t.getType() == Token.TOKEN_NUMBER) {

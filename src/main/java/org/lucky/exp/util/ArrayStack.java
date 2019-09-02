@@ -21,15 +21,15 @@
 *
 ----------------------------------------------------------------------------------
 */
-package org.lucky.exp;
+package org.lucky.exp.util;
 import java.util.EmptyStackException;
-class ArrayStack {
+public class ArrayStack {
 
     private double[] data;
 
     private int idx;
 
-    ArrayStack() {
+    public ArrayStack() {
         this(5);
     }
 
@@ -43,7 +43,7 @@ class ArrayStack {
         idx = -1;
     }
 
-    void push(double value) {
+    public void push(double value) {
         if (idx + 1 == data.length) {
             double[] temp = new double[(int) (data.length * 1.2) + 1];
             System.arraycopy(data, 0, temp, 0, data.length);
@@ -53,25 +53,25 @@ class ArrayStack {
         data[++idx] = value;
     }
 
-    double peek() {
+    public double peek() {
         if (idx == -1) {
             throw new EmptyStackException();
         }
         return data[idx];
     }
 
-    double pop() {
+    public double pop() {
         if (idx == -1) {
             throw new EmptyStackException();
         }
         return data[idx--];
     }
 
-    boolean isEmpty() {
+    public boolean isEmpty() {
         return idx == -1;
     }
 
-    int size() {
+    public int size() {
         return idx + 1;
     }
 }
