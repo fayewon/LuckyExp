@@ -239,6 +239,7 @@ public class Expression {
 			            this.variableNames.addAll(variables.keySet());
 					}
 				} catch (UnknownFunOrVarException e) {
+					//重算，为防止无限递归导致的内存溢出，故设置上限值。
 					this.recalLimit --;
 					if (this.recalLimit == 0) {
 						throw new CallBackException(ExceptionCode.C_10044.getCode(), e);					
