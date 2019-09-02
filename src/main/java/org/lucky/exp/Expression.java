@@ -223,7 +223,7 @@ public class Expression {
 					Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,this.variableNames, this.implicitMultiplication,field);
 					this.tokens = tokens;
 					if(operResult != null) {
-						operResult.validate(tokens,this.variables,field);
+						operResult.validate(tokens,this.variables,field);//验证表达式是否合法
 					}
 					double result = evaluate(tokens,field);
 					result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
