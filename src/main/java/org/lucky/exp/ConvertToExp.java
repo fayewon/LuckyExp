@@ -36,9 +36,9 @@ import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.annotation.Formula_Choose;
 import org.lucky.exp.annotation.Status;
-import org.lucky.exp.annotation.ValiSerializableObj;
 import org.lucky.exp.exception.BindException;
 import org.lucky.exp.exception.UnknownRuntimeException;
+import org.lucky.exp.util.ValiSerializableObj;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.BindDouble;
 /**

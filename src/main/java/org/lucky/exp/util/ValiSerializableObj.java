@@ -21,9 +21,7 @@
 *
 ----------------------------------------------------------------------------------
 */
-package org.lucky.exp.annotation;
-
-import java.io.Serializable;
+package org.lucky.exp.util;
 import java.lang.reflect.Field;
 import org.lucky.exp.exception.BindException;
 /**
