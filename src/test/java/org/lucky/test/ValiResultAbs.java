@@ -25,26 +25,27 @@ package org.lucky.test;
 
 import java.util.List;
 
-import org.lucky.exp.parent.ValiResult;
+import org.lucky.exp.parent.OperResult;
 /**
  * 验证结果的回调
 *
 * @author FayeWong
 * @date 2019年8月31日
  */
-public class ValiResultAbs extends ValiResult{
+public class ValiResultAbs /* extends ExecuteResult */{
 
-	@Override
+	
 	protected void getValiMeg(List message) {
 		System.out.println("message: "+message);	
 		
 	}
 
-	@Override
-	public void getBean(Object t,boolean isError) {
+	
+	public void execute(Object t,boolean isError) {
 		Dog u = (Dog)t;
 		
 		
 	}
+
 
 }

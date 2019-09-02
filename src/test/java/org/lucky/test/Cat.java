@@ -27,6 +27,7 @@ import java.io.Serializable;
 
 import org.lucky.exp.annotation.BindDouble;
 import org.lucky.exp.annotation.Calculation;
+import org.lucky.exp.annotation.Status;
 
 /**
  * 需要自动计算的对象需要实现序列化接口
@@ -42,15 +43,16 @@ public class Cat implements Serializable{
 	@BindDouble(key = "M")
 	private Double thirteen;
 	@BindDouble(key = "N")
-	private Double fourteen;
-	@Calculation(formula= {"A+B*D+P","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	private Double fourteen;	
 	@BindDouble(key = "O")
+	@Calculation(formula= {"A+B*D+J","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double fifteen;
 	@BindDouble(key = "P")
 	private Double sixteen;
-	@Calculation(formula= {"A+B*D*K","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	@BindDouble(key = "Q")
-	private Double seventeen;
+	@Calculation(formula= {"O+R","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	private Double seventeen1;
+	@Calculation(formula= {"O","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	@BindDouble(key = "R")
 	private Double eighteen;
 	@BindDouble(key = "S")
@@ -93,11 +95,12 @@ public class Cat implements Serializable{
 	public void setSixteen(Double sixteen) {
 		this.sixteen = sixteen;
 	}
-	public Double getSeventeen() {
-		return seventeen;
+	
+	public Double getSeventeen1() {
+		return seventeen1;
 	}
-	public void setSeventeen(Double seventeen) {
-		this.seventeen = seventeen;
+	public void setSeventeen1(Double seventeen1) {
+		this.seventeen1 = seventeen1;
 	}
 	public Double getEighteen() {
 		return eighteen;

@@ -48,7 +48,21 @@ import org.lucky.exp.annotation.BindDouble;
 * @date 2019年8月28日
  */
 public class ConvertToExp {
-   public  static void assignment(Serializable entity,Field field,Map<String,Double> variables,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) {
+	private static ConvertToExp convertToExp;
+
+	private ConvertToExp() {
+
+	}
+
+	public static ConvertToExp getInstance() {
+			synchronized (ConvertToExp.class) {
+				if (null == convertToExp) {
+					convertToExp = new ConvertToExp();
+				}
+			}
+		return convertToExp;
+	}
+	public   void assignment(Serializable entity,Field field,Map<String,Double> variables,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) {
 		try {			
 			if (field.isAnnotationPresent(BindObject.class)) {
 				final Object fieldVal = (Object)field.get(entity);
@@ -72,7 +86,7 @@ public class ConvertToExp {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private  static synchronized void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private   synchronized void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
 		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
@@ -127,7 +141,7 @@ public class ConvertToExp {
 		}
 	}
 	
-	private static void parseBindObject(Object fieldVal, Field field,Selector selector,Map<String, Double> variables, List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private  void parseBindObject(Object fieldVal, Field field,Selector selector,Map<String, Double> variables, List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
 		boolean valiType = false;
 		Class<?>[] clazzes = field.getType().getInterfaces();
 		for(Class<?> clazz : clazzes) {

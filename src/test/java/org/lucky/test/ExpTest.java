@@ -4,11 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+
 import org.junit.Test;
 import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Formula_Choose;
-import org.lucky.exp.parent.ValiResult;
+import org.lucky.exp.parent.OperResult;
 /**
  * 面向对象计算
 *
@@ -16,33 +20,41 @@ import org.lucky.exp.parent.ValiResult;
 * @date 2019年8月31日
  */
 public class ExpTest {
+	
 	/**
 	 * 自动计算
 	*
 	* @author FayeWong
 	* @date 2019年8月31日
 	 */
+	ExecutorService executor = Executors.newFixedThreadPool(5);
 	@Test
 	public void test() {
 		Selector selector = new Selector();//公式选择器
-		selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
+		//selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
 		dog.setOne(123.0);
 		dog.setTwo(234.1);
+		Cat cat = new Cat();
+		dog.setCat(cat);
 		boolean result = new DefaultLuckyExpBuilder()
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 		//.build(dog,param)//只绑定一个公式
 		.build(dog,param,selector)//复杂的计算  全都要0.0
 		.setRecalLimit(30)//设置重新计算次数，选择默认就好，默认20次。检查完参数和公式算不出结果可以设置
-		.implicitMultiplication(true)//是否插入隐式乘法标记，默认是true。使用默认就行
+		.implicitMultiplication(false)//是否插入隐式乘法标记，默认是false。使用默认就行
 		.func(new CustomFunction().roundDown())//自定义公式
 		.func(new CustomFunction().roundUp())//自定义公式
 		.result();
 		assertTrue(result);
-		System.out.println(dog.getThree());
-		System.out.println(dog.getFour());
+		System.out.println("Three: "+dog.getThree());
+		System.out.println("Four: "+dog.getFour());
+		System.out.println("ten: "+dog.getTen());
+		System.out.println("Fifteen: "+dog.getCat().getFifteen());
+		System.out.println("Sixteen: "+dog.getCat().getSeventeen1());
+		System.out.println("Eighteen: "+dog.getCat().getEighteen());
 	}
 	@Test
 	public void test2() {
@@ -76,6 +88,8 @@ public class ExpTest {
 			Dog dog = new Dog();
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
+			Cat cat = new Cat();
+			dog.setCat(cat);
 			boolean result = new DefaultLuckyExpBuilder()
 					.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
@@ -97,27 +111,28 @@ public class ExpTest {
 			Dog dog = new Dog();
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
+			Cat cat = new Cat();
+			dog.setCat(cat);
 			new DefaultLuckyExpBuilder()
 					.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
-					.result(new ValiResult<T>() {//带回调的计算结果
+					.result(executor,new OperResult<T>() {
+
 						@Override
 						protected void getValiMeg(List<Map<String, String>> message) {
-							//计算过程中检查表达式是否合法,如果不合法 message会有不合法的信息
-							//成功计算完毕message不会有信息
 							System.out.println("message: "+message);
+							
 						}
 
 						@Override
-						public <T> void getBean(T t, boolean isError) {
-							//isError,检查是否全部计算成功，如果全部计算成功 isError是false;
-							//如果isError是true，没有全部计算成功依然会把已经部分计算成功的dog返回
-							//这里的t == dog;
+						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)t;
 							System.out.println(dog.getThree());
 							System.out.println(dog.getFour());
-						}
+							
+						}//带回调的计算结果
+						
 					});						
 		}
 	}
@@ -148,26 +163,22 @@ public class ExpTest {
 					.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
-					.result(new ValiResult<T>() {//带回调的计算结果
+					.result(executor,new OperResult<T>() {
+
 						@Override
 						protected void getValiMeg(List<Map<String, String>> message) {
-							//计算过程中检查表达式是否合法,如果不合法 message会有不合法的信息
-							//成功计算完毕message不会有信息
 							System.out.println("message: "+message);
+							
 						}
 
 						@Override
-						public <T> void getBean(T t, boolean isError) {
-							//isError,检查是否全部计算成功，如果全部计算成功 isError是false;
-							//如果isError是true，没有全部计算成功依然会把已经部分计算成功的dog返回
-							//这里的t == dog;
+						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)t;
 							System.out.println(dog.getThree());
 							System.out.println(dog.getFour());
-							System.out.println(dog.getCat().getFifteen());
-							System.out.println(dog.getCat().getSeventeen());
 							
-						}
+						}//带回调的计算结果
+						
 					});						
 		}
 	}

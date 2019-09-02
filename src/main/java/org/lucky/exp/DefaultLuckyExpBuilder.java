@@ -22,8 +22,10 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp;
+import java.util.concurrent.ExecutorService;
+
 import org.lucky.exp.parent.AbstractLuckyExpBuilder;
-import org.lucky.exp.parent.ValiResult;
+import org.lucky.exp.parent.OperResult;
 /**
  * 
 *
@@ -47,12 +49,12 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
 	}
 
 	@Override
-	public void result(ValiResult valiResult) {
+	public boolean result(ExecutorService executor,OperResult operResult) {
 		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,recalLimit,this.userFuncs.keySet())
 				.setVariables(variables)
 				.setTokens(tokens)
 				.setEntity(entity);
-		expression.result(valiResult);
+		return expression.result(executor,operResult);
 	}   
 }
 

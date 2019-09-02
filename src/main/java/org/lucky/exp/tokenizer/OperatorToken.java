@@ -23,14 +23,14 @@
 */
 package org.lucky.exp.tokenizer;
 
-import org.lucky.exp.operator.Operator;
+import org.lucky.exp.oper.Oper;
 
 /**
  * 表示表达式中使用的运算符
  */
 public class OperatorToken extends Token{
-    private final Operator operator;
-    public OperatorToken(Operator op) {
+    private final Oper operator;
+    public OperatorToken(Oper op) {
         super(Token.TOKEN_OPERATOR);
         if (op == null) {
             throw new IllegalArgumentException("Operator is unknown for token.");
@@ -42,7 +42,7 @@ public class OperatorToken extends Token{
      * 获取运算符
      * @return  运算符
      */
-    public Operator getOperator() {
+    public Oper getOperator() {
         return operator;
     }
 }

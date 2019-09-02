@@ -21,8 +21,7 @@
 *
 ----------------------------------------------------------------------------------
 */
-package org.lucky.exp.function;
-
+package org.lucky.exp.func;
 /**
  * 函数对象
 *
@@ -72,7 +71,7 @@ public abstract class Func {
     * see org.lucky.exp.function.Funcs;
     * @return
      */
-    public abstract double apply(double... args);
+    public abstract double call(double... args);
     /**
      * 校验函数名是否有效
     *

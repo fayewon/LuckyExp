@@ -26,30 +26,30 @@ import java.util.Map;
 import java.util.Set;
 
 import org.lucky.exp.exception.UnknownFunOrVarException;
-import org.lucky.exp.function.Func;
-import org.lucky.exp.function.Funcs;
-import org.lucky.exp.operator.Operator;
-import org.lucky.exp.operator.Operators;
+import org.lucky.exp.func.Func;
+import org.lucky.exp.func.Funcs;
+import org.lucky.exp.oper.Oper;
+import org.lucky.exp.oper.Opers;
 public class Tokenizer {
 
     private final char[] expression;
 
-    private final int expressionLength;
+    public final int expressionLength;
 
     private final Map<String, Func> userFunctions;
 
-    private final Map<String, Operator> userOperators;
+    private final Map<String, Oper> userOperators;
 
     private final Set<String> variableNames;
 
     private final boolean implicitMultiplication;
 
-    private int pos = 0;
+    public int pos = 0;
 
     private Token lastToken;
     
     public Tokenizer(String expression, final Map<String, Func> userFunctions,
-            final Map<String, Operator> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) {
+            final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) {
         this.expression = expression.trim().toCharArray();
         this.expressionLength = this.expression.length;
         this.userFunctions = userFunctions;
@@ -59,7 +59,7 @@ public class Tokenizer {
     }
 
     public Tokenizer(String expression, final Map<String, Func> userFunctions,
-                     final Map<String, Operator> userOperators, final Set<String> variableNames) {
+                     final Map<String, Oper> userOperators, final Set<String> variableNames) {
         this.expression = expression.trim().toCharArray();
         this.expressionLength = this.expression.length;
         this.userFunctions = userFunctions;
@@ -93,7 +93,7 @@ public class Tokenizer {
                         && lastToken.getType() != Token.TOKEN_FUNCTION
                         && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                     // 插入隐式乘法标记
-                    lastToken = new OperatorToken(Operators.getBuiltinOperator('*', 2));
+                    lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
                     return lastToken;
                 }
             }
@@ -107,13 +107,13 @@ public class Tokenizer {
                             && lastToken.getType() != Token.TOKEN_FUNCTION
                             && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                 // 插入隐式乘法标记
-                lastToken = new OperatorToken(Operators.getBuiltinOperator('*', 2));
+                lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
                 return lastToken;
             }
             return parseParentheses(true);
         } else if (isCloseParentheses(ch)) {
             return parseParentheses(false);
-        } else if (Operator.isAllowedOperatorChar(ch)) {
+        } else if (Oper.isAllowedOperatorChar(ch)) {
             return parseOperatorToken(ch);
         } else if (isAlphabetic(ch) || ch == '_') {
             // 分析可以是集合变量或函数的名称
@@ -123,7 +123,7 @@ public class Tokenizer {
                             && lastToken.getType() != Token.TOKEN_FUNCTION
                             && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                 // 插入隐式乘法标记
-                lastToken = new OperatorToken(Operators.getBuiltinOperator('*', 2));
+                lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
                 return lastToken;
             }
             return parseFunctionOrVariable();
@@ -208,15 +208,15 @@ public class Tokenizer {
         final int offset = this.pos;
         int len = 1;
         final StringBuilder symbol = new StringBuilder();
-        Operator lastValid = null;
+        Oper lastValid = null;
         symbol.append(firstChar);
 
-        while (!isEndOfExpression(offset + len)  && Operator.isAllowedOperatorChar(expression[offset + len])) {
+        while (!isEndOfExpression(offset + len)  && Oper.isAllowedOperatorChar(expression[offset + len])) {
             symbol.append(expression[offset + len++]);
         }
 
         while (symbol.length() > 0) {
-            Operator op = this.getOperator(symbol.toString());
+            Oper op = this.getOperator(symbol.toString());
             if (op == null) {
                 symbol.setLength(symbol.length() - 1);
             }else{
@@ -230,8 +230,8 @@ public class Tokenizer {
         return lastToken;
     }
 
-    private Operator getOperator(String symbol) {
-        Operator op = null;
+    private Oper getOperator(String symbol) {
+        Oper op = null;
         if (this.userOperators != null) {
             op = this.userOperators.get(symbol);
         }
@@ -244,14 +244,14 @@ public class Tokenizer {
                 if (lastTokenType == Token.TOKEN_PARENTHESES_OPEN || lastTokenType == Token.TOKEN_SEPARATOR) {
                     argc = 1;
                 } else if (lastTokenType == Token.TOKEN_OPERATOR) {
-                    final Operator lastOp = ((OperatorToken) lastToken).getOperator();
+                    final Oper lastOp = ((OperatorToken) lastToken).getOperator();
                     if (lastOp.getNumOperands() == 2 || (lastOp.getNumOperands() == 1 && !lastOp.isLeftAssociative())) {
                         argc = 1;
                     }
                 }
 
             }
-            op = Operators.getBuiltinOperator(symbol.charAt(0), argc);
+            op = Opers.getBuiltinOperator(symbol.charAt(0), argc);
         }
         return op;
     }

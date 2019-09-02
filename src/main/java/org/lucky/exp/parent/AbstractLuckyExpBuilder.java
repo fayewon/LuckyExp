@@ -31,13 +31,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+
 import org.lucky.exp.ConvertToExp;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
-import org.lucky.exp.function.Func;
-import org.lucky.exp.function.Funcs;
-import org.lucky.exp.operator.Operator;
+import org.lucky.exp.func.Func;
+import org.lucky.exp.func.Funcs;
+import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.Token;
 /**
  * 
@@ -52,7 +54,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	/**用户自定义的函数，不包含内置的函数**/
 	protected  final Map<String, Func> userFuncs = new HashMap<String, Func>(4);
 	/**用户自定义的运算符，不包含内置运算符**/
-	protected  final Map<String, Operator> userOperators = new HashMap<String, Operator>(4);
+	protected  final Map<String, Oper> userOperators = new HashMap<String, Oper>(4);
 	/**参数名**/
     protected  final Set<String> variableNames = new HashSet<String>(4);
     /**参数**/
@@ -62,9 +64,9 @@ public  abstract class  AbstractLuckyExpBuilder{
     /**待计算公式和输入结果**/
     protected  final List<Map<Condition, Object>> waitExps = new LinkedList<Map<Condition, Object>>(); 
     /**重算上限**/
-    protected  int recalLimit = 20;
+    protected  int recalLimit = 100;
     /**是否追加隐式乘法**/
-    protected  boolean implicitMultiplication = true;
+    protected  boolean implicitMultiplication = false;
     
     protected Serializable entity;
     private  void setVariables(Set<String> variableNames) {
@@ -129,7 +131,7 @@ public  abstract class  AbstractLuckyExpBuilder{
         });       
 		Arrays.asList(fields).stream().forEach((field)->{
 			field.setAccessible(true);
-			ConvertToExp.assignment(entity, field, this.variables, selector,this.passExps,this.waitExps);
+			ConvertToExp.getInstance().assignment(entity, field, this.variables, selector,this.passExps,this.waitExps);
 			setVariables(this.variables.keySet());
 			field.setAccessible(field.isAccessible());
 		});   
@@ -172,24 +174,24 @@ public  abstract class  AbstractLuckyExpBuilder{
     	funcs.forEach(f -> this.userFuncs.put(f.getName(), f));
         return this;
     }  
-	public void checkOperatorSymbol(Operator op) {
+	public void checkOperatorSymbol(Oper op) {
         String name = op.getSymbol();
         for (char ch : name.toCharArray()) {
-            if(!Operator.isAllowedOperatorChar(ch)) {
+            if(!Oper.isAllowedOperatorChar(ch)) {
             	throw new IllegalArgumentException("操作符无效：'" + name + "'");
         	}
         }
     }
-	public AbstractLuckyExpBuilder operator(Operator operator) {
+	public AbstractLuckyExpBuilder operator(Oper operator) {
         this.checkOperatorSymbol(operator);
         this.userOperators.put(operator.getSymbol(), operator);
         return this;
     }
-	public AbstractLuckyExpBuilder operator(Operator... operators) {
+	public AbstractLuckyExpBuilder operator(Oper... operators) {
     	Arrays.asList(operators).stream().forEach( o -> this.operator(o));
         return this;
     }
-	public AbstractLuckyExpBuilder operator(List<Operator> operators) {
+	public AbstractLuckyExpBuilder operator(List<Oper> operators) {
     	operators.forEach( o -> this.operator(o));
         return this;
     }
@@ -207,5 +209,5 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @date 2019年8月31日
 	* @param valiResult 带回调函数错误结果集
 	 */
-	public abstract void result(ValiResult valiResult);
+	public  abstract boolean result(ExecutorService executor,OperResult operResult);
 }

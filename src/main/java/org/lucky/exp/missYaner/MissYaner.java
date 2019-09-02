@@ -22,16 +22,13 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp.missYaner;
-
 import java.util.*;
-
 import org.lucky.exp.exception.CallBackException;
-import org.lucky.exp.function.Func;
-import org.lucky.exp.operator.Operator;
+import org.lucky.exp.func.Func;
+import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.OperatorToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;
-
 /**
  * 中缀表达式转逆波兰表达式
 *
@@ -50,19 +47,18 @@ public class MissYaner {
      * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
      */
     public static Token[] convertToRPN(final String expression, final Map<String, Func> userFunctions,
-            final Map<String, Operator> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) throws CallBackException{
+        final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) throws CallBackException{
         final Stack<Token> stack = new Stack<Token>();
         final List<Token> output = new ArrayList<Token>();
         final Tokenizer tokenizer = new Tokenizer(expression, userFunctions, userOperators, variableNames, implicitMultiplication);
         while (tokenizer.hasNext()) {
             Token token = tokenizer.nextToken();
             switch (token.getType()) {
-            case Token.TOKEN_NUMBER:
+            case Token.TOKEN_NUMBER:                        	
             case Token.TOKEN_VARIABLE:
                 output.add(token);
                 break;
             case Token.TOKEN_FUNCTION:
-            	
                 stack.add(token);
                 break;
             case Token.TOKEN_SEPARATOR:
@@ -89,10 +85,9 @@ public class MissYaner {
                 stack.push(token);
                 break;
             case Token.TOKEN_PARENTHESES_OPEN:
-            	
                 stack.push(token);
                 break;
-            case Token.TOKEN_PARENTHESES_CLOSE:            	
+            case Token.TOKEN_PARENTHESES_CLOSE:  
                 while (stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
                     output.add(stack.pop());
                 }

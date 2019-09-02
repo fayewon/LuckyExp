@@ -36,20 +36,27 @@ import org.lucky.exp.annotation.Status;
 * @date 2019年8月31日
  */
 public class Dog implements Serializable{
+	//13 17;16 12;
+	//
 	@BindObject
 	private Cat cat;
 	@BindObject
 	private Rabbit rabbit;
+	@BindDouble(key = "J")
+	@Calculation(formula= {"D","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
+	private Double ten;
 	@BindDouble(key = "A")
 	private Double one;
 	@BindDouble(key = "B")
 	private Double two;
 	@BindDouble(key = "C")
-	@Calculation(formula= {"A+B*D","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@Calculation(formula= {"O","M * roundUp(max(A,2,7,9)/2.1)"},format = "##.###")
 	private Double three;
 	@BindDouble(key = "D")
-	@Calculation(formula= {"A+B","M * roundUp(max(A,2,3,4)/2.1)"})
+	@Calculation(formula= {"A+B"})
 	private Double four;
+	
+	
 	@BindDouble(key = "E")
 	private Double five;
 	@BindDouble(key = "F")
@@ -60,8 +67,7 @@ public class Dog implements Serializable{
 	private Double eight;
 	@BindDouble(key = "I")
 	private Double nine;
-	@BindDouble(key = "J")
-	private Double ten;
+	
 	public Double getOne() {
 		return one;
 	}
@@ -75,6 +81,7 @@ public class Dog implements Serializable{
 		this.two = two;
 	}
 	public Double getThree() {
+		//return three < 200 ? 200 : three;
 		return three;
 	}
 	public void setThree(Double three) {
@@ -117,6 +124,7 @@ public class Dog implements Serializable{
 		this.nine = nine;
 	}
 	public Double getTen() {
+		//return ten < 160 ?  160.0:ten;
 		return ten;
 	}
 	public void setTen(Double ten) {

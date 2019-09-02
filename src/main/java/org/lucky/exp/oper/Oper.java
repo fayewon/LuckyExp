@@ -21,12 +21,12 @@
 *
 ----------------------------------------------------------------------------------
 */
-package org.lucky.exp.operator;
+package org.lucky.exp.oper;
 
 /**
  * 表示可在表达式中使用的运算符的类
  */
-public abstract class Operator {
+public abstract class Oper {
     /**
      * 加法运算的优先值
      */
@@ -77,7 +77,7 @@ public abstract class Operator {
      * @param LeftAssociative如果运算符是左Associative，则设置为true；如果运算符是右Associative，则设置为false。
      * @param 优先级运算符的优先级值
      */
-    public Operator(String symbol, int numberOfOperands, boolean leftAssociative,
+    public Oper(String symbol, int numberOfOperands, boolean leftAssociative,
                     int precedence) {
         super();
         this.numOperands = numberOfOperands;

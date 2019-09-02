@@ -1,6 +1,6 @@
 package org.lucky.test;
 
-import org.lucky.exp.function.Func;
+import org.lucky.exp.func.Func;
 
 /**
  * 自定义函数
@@ -18,7 +18,7 @@ public class CustomFunction {
 	 */
 	public Func roundUp() {
 		Func roundUp = new Func("roundUp") {
-		    public double apply(double... args) {
+		    public double call(double... args) {
 		        return Math.ceil(args[0]);
 		    }
 		};
@@ -33,7 +33,7 @@ public class CustomFunction {
 	 */
 	public Func roundDown() {
 		Func roundDown = new Func("roundDown") {
-		    public double apply(double... args) {
+		    public double call(double... args) {
 		        return Math.floor(args[0]);
 		    }
 		};
@@ -49,7 +49,7 @@ public class CustomFunction {
 	 */
 	public Func max() {
 		Func max = new Func("max",4) {
-		    public double apply(double... args) {
+		    public double call(double... args) {
 		    	double max = args[0];
 		    	for(double d : args) {
 		    		max = max > d ? max : d;
@@ -68,8 +68,8 @@ public class CustomFunction {
 	* @return
 	 */
 	public Func min() {
-		Func min = new Func("min") {
-		    public double apply(double... args) {
+		Func min = new Func("min",4) {
+		    public double call(double... args) {
 		    	double min = args[0];
 		    	for(double d : args) {
 		    		min = min < d ? min : d;

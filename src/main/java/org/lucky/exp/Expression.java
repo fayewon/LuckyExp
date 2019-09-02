@@ -35,22 +35,24 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+
 import org.lucky.exp.annotation.BindDouble;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.exception.UnknownFunOrVarException;
-import org.lucky.exp.exception.UnknownRuntimeException;
-import org.lucky.exp.function.Func;
-import org.lucky.exp.function.Funcs;
+import org.lucky.exp.func.Func;
+import org.lucky.exp.func.Funcs;
 import org.lucky.exp.missYaner.MissYaner;
-import org.lucky.exp.operator.Operator;
-import org.lucky.exp.parent.ValiResult;
+import org.lucky.exp.oper.Oper;
+import org.lucky.exp.parent.OperResult;
 import org.lucky.exp.tokenizer.FunctionToken;
 import org.lucky.exp.tokenizer.NumberToken;
 import org.lucky.exp.tokenizer.OperatorToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
+
 /**
  * 
 *
@@ -71,7 +73,7 @@ public class Expression {
     /**用户自定义的函数，不包含内置的函数**/
     private  final Map<String, Func> userFuncs;
     /**用户自定义的运算符，不包含内置运算符**/
-    private  final Map<String, Operator> userOperators;
+    private  final Map<String, Oper> userOperators;
     /**参数名**/
     private  final Set<String> variableNames;   
     /**重算上限**/
@@ -88,7 +90,7 @@ public class Expression {
         return vars;
     }   
     Expression(final Map<String, Func> userFuncs,
-    		   final Map<String, Operator> userOperators,
+    		   final Map<String, Oper> userOperators,
     		   final Set<String> variableNames,
     		   final boolean implicitMultiplication,
     		   final List<Map<Condition, Object>> passExps,
@@ -183,14 +185,14 @@ public class Expression {
                 FunctionToken func = (FunctionToken) t;
                 final int numArguments = func.getFunction().getNumArguments();
                 if (output.size() < numArguments) {
-                    throw new CallBackException("可用于的参数数目无效 '" + func.getFunction().getName() + "' function");
+                    throw new CallBackException("无可用于计算的参数 '" + func.getFunction().getName() + "' function");
                 }
                 /* 从堆栈收集参数 */
                 double[] args = new double[numArguments];
                 for (int j = numArguments - 1; j >= 0; j--) {
                     args[j] = output.pop();
                 }
-                output.push(func.getFunction().apply(args));
+                output.push(func.getFunction().call(args));
             }
         }
         if (output.size() > 1) {
@@ -207,81 +209,86 @@ public class Expression {
     * @param exps
     * @return
      */
-    private boolean convertToBean(List<Map<Condition, Object>> exps,ValiResult valiResult) {		
+    private  boolean  convertToBean(List<Map<Condition, Object>> exps,OperResult operResult) throws CallBackException{		
 		LinkedList<Map<Condition, Object>> pop = (LinkedList<Map<Condition, Object>>) exps;
 		boolean isSuccess = false;
 		for (int i = 0; i < pop.size(); i++) {
-			Map<Condition, Object> exp = pop.remove(i);
-			i--;
-			    Field field = (Field) exp.get(Condition.field);
-			try {
-				String expression = (String) exp.get(Condition.calculation);
-				Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,this.variableNames, this.implicitMultiplication);
-				this.tokens = tokens;
-				if(valiResult != null) {
-					valiResult.validate(tokens,this.variables,field);
-				}
-				double result = evaluate();
-				result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
-				field.set(exp.get(Condition.entity), result);
-				BindDouble bind = field.getAnnotation(BindDouble.class);
-				if (bind != null) {
-					PropertyDescriptor pd = new PropertyDescriptor(field.getName(),  
-							exp.get(Condition.entity).getClass());  
-					Method getMethod = pd.getReadMethod();
-		            Object doubleVal = getMethod.invoke((Object)exp.get(Condition.entity));
-		            this.variables.put(bind.key(), (Double) doubleVal);
-		            this.variableNames.addAll(variables.keySet());
-				}
-			} catch (UnknownFunOrVarException e) {
-				this.recalLimit --;
-				if (this.recalLimit == 0) {
-					//发生回滚异常需要及时把结果给回调函数
-					if(valiResult != null) {
-						valiResult.setT(entity,true);
+				Map<Condition, Object> exp = pop.remove(i);
+				i--;
+				    Field field = (Field) exp.get(Condition.field);
+				try {
+					String expression = (String) exp.get(Condition.calculation);
+					Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,this.variableNames, this.implicitMultiplication);
+					this.tokens = tokens;
+					if(operResult != null) {
+						operResult.validate(tokens,this.variables,field);
 					}
-					throw new UnknownRuntimeException(ExceptionCode.C_10044.getCode(), e);
-				}
-				pop.offerLast(exp);
-				convertToBean(pop,valiResult);
-			} catch (IllegalArgumentException e) {
-				throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
-			} catch (IllegalAccessException e) {
-				throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
-			} catch (InvocationTargetException e) {
-				throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
-			} catch (IntrospectionException e) {
-				throw new UnknownRuntimeException("成员变量 '"+field.getName()+"' 没有get()方法",e);
-			} catch (CallBackException e) {
-				//发生回滚异常需要及时把结果给回调函数
-				if(valiResult != null) {
-					valiResult.setT(entity,true);
-				}	
-				throw new IllegalArgumentException(e);
-			}
+					double result = evaluate();
+					result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
+					field.set(exp.get(Condition.entity), result);
+					BindDouble bind = field.getAnnotation(BindDouble.class);
+					if (bind != null) {
+						PropertyDescriptor pd = new PropertyDescriptor(field.getName(),  
+								exp.get(Condition.entity).getClass());  
+						Method getMethod = pd.getReadMethod();
+			            Object doubleVal = getMethod.invoke((Object)exp.get(Condition.entity));
+			            this.variables.put(bind.key(), (Double) doubleVal);
+			            this.variableNames.addAll(variables.keySet());
+					}
+				} catch (UnknownFunOrVarException e) {
+					this.recalLimit --;
+					if (this.recalLimit == 0) {
+						throw new CallBackException(ExceptionCode.C_10044.getCode(), e);					
+					}
+					pop.offerLast(exp);
+					convertToBean(pop,operResult);
+				} catch (IllegalArgumentException e) {
+					throw new CallBackException(ExceptionCode.C_10042.getCode(),e);
+				} catch (IllegalAccessException e) {
+					throw new CallBackException(ExceptionCode.C_10042.getCode(),e);
+				} catch (InvocationTargetException e) {
+					throw new CallBackException(ExceptionCode.C_10042.getCode(),e);
+				} catch (IntrospectionException e) {
+					throw new CallBackException("成员变量 '"+field.getName()+"' 没有get()方法",e);
+				} 
 		}
 		if(pop.isEmpty())isSuccess = true;
 		return isSuccess;
 	}
     public boolean result() {
     	if(!passExps.isEmpty()) {
-    		if(convertToBean(passExps,null) && !waitExps.isEmpty()) {
-    			return convertToBean(waitExps,null);
-    		}else {
-    			return true;
-    		}
+    		try {
+				if(convertToBean(passExps,null)) {
+					return convertToBean(waitExps,null);
+				}else {
+					return true;
+				}
+			} catch (CallBackException e) {
+				throw new IllegalArgumentException(e);
+			}
     	} 
     	return false;
     }
-    public void result(ValiResult valiResult) {
+    public boolean result(ExecutorService executor,OperResult operResult){
     	if(!passExps.isEmpty()) {
-    		if(convertToBean(passExps,valiResult) && !waitExps.isEmpty()) {
-    			if(convertToBean(waitExps,valiResult)) {
-    				valiResult.setT(entity,false);
-    			};
-    		}else {
-    			valiResult.setT(entity,false);
-    		}
-    	} 
+    		try {
+				if(convertToBean(passExps,operResult)) {
+					if(convertToBean(waitExps,operResult)) {
+						operResult.setObject(executor,entity,true);	
+						return true;
+					}
+					return true;
+				}else {
+					operResult.setObject(executor,entity,false);
+					return false;
+				}
+			} catch (CallBackException e) {
+				operResult.setObject(executor,entity,false);
+				throw new IllegalArgumentException(e);
+			}
+    	}else {
+    		operResult.setObject(executor,entity,false);
+    	}
+    	return false;
     }
 }
