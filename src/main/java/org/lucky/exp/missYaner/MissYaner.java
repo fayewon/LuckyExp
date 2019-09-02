@@ -22,6 +22,7 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp.missYaner;
+import java.lang.reflect.Field;
 import java.util.*;
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.func.Func;
@@ -47,10 +48,10 @@ public class MissYaner {
      * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
      */
     public static Token[] convertToRPN(final String expression, final Map<String, Func> userFunctions,
-        final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) throws CallBackException{
+        final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication,Field field) throws CallBackException{
         final Stack<Token> stack = new Stack<Token>();
         final List<Token> output = new ArrayList<Token>();
-        final Tokenizer tokenizer = new Tokenizer(expression, userFunctions, userOperators, variableNames, implicitMultiplication);
+        final Tokenizer tokenizer = new Tokenizer(expression, userFunctions, userOperators, variableNames, implicitMultiplication,field);
         while (tokenizer.hasNext()) {
             Token token = tokenizer.nextToken();
             switch (token.getType()) {
@@ -66,7 +67,7 @@ public class MissYaner {
                     output.add(stack.pop());
                 }
                 if (stack.empty() || stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
-                    throw new CallBackException("函数分隔符','位置错误或括号不匹配");
+                    throw new CallBackException("变量 '"+field.getName()+"',函数分隔符','位置错误或括号不匹配");
                 }
                 break;
             case Token.TOKEN_OPERATOR:
@@ -103,7 +104,7 @@ public class MissYaner {
         while (!stack.empty()) {
             Token t = stack.pop();
             if (t.getType() == Token.TOKEN_PARENTHESES_CLOSE || t.getType() == Token.TOKEN_PARENTHESES_OPEN) {
-                throw new CallBackException("检测到不匹配的括号。请检查表达式");
+                throw new CallBackException("变量 '"+field.getName()+"',检测到不匹配的括号。请检查表达式");
             } else {
                 output.add(t);
             }

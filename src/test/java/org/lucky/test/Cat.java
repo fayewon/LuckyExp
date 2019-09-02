@@ -41,7 +41,7 @@ public class Cat implements Serializable{
 	@BindDouble(key = "L")
 	private Double twelve;
 	@BindDouble(key = "M")
-	@Calculation(formula= {"O","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@Calculation(formula= {"O+Q","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double thirteen;
 	@BindDouble(key = "N")
 	private Double fourteen;	

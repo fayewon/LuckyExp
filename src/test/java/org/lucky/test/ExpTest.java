@@ -44,7 +44,7 @@ public class ExpTest {
 		//.build(dog,param)//只绑定一个公式
 		.build(dog,param,selector)//复杂的计算  全都要0.0
 		.setRecalLimit(30)//设置重新计算次数，选择默认就好，默认20次。检查完参数和公式算不出结果可以设置
-		.implicitMultiplication(false)//是否插入隐式乘法标记，默认是false。使用默认就行
+		.implicitMultiplication(true)//是否插入隐式乘法标记，默认是false。使用默认就行
 		.func(new CustomFunction().roundDown())//自定义公式
 		.func(new CustomFunction().roundUp())//自定义公式
 		.result();
@@ -55,6 +55,7 @@ public class ExpTest {
 		System.out.println("Fifteen: "+dog.getCat().getFifteen());
 		System.out.println("Sixteen: "+dog.getCat().getSeventeen1());
 		System.out.println("Eighteen: "+dog.getCat().getEighteen());
+		System.out.println("Thirteen: "+dog.getCat().getThirteen());
 	}
 	@Test
 	public void test2() {

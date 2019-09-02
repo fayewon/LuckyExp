@@ -22,6 +22,7 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp.tokenizer;
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,30 +49,25 @@ public class Tokenizer {
     private final Set<String> variableNames;
 
     private final boolean implicitMultiplication;
+    
+    private final Field field;
 
     public int pos = 0;
 
     private Token lastToken;
     
     public Tokenizer(String expression, final Map<String, Func> userFunctions,
-            final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication) {
+            final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication,Field field) {
         this.expression = expression.trim().toCharArray();
         this.expressionLength = this.expression.length;
         this.userFunctions = userFunctions;
         this.userOperators = userOperators;
         this.variableNames = variableNames;
         this.implicitMultiplication = implicitMultiplication;
+        this.field = field;
     }
 
-    public Tokenizer(String expression, final Map<String, Func> userFunctions,
-                     final Map<String, Oper> userOperators, final Set<String> variableNames) {
-        this.expression = expression.trim().toCharArray();
-        this.expressionLength = this.expression.length;
-        this.userFunctions = userFunctions;
-        this.userOperators = userOperators;
-        this.variableNames = variableNames;
-        this.implicitMultiplication = true;
-    }
+    
 
     public boolean hasNext() {
         return this.expression.length > pos;
@@ -191,7 +187,7 @@ public class Tokenizer {
             testPos = offset + len - 1;
         }
         if (lastValidToken == null) {
-            throw new UnknownFunOrVarException(new String(expression), pos, len);
+            throw new UnknownFunOrVarException(field,new String(expression), pos, len);
         }
         pos += lastValidLen;
         lastToken = lastValidToken;

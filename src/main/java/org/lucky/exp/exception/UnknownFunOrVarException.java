@@ -23,6 +23,8 @@
 */
 package org.lucky.exp.exception;
 
+import java.lang.reflect.Field;
+
 import org.lucky.exp.tokenizer.Tokenizer;
 
 /**
@@ -40,11 +42,11 @@ public class UnknownFunOrVarException extends IllegalArgumentException {
 	private final String token;
 	private final int position;
 
-	public UnknownFunOrVarException(String expression, int position, int length) {
+	public UnknownFunOrVarException(Field field,String expression, int position, int length) {
 		this.expression = expression;
 		this.token = token(expression, position, length);
 		this.position = position;
-		this.message = "未知函数或变量 '" + token + "'，位置 '" + position + "'，不在表达式: '" + expression + "'中";
+		this.message = "变量 '"+field.getName()+"，'未知函数或参量 '" + token + "'，位置 '" + position + "'，不在表达式: '" + expression + "'中";
 	}
 
 	private static String token(String expression, int position, int length) {

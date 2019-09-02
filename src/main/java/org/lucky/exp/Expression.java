@@ -153,7 +153,7 @@ public class Expression {
     * @return
      * @throws CallBackException 
      */
-    private double evaluate() throws CallBackException {
+    private double evaluate(Token[] tokens,Field field) throws CallBackException {
         final ArrayStack output = new ArrayStack();
         for (int i = 0; i < tokens.length; i++) {
             Token t = tokens[i];
@@ -163,13 +163,13 @@ public class Expression {
                 final String name = ((VariableToken) t).getName();
                 final Double value = this.variables.get(name);
                 if (value == null) {
-                    throw new CallBackException("参数为空 '" + name + "'.");
+                    throw new CallBackException("变量 '"+field.getName()+"',参数为空 '" + name + "'.");
                 }
                 output.push(value);
             } else if (t.getType() == Token.TOKEN_OPERATOR) {
                 OperatorToken op = (OperatorToken) t;
                 if (output.size() < op.getOperator().getNumOperands()) {
-                    throw new CallBackException("可用于的操作数无效 '" + op.getOperator().getSymbol() + "' operator");
+                    throw new CallBackException("变量 '"+field.getName()+"',可用于的操作数无效 '" + op.getOperator().getSymbol() + "' operator");
                 }
                 if (op.getOperator().getNumOperands() == 2) {
                     /* 弹出操作数并推送操作结果 */
@@ -185,7 +185,7 @@ public class Expression {
                 FunctionToken func = (FunctionToken) t;
                 final int numArguments = func.getFunction().getNumArguments();
                 if (output.size() < numArguments) {
-                    throw new CallBackException("无可用于计算的参数 '" + func.getFunction().getName() + "' function");
+                    throw new CallBackException("变量 '"+field.getName()+"',无可用于计算的参数 '" + func.getFunction().getName() + "' function");
                 }
                 /* 从堆栈收集参数 */
                 double[] args = new double[numArguments];
@@ -196,7 +196,7 @@ public class Expression {
             }
         }
         if (output.size() > 1) {
-            throw new CallBackException("输出队列中的项目数无效。可能是函数的参数数目无效导致的.");
+            throw new CallBackException("变量 '"+field.getName()+"',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
         }
         return output.pop();
     }
@@ -218,12 +218,12 @@ public class Expression {
 				    Field field = (Field) exp.get(Condition.field);
 				try {
 					String expression = (String) exp.get(Condition.calculation);
-					Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,this.variableNames, this.implicitMultiplication);
+					Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,this.variableNames, this.implicitMultiplication,field);
 					this.tokens = tokens;
 					if(operResult != null) {
 						operResult.validate(tokens,this.variables,field);
 					}
-					double result = evaluate();
+					double result = evaluate(tokens,field);
 					result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
 					field.set(exp.get(Condition.entity), result);
 					BindDouble bind = field.getAnnotation(BindDouble.class);
@@ -249,7 +249,7 @@ public class Expression {
 				} catch (InvocationTargetException e) {
 					throw new CallBackException(ExceptionCode.C_10042.getCode(),e);
 				} catch (IntrospectionException e) {
-					throw new CallBackException("成员变量 '"+field.getName()+"' 没有get()方法",e);
+					throw new CallBackException("变量 '"+field.getName()+"' 没有get()方法",e);
 				} 
 		}
 		if(pop.isEmpty())isSuccess = true;
