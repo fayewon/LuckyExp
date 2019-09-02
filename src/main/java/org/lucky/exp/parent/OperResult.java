@@ -38,7 +38,7 @@ import org.lucky.exp.tokenizer.OperatorToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
 /**
- * 结果集回调操作
+ * 结果集线程回调操作
 *
 * @author FayeWong
  * @param <T>

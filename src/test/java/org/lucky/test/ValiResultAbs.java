@@ -32,7 +32,7 @@ import org.lucky.exp.parent.OperResult;
 * @author FayeWong
 * @date 2019年8月31日
  */
-public class ValiResultAbs /* extends ExecuteResult */{
+public class ValiResultAbs extends OperResult{
 
 	
 	protected void getValiMeg(List message) {
@@ -40,12 +40,12 @@ public class ValiResultAbs /* extends ExecuteResult */{
 		
 	}
 
-	
-	public void execute(Object t,boolean isError) {
-		Dog u = (Dog)t;
-		
+
+	@Override
+	public void executeAsync(Object t, boolean isSuccess) {
+		Dog dog = (Dog)this.t;
+		System.out.println(dog.getThree());
+		System.out.println(dog.getFour());
 		
 	}
-
-
 }

@@ -261,7 +261,7 @@ public class Expression {
 				if(convertToBean(passExps,null)) {
 					return convertToBean(waitExps,null);
 				}else {
-					return true;
+					return false;
 				}
 			} catch (CallBackException e) {
 				throw new IllegalArgumentException(e);
@@ -276,7 +276,7 @@ public class Expression {
 					if(convertToBean(waitExps,operResult)) {
 						operResult.setObject(executor,entity,true);	
 					}else {
-						operResult.setObject(executor,entity,true);
+						operResult.setObject(executor,entity,false);
 					}
 				}else {
 					operResult.setObject(executor,entity,false);

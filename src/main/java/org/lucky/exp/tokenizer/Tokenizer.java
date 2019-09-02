@@ -30,6 +30,11 @@ import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.oper.Oper;
 import org.lucky.exp.oper.Opers;
+/**
+ * 解析表达式，将表达式拆分成Token对象
+ * @author FayeWong
+ *
+ */
 public class Tokenizer {
 
     private final char[] expression;
@@ -76,7 +81,7 @@ public class Tokenizer {
     *
     * @author FayeWong
     * @date 2019年8月28日
-    * @return
+    * @return 被拆分的Token对象
      */
     public Token nextToken(){
         char ch = expression[pos];

@@ -108,29 +108,36 @@ public class ExpTest {
 	@Test
 	public <T> void test4() {
 		for(int i=0;i<10;i++) {
+			Selector selector = new Selector();//公式选择器
 			Dog dog = new Dog();
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
+			if( i == 4) {
+				dog.setThree(0.0);
+			}
+			if(i == 5) {
+				selector.put("three", Formula_Choose._2);
+			}
 			Cat cat = new Cat();
 			dog.setCat(cat);
 			new DefaultLuckyExpBuilder()
-					.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+					.build(dog,null,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.result(executor,new OperResult<T>() {
 
 						@Override
 						protected void getValiMeg(List<Map<String, String>> message) {
-							System.out.println("message: "+message);
+							//System.out.println("message: "+message);
 							
 						}
 
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)t;
-							System.out.println(dog.getThree());
-							System.out.println(dog.getFour());
-							
+							System.out.println("Three: "+dog.getThree());
+							System.out.println("Four: "+dog.getFour());
+							System.out.println("Thirteen: "+dog.getCat().getThirteen());
 						}//带回调的计算结果
 						
 					});						
@@ -164,7 +171,7 @@ public class ExpTest {
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.result(executor,new OperResult<T>() {
-
+						
 						@Override
 						protected void getValiMeg(List<Map<String, String>> message) {
 							System.out.println("message: "+message);
@@ -173,11 +180,12 @@ public class ExpTest {
 
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
-							Dog dog = (Dog)t;
+							Dog dog = (Dog)this.t;
 							System.out.println(dog.getThree());
 							System.out.println(dog.getFour());
 							
 						}//带回调的计算结果
+						
 						
 					});						
 		}
