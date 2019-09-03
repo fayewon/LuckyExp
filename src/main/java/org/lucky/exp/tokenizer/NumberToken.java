@@ -1,10 +1,5 @@
-/** Copyright 2019 SAIC General Motors Corporation Ltd. All Rights Reserved.
-*
-* This software is published under the terms of the SGM Software
-* License version 1.0, a copy of which has been included with this
-* distribution in the LICENSE.txt file.
-*
-* @Project Name : LuckyExp
+/** 
+ * @Project Name : LuckyExp
 *
 * @File name : NumberToken.java
 *
@@ -24,7 +19,7 @@
 package org.lucky.exp.tokenizer;
 
 /**
- * 表达式中的数字
+ * 数字对象
  */
 public final class NumberToken extends Token {
     private final double value;

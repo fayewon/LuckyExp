@@ -1,10 +1,5 @@
-/** Copyright 2019 SAIC General Motors Corporation Ltd. All Rights Reserved.
-*
-* This software is published under the terms of the SGM Software
-* License version 1.0, a copy of which has been included with this
-* distribution in the LICENSE.txt file.
-*
-* @Project Name : LuckyExp
+/** 
+ * @Project Name : LuckyExp
 *
 * @File name : FunctionToken.java
 *
@@ -24,7 +19,12 @@
 package org.lucky.exp.tokenizer;
 
 import org.lucky.exp.func.Func;
-
+/**
+ * 函数对象
+*
+* @author FayeWong
+* @date 2019年9月3日
+ */
 public class FunctionToken extends Token{
     private final Func function;
     public FunctionToken(final Func function) {

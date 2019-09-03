@@ -1,12 +1,7 @@
-/** Copyright 2019 SAIC General Motors Corporation Ltd. All Rights Reserved.
+/** 
+ * @Project Name : LuckyExp
 *
-* This software is published under the terms of the SGM Software
-* License version 1.0, a copy of which has been included with this
-* distribution in the LICENSE.txt file.
-*
-* @Project Name : LuckyExp
-*
-* @File name : Operators.java
+* @File name : Opers.java
 *
 * @Author : FayeWong
 *
@@ -38,37 +33,37 @@ public abstract class Opers {
     static {
         builtinOperators[INDEX_ADDITION]= new Oper("+", 2, true, Oper.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return args[0] + args[1];
             }
         };
         builtinOperators[INDEX_SUBTRACTION]= new Oper("-", 2, true, Oper.PRECEDENCE_ADDITION) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return args[0] - args[1];
             }
         };
         builtinOperators[INDEX_UNARYMINUS]= new Oper("-", 1, false, Oper.PRECEDENCE_UNARY_MINUS) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return -args[0];
             }
         };
         builtinOperators[INDEX_UNARYPLUS]= new Oper("+", 1, false, Oper.PRECEDENCE_UNARY_PLUS) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return args[0];
             }
         };
         builtinOperators[INDEX_MUTLIPLICATION]= new Oper("*", 2, true, Oper.PRECEDENCE_MULTIPLICATION) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return args[0] * args[1];
             }
         };
         builtinOperators[INDEX_DIVISION]= new Oper("/", 2, true, Oper.PRECEDENCE_DIVISION) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 if (args[1] == 0d) {
                     throw new ArithmeticException("被除数为0!");
                 }
@@ -77,13 +72,13 @@ public abstract class Opers {
         };
         builtinOperators[INDEX_POWER]= new Oper("^", 2, false, Oper.PRECEDENCE_POWER) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 return Math.pow(args[0], args[1]);
             }
         };
         builtinOperators[INDEX_MODULO]= new Oper("%", 2, true, Oper.PRECEDENCE_MODULO) {
             @Override
-            public double apply(final double... args) {
+            public double call(final double... args) {
                 if (args[1] == 0d) {
                     throw new ArithmeticException("被余数为0!");
                 }

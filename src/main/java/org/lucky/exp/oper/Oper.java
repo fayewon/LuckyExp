@@ -1,12 +1,7 @@
-/** Copyright 2019 SAIC General Motors Corporation Ltd. All Rights Reserved.
-*
-* This software is published under the terms of the SGM Software
-* License version 1.0, a copy of which has been included with this
-* distribution in the LICENSE.txt file.
-*
+/**
 * @Project Name : LuckyExp
 *
-* @File name : Operator.java
+* @File name : Oper.java
 *
 * @Author : FayeWong
 *
@@ -121,7 +116,7 @@ public abstract class Oper {
      * @param args该操作的操作数
      * @return 操作的计算结果
      */
-    public abstract double apply(double ... args);
+    public abstract double call(double ... args);
 
     /**
      * 获取运算符符号
