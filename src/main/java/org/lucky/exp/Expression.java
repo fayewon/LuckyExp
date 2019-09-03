@@ -172,11 +172,11 @@ public class Expression {
                     /* 弹出操作数并推送操作结果 */
                     double rightArg = output.pop();
                     double leftArg = output.pop();
-                    output.push(op.getOperator().apply(leftArg, rightArg));
+                    output.push(op.getOperator().call(leftArg, rightArg));
                 } else if (op.getOperator().getNumOperands() == 1) {
                 	/* 弹出操作数并推送操作结果 */
                     double arg = output.pop();
-                    output.push(op.getOperator().apply(arg));
+                    output.push(op.getOperator().call(arg));
                 }
             } else if (t.getType() == Token.TOKEN_FUNCTION) {
                 FunctionToken func = (FunctionToken) t;
