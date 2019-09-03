@@ -40,7 +40,7 @@ public class LinkedStack<E> {
 	public E pop() {
 		return list.removeLast();
 	}
-	public boolean empty() {
+	public boolean isEmpty() {
 		return list.size() == 0;		
 	}
 	public E search(int index) {
