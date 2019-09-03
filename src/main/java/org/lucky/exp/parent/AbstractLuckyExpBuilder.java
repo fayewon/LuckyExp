@@ -177,17 +177,17 @@ public  abstract class  AbstractLuckyExpBuilder{
         	}
         }
     }
-	public AbstractLuckyExpBuilder operator(Oper operator) {
-        this.checkOperatorSymbol(operator);
-        this.userOperators.put(operator.getSymbol(), operator);
+	public AbstractLuckyExpBuilder oper(Oper oper) {
+        this.checkOperatorSymbol(oper);
+        this.userOperators.put(oper.getSymbol(), oper);
         return this;
     }
-	public AbstractLuckyExpBuilder operator(Oper... operators) {
-    	Arrays.asList(operators).stream().forEach( o -> this.operator(o));
+	public AbstractLuckyExpBuilder oper(Oper... oper) {
+    	Arrays.asList(oper).stream().forEach( o -> this.oper(o));
         return this;
     }
-	public AbstractLuckyExpBuilder operator(List<Oper> operators) {
-    	operators.forEach( o -> this.operator(o));
+	public AbstractLuckyExpBuilder oper(List<Oper> oper) {
+    	oper.forEach( o -> this.oper(o));
         return this;
     }
 	/**

@@ -29,7 +29,7 @@ import java.util.concurrent.ExecutorService;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.FunctionToken;
-import org.lucky.exp.tokenizer.OperatorToken;
+import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
 /**
@@ -133,7 +133,7 @@ public abstract class OperResult<T> {
                     }
                     break;
                 case Token.TOKEN_OPERATOR:
-                    Oper op = ((OperatorToken) tok).getOperator();
+                    Oper op = ((OperToken) tok).getOper();
                     if (op.getNumOperands() == 2) {
                         count--;
                     }

@@ -48,7 +48,7 @@ public class Dog implements Serializable{
 	@Calculation(formula= {"O","M * roundUp(max(A,2,7,9))"},format = "##.###")
 	private Double three;
 	@BindDouble(key = "D")
-	@Calculation(formula= {"A+B"})
+	@Calculation(formula= {"100#A+B"})
 	private Double four;
 	
 	

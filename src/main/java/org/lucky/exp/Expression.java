@@ -44,7 +44,7 @@ import org.lucky.exp.oper.Oper;
 import org.lucky.exp.parent.OperResult;
 import org.lucky.exp.tokenizer.FunctionToken;
 import org.lucky.exp.tokenizer.NumberToken;
-import org.lucky.exp.tokenizer.OperatorToken;
+import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
 import org.lucky.exp.util.LinkedStack;
@@ -164,19 +164,19 @@ public class Expression {
                 }
                 output.push(value);
             } else if (t.getType() == Token.TOKEN_OPERATOR) {
-                OperatorToken op = (OperatorToken) t;
-                if (output.size() < op.getOperator().getNumOperands()) {
-                    throw new CallBackException("变量 '"+field.getName()+"',可用于的操作数无效 '" + op.getOperator().getSymbol() + "' operator");
+                OperToken op = (OperToken) t;
+                if (output.size() < op.getOper().getNumOperands()) {
+                    throw new CallBackException("变量 '"+field.getName()+"',可用于的操作数无效 '" + op.getOper().getSymbol() + "' oper(操作数只接受1或2)");
                 }
-                if (op.getOperator().getNumOperands() == 2) {
+                if (op.getOper().getNumOperands() == 2) {
                     /* 弹出操作数并推送操作结果 */
                     double rightArg = output.pop();
                     double leftArg = output.pop();
-                    output.push(op.getOperator().call(leftArg, rightArg));
-                } else if (op.getOperator().getNumOperands() == 1) {
+                    output.push(op.getOper().call(leftArg, rightArg));
+                } else if (op.getOper().getNumOperands() == 1) {
                 	/* 弹出操作数并推送操作结果 */
                     double arg = output.pop();
-                    output.push(op.getOperator().call(arg));
+                    output.push(op.getOper().call(arg));
                 }
             } else if (t.getType() == Token.TOKEN_FUNCTION) {
                 FunctionToken func = (FunctionToken) t;

@@ -1,7 +1,7 @@
 /** 
 * @Project Name : LuckyExp
 *
-* @File name : OperatorToken.java
+* @File name : OperToken.java
 *
 * @Author : FayeWong
 *
@@ -23,22 +23,22 @@ import org.lucky.exp.oper.Oper;
 /**
  * 运算符对象
  */
-public class OperatorToken extends Token{
-    private final Oper operator;
-    public OperatorToken(Oper op) {
+public class OperToken extends Token{
+    private final Oper oper;
+    public OperToken(Oper op) {
         super(Token.TOKEN_OPERATOR);
         if (op == null) {
             throw new IllegalArgumentException("Operator is unknown for token.");
         }
-        this.operator = op;
+        this.oper = op;
     }
 
     /**
      * 获取运算符
      * @return  运算符
      */
-    public Oper getOperator() {
-        return operator;
+    public Oper getOper() {
+        return oper;
     }
 }
 

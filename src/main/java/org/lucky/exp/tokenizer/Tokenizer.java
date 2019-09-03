@@ -89,7 +89,7 @@ public class Tokenizer {
                         && lastToken.getType() != Token.TOKEN_FUNCTION
                         && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                     // 插入隐式乘法标记
-                    lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
+                    lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
                     return lastToken;
                 }
             }
@@ -103,7 +103,7 @@ public class Tokenizer {
                             && lastToken.getType() != Token.TOKEN_FUNCTION
                             && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                 // 插入隐式乘法标记
-                lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
+                lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
                 return lastToken;
             }
             return parseParentheses(true);
@@ -119,7 +119,7 @@ public class Tokenizer {
                             && lastToken.getType() != Token.TOKEN_FUNCTION
                             && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
                 // 插入隐式乘法标记
-                lastToken = new OperatorToken(Opers.getBuiltinOperator('*', 2));
+                lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
                 return lastToken;
             }
             return parseFunctionOrVariable();
@@ -222,7 +222,7 @@ public class Tokenizer {
         }
 
         pos += symbol.length();
-        lastToken = new OperatorToken(lastValid);
+        lastToken = new OperToken(lastValid);
         return lastToken;
     }
 
@@ -240,7 +240,7 @@ public class Tokenizer {
                 if (lastTokenType == Token.TOKEN_PARENTHESES_OPEN || lastTokenType == Token.TOKEN_SEPARATOR) {
                     argc = 1;
                 } else if (lastTokenType == Token.TOKEN_OPERATOR) {
-                    final Oper lastOp = ((OperatorToken) lastToken).getOperator();
+                    final Oper lastOp = ((OperToken) lastToken).getOper();
                     if (lastOp.getNumOperands() == 2 || (lastOp.getNumOperands() == 1 && !lastOp.isLeftAssociative())) {
                         argc = 1;
                     }

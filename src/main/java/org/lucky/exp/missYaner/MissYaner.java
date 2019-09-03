@@ -22,7 +22,7 @@ import java.util.*;
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
-import org.lucky.exp.tokenizer.OperatorToken;
+import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;
 /**
@@ -67,12 +67,12 @@ public class MissYaner {
                 break;
             case Token.TOKEN_OPERATOR:
                 while (!stack.empty() && stack.peek().getType() == Token.TOKEN_OPERATOR) {
-                    OperatorToken o1 = (OperatorToken) token;
-                    OperatorToken o2 = (OperatorToken) stack.peek();
-                    if (o1.getOperator().getNumOperands() == 1 && o2.getOperator().getNumOperands() == 2) {
+                    OperToken o1 = (OperToken) token;
+                    OperToken o2 = (OperToken) stack.peek();
+                    if (o1.getOper().getNumOperands() == 1 && o2.getOper().getNumOperands() == 2) {
                         break;
-                    } else if ((o1.getOperator().isLeftAssociative() && o1.getOperator().getPrecedence() <= o2.getOperator().getPrecedence())
-                            || (o1.getOperator().getPrecedence() < o2.getOperator().getPrecedence())) {
+                    } else if ((o1.getOper().isLeftAssociative() && o1.getOper().getPrecedence() <= o2.getOper().getPrecedence())
+                            || (o1.getOper().getPrecedence() < o2.getOper().getPrecedence())) {
                         output.add(stack.pop());
                     }else {
                         break;

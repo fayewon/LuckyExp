@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Formula_Choose;
+import org.lucky.exp.oper.Oper;
 import org.lucky.exp.parent.OperResult;
 /**
  * 面向对象计算
@@ -30,6 +31,12 @@ public class ExpTest {
 	ExecutorService executor = Executors.newFixedThreadPool(5);
 	@Test
 	public void test() {
+		Oper oper = new Oper("#", 2/**操作数只接受1或2**/, true, Oper.PRECEDENCE_ADDITION) {
+            @Override
+            public double call(final double... args) {
+                return args[0] + args[1];
+            }
+        };
 		Selector selector = new Selector();//公式选择器
 		//selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
@@ -47,6 +54,7 @@ public class ExpTest {
 		.implicitMultiplication(true)//是否插入隐式乘法标记，默认是false。使用默认就行
 		.func(new CustomFunction().roundDown())//自定义公式
 		.func(new CustomFunction().roundUp())//自定义公式
+		.oper(oper)//自定义运算符
 		.result();
 		assertTrue(result);
 		System.out.println("Three: "+dog.getThree());
