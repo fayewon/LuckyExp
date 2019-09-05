@@ -18,9 +18,11 @@
 */
 package org.lucky.exp.tokenizer;
 import java.lang.reflect.Field;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.exception.UnknownFunOrVarException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
@@ -44,7 +46,7 @@ public class Tokenizer {
     private final Set<String> variableNames;
 
     private final boolean implicitMultiplication;
-    
+       
     private final Field field;
 
     public int pos = 0;

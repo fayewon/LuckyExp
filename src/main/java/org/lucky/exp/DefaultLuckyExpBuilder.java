@@ -37,7 +37,7 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
 
 	@Override
 	public boolean result() {		
-		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,recalLimit,this.userFuncs.keySet())
+		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,this.userFuncs.keySet())
 				.setVariables(variables)
 				.setTokens(tokens);
 		return expression.result();
@@ -45,7 +45,7 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
 
 	@Override
 	public void  result(ExecutorService executor,OperResult operResult) {
-		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,recalLimit,this.userFuncs.keySet())
+		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,this.userFuncs.keySet())
 				.setVariables(variables)
 				.setTokens(tokens)
 				.setEntity(entity);

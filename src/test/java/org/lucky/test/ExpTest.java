@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-
 import org.junit.Test;
 import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
@@ -50,14 +48,13 @@ public class ExpTest {
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 		//.build(dog,param)//只绑定一个公式
 		.build(dog,param,selector)//复杂的计算  全都要0.0
-		.setRecalLimit(30)//设置重新计算次数，选择默认就好，默认20次。检查完参数和公式算不出结果可以设置
 		.implicitMultiplication(true)//是否插入隐式乘法标记，默认是false。使用默认就行
 		.func(new CustomFunction().roundDown())//自定义公式
 		.func(new CustomFunction().roundUp())//自定义公式
 		.oper(oper)//自定义运算符
 		.result();
 		assertTrue(result);
-		System.out.println("Three: "+dog.getThree());
+		//System.out.println("Three: "+dog.getThree());
 		System.out.println("Four: "+dog.getFour());
 		System.out.println("ten: "+dog.getTen());
 		System.out.println("Fifteen: "+dog.getCat().getFifteen());
@@ -70,14 +67,14 @@ public class ExpTest {
 		Dog dog = new Dog();
 		dog.setOne(123.0);
 		dog.setTwo(234.1);
-		dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
+		//dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
 		boolean result = new DefaultLuckyExpBuilder()
 				.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 				.func(new CustomFunction().roundDown())//自定义公式
 				.func(new CustomFunction().roundUp())//自定义公式
 				.result();
 				assertTrue(result);
-				System.out.println(dog.getThree());//该值为默认值
+				//System.out.println(dog.getThree());//该值为默认值
 				System.out.println(dog.getFour());
 	  /**
 	   * 注意还有种情况的处理方式，如果业务需要计算之后的变量进行判断，可以在该变量的get方法里判断
@@ -110,7 +107,7 @@ public class ExpTest {
 		}
 		
 		for(Dog dog : list) {
-			System.out.println(dog.getThree());
+			//System.out.println(dog.getThree());
 			System.out.println(dog.getFour());
 		}
 	}
@@ -122,7 +119,7 @@ public class ExpTest {
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
 			if( i == 4) {
-				dog.setThree(0.0);
+				//dog.setThree(0.0);
 			}
 			if(i == 5) {
 				selector.put("three", Formula_Choose._2);
@@ -144,7 +141,7 @@ public class ExpTest {
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)t;
-							System.out.println("Three: "+dog.getThree());
+							//System.out.println("Three: "+dog.getThree());
 							System.out.println("Four: "+dog.getFour());
 							System.out.println("Thirteen: "+dog.getCat().getThirteen());
 						}//带回调的计算结果
@@ -190,7 +187,7 @@ public class ExpTest {
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)this.t;
-							System.out.println(dog.getThree());
+							//System.out.println(dog.getThree());
 							System.out.println(dog.getFour());
 							
 						}//带回调的计算结果

@@ -36,12 +36,12 @@ public class Cat implements Serializable{
 	@BindDouble(key = "L")
 	private Double twelve;
 	@BindDouble(key = "M")
-	@Calculation(formula= {"O+Q","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@Calculation(formula= {"A","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double thirteen;
 	@BindDouble(key = "N")
 	private Double fourteen;	
 	@BindDouble(key = "O")
-	@Calculation(formula= {"A+B*D+J","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@Calculation(formula= {" D ","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double fifteen;
 	@BindDouble(key = "P")
 	private Double sixteen;

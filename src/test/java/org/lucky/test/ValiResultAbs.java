@@ -39,7 +39,7 @@ public class ValiResultAbs extends OperResult{
 	@Override
 	public void executeAsync(Object t, boolean isSuccess) {
 		Dog dog = (Dog)this.t;
-		System.out.println(dog.getThree());
+		//System.out.println(dog.getThree());
 		System.out.println(dog.getFour());
 		
 	}

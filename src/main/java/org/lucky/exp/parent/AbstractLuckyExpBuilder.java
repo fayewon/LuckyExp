@@ -58,18 +58,12 @@ public  abstract class  AbstractLuckyExpBuilder{
     protected  final List<Map<Condition, Object>> passExps = new LinkedList<Map<Condition, Object>>(); 
     /**待计算公式和输入结果**/
     protected  final List<Map<Condition, Object>> waitExps = new LinkedList<Map<Condition, Object>>(); 
-    /**重算上限**/
-    protected  int recalLimit = 100;
     /**是否追加隐式乘法**/
     protected  boolean implicitMultiplication = false;
     
     protected Serializable entity;
     private  void setVariables(Set<String> variableNames) {
         this.variableNames.addAll(variableNames);
-    }
-    public AbstractLuckyExpBuilder setRecalLimit(int recalLimit) {
-    	this.recalLimit = recalLimit;
-    	return this;
     }
     public AbstractLuckyExpBuilder implicitMultiplication(boolean enabled) {
         this.implicitMultiplication = enabled;

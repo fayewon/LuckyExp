@@ -38,17 +38,17 @@ public class Dog implements Serializable{
 	@BindObject
 	private Rabbit rabbit;
 	@BindDouble(key = "J")
-	@Calculation(formula= {"D","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
+	@Calculation(formula= {"A","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
 	private Double ten;
 	@BindDouble(key = "A")
 	private Double one;
 	@BindDouble(key = "B")
 	private Double two;
 	@BindDouble(key = "C")
-	@Calculation(formula= {"O","M * roundUp(max(A,2,7,9))"},format = "##.###")
+	@Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
 	private Double three;
 	@BindDouble(key = "D")
-	@Calculation(formula= {"100#A+B"})
+	@Calculation(formula= {"100#A+B+J+M"})
 	private Double four;
 	
 	
@@ -75,13 +75,7 @@ public class Dog implements Serializable{
 	public void setTwo(Double two) {
 		this.two = two;
 	}
-	public Double getThree() {
-		//return three < 200 ? 200 : three;
-		return three;
-	}
-	public void setThree(Double three) {
-		this.three = three;
-	}
+	
 	public Double getFour() {
 		return four;
 	}
