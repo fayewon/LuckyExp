@@ -27,8 +27,7 @@ import org.lucky.exp.exception.BindException;
  */
 public class ValiSerializableObj {
 	public static boolean validation(Field field,boolean valiType) throws BindException {
-		Class<?>[] clazzes = field.getType().getInterfaces();
-		for(Class<?> clazz : clazzes) {
+		Class<?> clazz = field.getType();
 			if(clazz == String.class) {
 				return valiType = false;
 			}else if(clazz == Byte.class) {
@@ -48,7 +47,7 @@ public class ValiSerializableObj {
 			}else if(clazz == Boolean.class) {
 				return valiType = false;
 			}
-		}
+			//.....
 		return valiType;
 	}
 }

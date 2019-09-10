@@ -27,7 +27,7 @@ package org.lucky.exp.annotation;
 public enum Condition {
 	field,
 	entity,
-	calculation,
+	expression,
 	disable,
 	status,
 	format,

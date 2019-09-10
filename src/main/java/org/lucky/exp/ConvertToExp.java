@@ -117,7 +117,7 @@ public class ConvertToExp {
 				parseObj.put(Condition.entity, entity);
 				parseObj.put(Condition.status, calculation.action());
 				parseObj.put(Condition.format, calculation.format());
-				parseObj.put(Condition.calculation, calculation.formula()[index]);
+				parseObj.put(Condition.expression, calculation.formula()[index]);
 				switch ((Status) parseObj.get(Condition.status)) {
 				case PASS:
 					passExps.add(parseObj);
@@ -166,7 +166,7 @@ public class ConvertToExp {
 			});
 		}
 	}
-	private static void parseBindDouble(Object fieldVal, Field field, Map<String, Double> variables) throws BindException {
+	private  void parseBindDouble(Object fieldVal, Field field, Map<String, Double> variables) throws BindException {
 		BindDouble bind = (BindDouble) field.getAnnotation(BindDouble.class);
 		if(field.getType() != Double.class) {
 			throw new BindException("@BindDouble('" + bind.key() + "') 必须绑定Double类型的字段 ：" + field.getType()

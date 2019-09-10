@@ -5,16 +5,16 @@
   <groupId>LuckyExp</groupId>
   <artifactId>LuckyExp</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <description>幸运的表达式，一个快速易用的面向对象计算的开源工具.</description>
   <packaging>jar</packaging>
-
   <name>LuckyExp</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/fayewon/LuckyExp</url>
   <scm>
         <connection>scm:git:https://github.com/fayewon/LuckyExp.git</connection>
         <developerConnection>scm:git:https://github.com/fayewon/LuckyExp.git</developerConnection>
         <url>https://github.com/fayewon/LuckyExp</url>
         <tag>HEAD</tag>
-    </scm>
+  </scm>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -27,4 +27,31 @@
         <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <developers>
+   <developer>
+   <name>FayeWong</name>
+   <email> 50125289@qq.com</email>
+   <url>https://github.com/fayewon/LuckyExp</url>
+   </developer>
+  </developers>
+  <licenses>
+    <license>
+      <name>The Apache Software License, Version2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <configuration>
+              <source>1.8</source>
+              <target>1.8</target>
+            </configuration>
+      </plugin>
+    </plugins>
+ </build>
 </project>

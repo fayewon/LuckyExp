@@ -28,7 +28,7 @@ public class OperToken extends Token{
     public OperToken(Oper op) {
         super(Token.TOKEN_OPERATOR);
         if (op == null) {
-            throw new IllegalArgumentException("Operator is unknown for token.");
+            throw new IllegalArgumentException("未知的运算符.");
         }
         this.oper = op;
     }

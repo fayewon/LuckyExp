@@ -35,6 +35,8 @@ public class Dog implements Serializable{
 	//
 	@BindObject
 	private Cat cat;
+	//@BindObject
+	private String str = "helloworld";
 	@BindObject
 	private Rabbit rabbit;
 	@BindDouble(key = "J")
@@ -130,6 +132,18 @@ public class Dog implements Serializable{
 	}
 	public void setRabbit(Rabbit rabbit) {
 		this.rabbit = rabbit;
+	}
+	public Double getThree() {
+		return three;
+	}
+	public void setThree(Double three) {
+		this.three = three;
+	}
+	public String getStr() {
+		return str;
+	}
+	public void setStr(String str) {
+		this.str = str;
 	}
 	
 }

@@ -32,8 +32,8 @@ import org.lucky.exp.annotation.Formula_Choose;
 * @date 2019年8月29日
  */
 public class Selector {
-	public Map<String, Formula_Choose> selector = new HashMap<String, Formula_Choose>();
-	public void put(String filedName, Formula_Choose select) {
+	Map<String, Formula_Choose> selector = new HashMap<String, Formula_Choose>();
+	public void formulaFiled(String filedName, Formula_Choose select) {
 		selector.put(filedName, select);
 	}
 }

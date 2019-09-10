@@ -17,9 +17,6 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp;
-
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
 import java.io.Serializable;
@@ -29,16 +26,13 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-
 import org.lucky.exp.annotation.BindDouble;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
-import org.lucky.exp.exception.BindException;
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.exception.UnknownFunOrVarException;
 import org.lucky.exp.func.Func;
@@ -51,9 +45,8 @@ import org.lucky.exp.tokenizer.NumberToken;
 import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.VariableToken;
+import org.lucky.exp.util.Iterator;
 import org.lucky.exp.util.LinkedStack;
-import org.lucky.exp.util.ArrayStack;
-
 /**
  * 
  *
@@ -94,7 +87,7 @@ public class Expression {
 	Expression(final Map<String, Func> userFuncs, final Map<String, Oper> userOperators,
 			final Set<String> variableNames, final boolean implicitMultiplication,
 			final List<Map<Condition, Object>> passExps, final List<Map<Condition, Object>> waitExps,
-		    final Set<String> userFunctionNames) {
+			final Set<String> userFunctionNames) {
 		this.userFuncs = userFuncs;
 		this.userOperators = userOperators;
 		this.variableNames = variableNames;
@@ -154,7 +147,7 @@ public class Expression {
 	 * @return
 	 * @throws CallBackException
 	 */
-	private double evaluate(Token[] tokens, Field field) throws CallBackException {
+	private double evaluate(final Token[] tokens, final Field field) throws CallBackException {
 		final LinkedStack<Double> output = new LinkedStack<Double>();
 		for (int i = 0; i < tokens.length; i++) {
 			Token t = tokens[i];
@@ -203,7 +196,6 @@ public class Expression {
 		}
 		return output.pop();
 	}
-
 	/**
 	 * 从表达式中推送出来的结果组装到各个对象中
 	 *
@@ -211,26 +203,24 @@ public class Expression {
 	 * @date 2019年8月30日
 	 * @param exps
 	 * @return
-	 * @throws BindException 
+	 * @throws CallBackException
 	 */
-	private boolean convertToBean(List<Map<Condition, Object>> exps, OperResult operResult) throws CallBackException, BindException {
-		LinkedList<Map<Condition, Object>> pop = (LinkedList<Map<Condition, Object>>) exps;
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	private boolean convertToBean(final List<Map<Condition, Object>> exps, final OperResult operResult) throws CallBackException {
+		Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(exps);
 		boolean isSuccess = false;
-		for (int i = 0; i < pop.size(); i++) {
-			Map<Condition, Object> exp = pop.removeFirst();
-			i--;
+		while(iterator.hasNext()) {
+			Map<Condition, Object> exp = iterator.removeNext();
 			Field field = (Field) exp.get(Condition.field);
 			try {
-				String expression = (String) exp.get(Condition.calculation);
+				String expression = (String) exp.get(Condition.expression);
 				BindDouble bind = field.getAnnotation(BindDouble.class);
-				//try {
-					Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,
-							this.variableNames, this.implicitMultiplication,field);
-					this.tokens = tokens;
-					if (operResult != null) {
-						operResult.validate(tokens, this.variables, field);// 验证表达式是否合法
-					}
-								
+				Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,
+						this.variableNames, this.implicitMultiplication, field);
+				this.tokens = tokens;
+				if (operResult != null) {
+					operResult.validate(tokens, this.variables, field);// 验证表达式是否合法
+				}
 				double result = evaluate(tokens, field);
 				result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
 				field.set(exp.get(Condition.entity), result);
@@ -239,14 +229,14 @@ public class Expression {
 					PropertyDescriptor pd = new PropertyDescriptor(field.getName(),
 							exp.get(Condition.entity).getClass());
 					Method getMethod = pd.getReadMethod();
-					Object doubleVal = getMethod.invoke((Object) exp.get(Condition.entity));
-					this.variables.put(bind.key(), (Double) doubleVal);
+					Object getResult = getMethod.invoke((Object) exp.get(Condition.entity));
+					this.variables.put(bind.key(), (Double) getResult);
 					this.variableNames.addAll(variables.keySet());
 				}
 			} catch (UnknownFunOrVarException e) {
 				unknownFunOrVarException = e.getMessage();
-				pop.offerLast(exp);
-				convertToBean(pop, operResult);
+				iterator.offerLast();
+				convertToBean(iterator.getList(), operResult);
 			} catch (IllegalArgumentException e) {
 				throw new CallBackException(ExceptionCode.C_10042.getCode(), e);
 			} catch (IllegalAccessException e) {
@@ -255,9 +245,9 @@ public class Expression {
 				throw new CallBackException(ExceptionCode.C_10042.getCode(), e);
 			} catch (IntrospectionException e) {
 				throw new CallBackException("变量 '" + field.getName() + "' 没有get()方法", e);
-			} 	
+			}
 		}
-		if (pop.isEmpty())
+		if (iterator.isEmpty())
 			isSuccess = true;
 		return isSuccess;
 	}
@@ -272,15 +262,14 @@ public class Expression {
 				}
 			} catch (CallBackException e) {
 				throw new IllegalArgumentException(e);
-			} catch (BindException e) {
-				throw new IllegalArgumentException(e);
-			} catch(StackOverflowError error) {
-				throw new IllegalArgumentException("重算失败，请检查"+unknownFunOrVarException+"或者相互引用");
+			} catch (StackOverflowError error) {
+				throw new IllegalArgumentException("重算失败，请检查" + unknownFunOrVarException + "或者相互引用");
 			}
 		}
 		return false;
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void result(ExecutorService executor, OperResult operResult) {
 		if (!passExps.isEmpty()) {
 			try {
@@ -296,10 +285,9 @@ public class Expression {
 			} catch (CallBackException e) {
 				operResult.setObject(executor, entity, false);
 				throw new IllegalArgumentException(e);
-			} catch (BindException e) {
-				throw new IllegalArgumentException(e);
-			} catch(StackOverflowError error) {
-				throw new IllegalArgumentException("重算失败，请检查"+unknownFunOrVarException+",是否相互引用");
+			} catch (StackOverflowError error) {
+				operResult.setObject(executor, entity, false);
+				throw new IllegalArgumentException("重算失败，请检查" + unknownFunOrVarException + ",是否相互引用");
 			}
 		} else {
 			operResult.setObject(executor, entity, false);

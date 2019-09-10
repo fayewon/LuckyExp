@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
-
 import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.FunctionToken;
@@ -61,7 +60,7 @@ public abstract class OperResult<T> {
 			public void run() {
 				executeAsync(t,isSuccess);
 			}
-		});		
+		});	
 	}
 	protected abstract void getValiMeg(List<Map<String,String>> message);
 	/**
