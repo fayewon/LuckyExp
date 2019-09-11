@@ -9,17 +9,17 @@
 * JDK1.8
 # maven
 * <mirror>
-    <id>sonatype</id>
-    <name>sonatype Central</name>
-    <url>https://oss.sonatype.org/content/groups/public/</url>
-    <mirrorOf>*</mirrorOf>
-</mirror>
+*    <id>sonatype</id>
+*    <name>sonatype Central</name>
+*    <url>https://oss.sonatype.org/content/groups/public/</url>
+*    <mirrorOf>*</mirrorOf>
+* </mirror>
 # pom.xml
 * <dependency>
-  <groupId>com.github.fayewon</groupId>
-  <artifactId>LuckyExp</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-</dependency>
+*  <groupId>com.github.fayewon</groupId>
+*  <artifactId>LuckyExp</artifactId>
+*  <version>0.0.1-SNAPSHOT</version>
+* </dependency>
 ```java
 /**
 	 /**
