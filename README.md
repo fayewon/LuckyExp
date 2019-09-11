@@ -10,7 +10,7 @@
 # maven
 ![Alt text](/img/maven.PNG)
 # pom.xml
-
+![Alt text](/img/pom.PNG)
 ```java
 /**
 	 /**
