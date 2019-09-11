@@ -8,7 +8,7 @@
 # requirements:
 * JDK1.8
 # maven
-[maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
+[maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/ "悬停显示")  
 ![Alt text](/img/maven.PNG)
 # pom.xml
 ![Alt text](/img/pom.PNG)
