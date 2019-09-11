@@ -19,10 +19,10 @@
 
 package org.lucky.exp.annotation;
 /**
- * @Calculation 对象
+ * 
 *
 * @author FayeWong
-* @date 2019年4月18日
+* 
  */
 public enum Condition {
 	field,

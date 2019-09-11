@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0        运算符对象
 *
 *
 *
@@ -20,9 +20,7 @@ package org.lucky.exp.tokenizer;
 
 import org.lucky.exp.oper.Oper;
 
-/**
- * 运算符对象
- */
+
 public class OperToken extends Token{
     private final Oper oper;
     public OperToken(Oper op) {

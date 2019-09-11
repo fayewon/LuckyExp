@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0        解析表达式，将表达式拆分成Token对象
 *
 *
 *
@@ -26,7 +26,7 @@ import org.lucky.exp.func.Funcs;
 import org.lucky.exp.oper.Oper;
 import org.lucky.exp.oper.Opers;
 /**
- * 解析表达式，将表达式拆分成Token对象
+ * 
  * @author FayeWong
  *
  */
@@ -70,7 +70,6 @@ public class Tokenizer {
      * 
     *
     * @author FayeWong
-    * @date 2019年8月28日
     * @return 被拆分的Token对象
      */
     public Token nextToken(){

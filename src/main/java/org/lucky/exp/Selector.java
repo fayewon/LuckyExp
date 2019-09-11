@@ -29,7 +29,7 @@ import org.lucky.exp.annotation.Formula_Choose;
  * 公式选择器
 *
 * @author FayeWong
-* @date 2019年8月29日
+* 
  */
 public class Selector {
 	Map<String, Formula_Choose> selector = new HashMap<String, Formula_Choose>();

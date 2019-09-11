@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0        绑定的成员变量会成为自动计算变量，设置非null的默认值则自动解绑
 *
 *
 *
@@ -18,18 +18,17 @@
 */
 
 package org.lucky.exp.annotation;
-
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
- * 绑定的成员变量会成为自动计算变量，
- * 设置非null的默认值则自动解绑
+ * 
+ * 
 *
 * @author FayeWong
-* @date 2019年8月30日
+* 
  */
 @Target({ ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

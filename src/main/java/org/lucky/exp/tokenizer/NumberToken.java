@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0        数字对象
 *
 *
 *
@@ -19,7 +19,7 @@
 package org.lucky.exp.tokenizer;
 
 /**
- * 数字对象
+ * 
  */
 public final class NumberToken extends Token {
     private final double value;
@@ -33,7 +33,7 @@ public final class NumberToken extends Token {
     }
 
     /**
-     * 获取数字的值
+     * 
      * @return the 该值
      */
     public double getValue() {

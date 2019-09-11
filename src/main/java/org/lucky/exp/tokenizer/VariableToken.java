@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0         表示表达式中使用的setvariable
 *
 *
 *
@@ -18,9 +18,7 @@
 */
 package org.lucky.exp.tokenizer;
 
-/**
- * 表示表达式中使用的setvariable
- */
+
 public class VariableToken extends Token {
     private final String name;
 
@@ -34,7 +32,7 @@ public class VariableToken extends Token {
 
     /**
      * 
-     * @param 命名集合变量的名称
+     * @param name 命名集合变量的名称
      */
     public VariableToken(String name) {
         super(TOKEN_VARIABLE);

@@ -35,8 +35,7 @@ import org.lucky.exp.tokenizer.VariableToken;
  * 结果集线程回调操作
 *
 * @author FayeWong
- * @param <T>
-* @date 2019年8月29日
+ * @param <T> 结果
  */
 public abstract class OperResult<T> {
 	protected T t;
@@ -67,23 +66,17 @@ public abstract class OperResult<T> {
 	 * 
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
-	* @param <T>
-	* @param t
-	* @param isError 1.成功计算完成，2.计算失败，3.产生CallBack异常均会及时返回t结果。
-	* 1：isSuccess = true
-	* 2：isSuccess = false
-	* 3：isSuccess = false
+	* @param t 结果
+	* @param isSuccess 1.成功计算完成，2.计算失败，3.产生CallBack异常均会及时返回t结果。
 	 */
     public abstract void executeAsync(T t,boolean isSuccess); 
     /**
      * 
     * 验证表达式是否符合规范
     * @author FayeWong
-    * @date 2019年8月29日
-    * @param tokens
-    * @param variables
-    * @param field
+    * @param tokens 认证组
+    * @param variables 参数池
+    * @param field 字段
      */
     public void validate(Token[] tokens, Map<String, Double> variables,Field field) {
     	List<Map<String,String>> errors = new ArrayList<Map<String,String>>(0);

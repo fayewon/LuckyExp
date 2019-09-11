@@ -66,11 +66,11 @@ public abstract class Oper {
     protected final int precedence;
 
     /**
-     * 创建用于表达式的新运算符
-     * @param 符号操作员的符号
-     * @param NumberOfOperands运算符接受的操作数（1或2）
-     * @param LeftAssociative如果运算符是左Associative，则设置为true；如果运算符是右Associative，则设置为false。
-     * @param 优先级运算符的优先级值
+     * 
+     * @param symbol 符号操作员的符号
+     * @param numberOfOperands 运算符接受的操作数（1或2）
+     * @param leftAssociative 如果运算符是左Associative，则设置为true；如果运算符是右Associative，则设置为false。
+     * @param precedence 优先级运算符的优先级值
      */
     public Oper(String symbol, int numberOfOperands, boolean leftAssociative,
                     int precedence) {
@@ -82,8 +82,8 @@ public abstract class Oper {
     }
 
     /**
-     * 检查字符是否为允许的运算符字符
-     * @param 检查字符
+     * 
+     * @param ch 检查字符 检查字符是否为允许的运算符字符
      * @return 如果char允许使用运算符符号，则为true，否则为false
      */
     public static boolean isAllowedOperatorChar(char ch) {
@@ -96,7 +96,7 @@ public abstract class Oper {
     }
 
     /**
-     * 检查操作员是否与左侧关联
+     * 
      * @return true os运算符是左相关的，否则为false
      */
     public boolean isLeftAssociative() {
@@ -104,7 +104,7 @@ public abstract class Oper {
     }
 
     /**
-     * 检查运算符的优先值
+     * 
      * @return 优先值
      */
     public int getPrecedence() {
@@ -112,14 +112,14 @@ public abstract class Oper {
     }
 
     /**
-     * 对给定的操作数应用该操作
-     * @param args该操作的操作数
+     * 
+     * @param args 该操作的操作数
      * @return 操作的计算结果
      */
     public abstract double call(double ... args);
 
     /**
-     * 获取运算符符号
+     * 
      * @return 符号
      */
     public String getSymbol() {
@@ -127,7 +127,7 @@ public abstract class Oper {
     }
 
     /**
-     * 获取操作数
+     * 
      * @return 操作数的数目
      */
     public int getNumOperands() {

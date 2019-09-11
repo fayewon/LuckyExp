@@ -21,7 +21,7 @@ package org.lucky.exp.exception;
  * 
 *
 * @author FayeWong
-* @date 2019年8月28日
+* 
  */
 public class UnknownRuntimeException extends IllegalArgumentException{
 	private static final long serialVersionUID = 1L;

@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *     Date       Who       Version     Comments
-* 1. 2019年9月10日    FayeWong    1.0
+* 1. 2019年9月10日    FayeWong    1.0  公式迭代器
 *
 *
 *
@@ -21,11 +21,10 @@ package org.lucky.exp.util;
 import java.util.LinkedList;
 import java.util.List;
 /**
- * 公式迭代器
+ * 
 *
 * @author FayeWong
- * @param <E>
-* @date 2019年9月10日
+ * @param <E>  公式对象
  */
 public class Iterator<E> {
 	private  final LinkedList<E> exps;

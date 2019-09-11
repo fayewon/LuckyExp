@@ -21,7 +21,7 @@ package org.lucky.exp.annotation;
  * 公式指针，目前最多支持绑定6给公式
 *
 * @author FayeWong
-* @date 2019年8月29日
+* 
  */
 public enum Formula_Choose {
 	_1(0),

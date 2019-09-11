@@ -21,7 +21,7 @@ package org.lucky.exp.exception;
  * 验证出结果的错误信息会发生此异常
 *
 * @author FayeWong
-* @date 2019年8月31日
+* 
  */
 public class CallBackException extends Exception{
 	private static final long serialVersionUID = 1L;

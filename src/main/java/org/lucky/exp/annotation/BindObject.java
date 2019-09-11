@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
  * 绑定计算变量
 *
 * @author FayeWong
-* @date 2019年8月30日
+* 
  */
 @Target({ ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

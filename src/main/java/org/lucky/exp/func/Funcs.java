@@ -220,9 +220,7 @@ public class Funcs {
         };
     }
 
-    /**
-     * 获取给定名称的内置函数
-     */
+    
     public static Func getBuiltinFunction(final String name) {
     	if(name.equals("min")) {
     		return builtinFunctions[INDEX_MIN];

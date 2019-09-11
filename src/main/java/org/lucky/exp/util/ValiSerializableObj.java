@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0       对常见的实现序列化进行校验
 *
 *
 *
@@ -20,10 +20,9 @@ package org.lucky.exp.util;
 import java.lang.reflect.Field;
 import org.lucky.exp.exception.BindException;
 /**
- * 对常见的实现序列化进行校验
+ * 
 *
 * @author FayeWong
-* @date 2019年8月31日
  */
 public class ValiSerializableObj {
 	public static boolean validation(Field field,boolean valiType) throws BindException {

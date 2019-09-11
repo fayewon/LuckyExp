@@ -40,7 +40,7 @@ import org.lucky.exp.annotation.BindDouble;
  * 计算对象组装成计算变量
 *
 * @author FayeWong
-* @date 2019年8月28日
+* 
  */
 public class ConvertToExp {
 	private static ConvertToExp convertToExp;

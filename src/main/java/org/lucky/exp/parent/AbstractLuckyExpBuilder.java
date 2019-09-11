@@ -40,7 +40,6 @@ import org.lucky.exp.tokenizer.Token;
  * 
 * 幸运的表达式引擎
 * @author FayeWong
-* @date 2019年8月29日
  */
 
 public  abstract class  AbstractLuckyExpBuilder{
@@ -70,12 +69,10 @@ public  abstract class  AbstractLuckyExpBuilder{
         return this;
     }
     /**
-	 * 建立一个幸运表达式^。^
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
 	* @param entity 对象结果集
-	* @return
+	* @return this
 	 */
     public AbstractLuckyExpBuilder build(Serializable entity) {
     	if(entity == null) throw new IllegalArgumentException(ExceptionCode.C_10046.getCode());
@@ -83,13 +80,11 @@ public  abstract class  AbstractLuckyExpBuilder{
 		return this;
 	};
 	/**
-	 * 建立一个幸运表达式^。^
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
 	* @param entity 对象结果集
 	* @param variables 公式选择器
-	* @return
+	* @return this
 	 */
 	public AbstractLuckyExpBuilder build(Serializable entity,Map<String,Double> variables) {
 		if(entity == null) throw new IllegalArgumentException(ExceptionCode.C_10046.getCode());
@@ -98,14 +93,12 @@ public  abstract class  AbstractLuckyExpBuilder{
 		return this;
 	};
 	/**
-	 * 建立一个幸运表达式^。^
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
 	* @param entity 对象结果集
 	* @param variables 参数
 	* @param selector 公式选择器
-	* @return
+	* @return this
 	 */
 	public AbstractLuckyExpBuilder build(Serializable entity,Map<String,Double> variables,Selector selector) {
 		if(entity == null) throw new IllegalArgumentException(ExceptionCode.C_10046.getCode());
@@ -128,36 +121,33 @@ public  abstract class  AbstractLuckyExpBuilder{
 		return this;
 	};
 	/**
-	 * 自定义函数
+	 * 
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
-	* @param func
-	* @return
+	* @param func 自定义函数
+	* @return this
 	 */
 	public AbstractLuckyExpBuilder func(Func func) {
         this.userFuncs.put(func.getName(), func);
         return this;
     }
 	/**
-	 * 自定义函数
+	 * 
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
-	* @param funcs
-	* @return
+	* @param funcs 自定义函数
+	* @return this
 	 */
 	public AbstractLuckyExpBuilder funcs(Func... funcs) {
     	Arrays.asList(funcs).stream().forEach( f -> this.userFuncs.put(f.getName(), f));
         return this;
     }
 	/**
-	 * 自定义函数
+	 * 
 	*
 	* @author FayeWong
-	* @date 2019年8月30日
-	* @param funcs
-	* @return
+	* @param funcs 自定义函数
+	* @return this
 	 */
 	public AbstractLuckyExpBuilder funcs(List<Func> funcs) {
     	funcs.forEach(f -> this.userFuncs.put(f.getName(), f));
@@ -185,18 +175,18 @@ public  abstract class  AbstractLuckyExpBuilder{
         return this;
     }
 	/**
-     * 普通结果集
+     * 
     *
     * @author FayeWong
-    * @date 2019年8月30日
+    * @return 是否计算成功
      */
 	public abstract boolean result();
 	/**
 	 * 
 	*
 	* @author FayeWong
-	* @date 2019年8月31日
-	* @param OperResult 回调函数结果集
+	* @param executor 线程池
+	* @param operResult 回调函数
 	 */
-	public  abstract void  result(ExecutorService executor,OperResult operResult);
+	public  abstract void  result(ExecutorService executor,@SuppressWarnings("rawtypes") OperResult operResult);
 }

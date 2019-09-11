@@ -29,16 +29,18 @@ import org.lucky.exp.tokenizer.Tokenizer;
  * 中缀表达式转逆波兰表达式
 *
 * @author FayeWong
-* @date 2019年8月29日
+* 
  */
 public class MissYaner {
 
     /**
      * 将一组标记从中缀表达式转逆波兰表达式
-     * @param 表达式要转换的表达式
-     * @param 用户函数使用的自定义函数
-     * @param 用户运算符使用的自定义运算符
-     * @param 变量名表达式中使用的变量名
+     * @param expression 表达式要转换的表达式
+     * @param userFunctions 用户函数使用的自定义函数
+     * @param userOperators 用户运算符使用的自定义运算符
+     * @param variableNames 变量名表达式中使用的变量名
+     * @param implicitMultiplication 是否使用隐含乘法
+     * @param field 抛出异常信息时使用
      * @return 包含结果的{@link org.lucky.exp.tokenizer.Token} 数组
      * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
      */

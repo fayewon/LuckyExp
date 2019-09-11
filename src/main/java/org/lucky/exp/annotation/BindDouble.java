@@ -28,7 +28,7 @@ import java.lang.annotation.Target;
  * 绑定的成员变量会成为计算参数
 *
 * @author FayeWong
-* @date 2019年8月30日
+* 
  */
 @Target({ ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

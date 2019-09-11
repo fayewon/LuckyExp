@@ -51,7 +51,7 @@ import org.lucky.exp.util.LinkedStack;
  * 
  *
  * @author FayeWong
- * @date 2019年8月28日
+ * 
  */
 public class Expression {
 	/** 解析字符串获取的认证数组（函数，运算符，左括号，右括号，逗号...） **/
@@ -143,9 +143,8 @@ public class Expression {
 	 * 从栈堆推送结果
 	 *
 	 * @author FayeWong
-	 * @date 2019年8月30日
-	 * @return
-	 * @throws CallBackException
+	 * @return 结果
+	 * @throws CallBackException 回调异常
 	 */
 	private double evaluate(final Token[] tokens, final Field field) throws CallBackException {
 		final LinkedStack<Double> output = new LinkedStack<Double>();
@@ -200,9 +199,8 @@ public class Expression {
 	 * 从表达式中推送出来的结果组装到各个对象中
 	 *
 	 * @author FayeWong
-	 * @date 2019年8月30日
 	 * @param exps
-	 * @return
+	 * @return 是否算计成功
 	 * @throws CallBackException
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })

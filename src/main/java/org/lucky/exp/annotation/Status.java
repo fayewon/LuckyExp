@@ -22,7 +22,7 @@ package org.lucky.exp.annotation;
  * 直接计算或等待计算标识
 *
 * @author FayeWong
-* @date 2019年8月29日
+* 
  */
 public enum Status {
 	PASS,

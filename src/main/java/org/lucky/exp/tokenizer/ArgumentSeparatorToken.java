@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0       表示函数中的参数分隔符 i.e: ','
 *
 *
 *
@@ -19,9 +19,8 @@
 package org.lucky.exp.tokenizer;
 /**
  * 
-* 表示函数中的参数分隔符 i.e: ','
+* 
 * @author FayeWong
-* @date 2019年8月28日
  */
 class ArgumentSeparatorToken extends Token{
 

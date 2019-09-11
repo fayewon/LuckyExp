@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0         函数对象
 *
 *
 *
@@ -20,10 +20,9 @@ package org.lucky.exp.tokenizer;
 
 import org.lucky.exp.func.Func;
 /**
- * 函数对象
+ * 
 *
 * @author FayeWong
-* @date 2019年9月3日
  */
 public class FunctionToken extends Token{
     private final Func function;

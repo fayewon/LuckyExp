@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0       函数对象
 *
 *
 *
@@ -18,10 +18,10 @@
 */
 package org.lucky.exp.func;
 /**
- * 函数对象
+ * 
 *
 * @author FayeWong
-* @date 2019年8月30日
+* 
  */
 public abstract class Func {
 
@@ -30,10 +30,10 @@ public abstract class Func {
     protected  int numArguments;
 
     /**
-     * 使用给定的名称和参数数目创建新函数
      * 
-     * @param 命名函数的名称
-     * @param numArguments函数接受的参数数
+     * 
+     * @param name 命名函数的名称
+     * @param numArguments 函数接受的参数数
      */
     public Func(String name, int numArguments) {
         if (numArguments < 0) {
@@ -61,18 +61,18 @@ public abstract class Func {
      * 函数入口
     *
     * @author FayeWong
-    * @param args 函数的参数，但是需要自定义函数参数数量  numArguments->自定义数量
+    * @param args 函数的参数，但是需要自定义函数参数数量  numArguments 自定义数量
     * 内置函数的参数数量也是自定义的
     * see org.lucky.exp.function.Funcs;
-    * @return
+    * @return 结果
      */
     public abstract double call(double... args);
     /**
      * 校验函数名是否有效
     *
     * @author FayeWong
-    * @param name
-    * @return
+    * @param name 函数名称
+    * @return 校验结果
      */
     public static boolean isValidFunctionName(final String name) {
         if (name == null) {

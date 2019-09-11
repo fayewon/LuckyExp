@@ -9,7 +9,7 @@
 *
 ----------------------------------------------------------------------------------
 *    Who        Version     Comments
-* 1. FayeWong    1.0
+* 1. FayeWong    1.0         luckyExp表达式对象
 *
 *
 *
@@ -18,9 +18,6 @@
 */
 package org.lucky.exp.tokenizer;
 
-/**
- * luckyExp表达式对象
- */
 
 public abstract class Token {
     public static final short TOKEN_NUMBER = 1;

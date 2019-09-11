@@ -25,7 +25,7 @@ import org.lucky.exp.parent.OperResult;
  * 
 *
 * @author FayeWong
-* @date 2019年8月28日
+* 
  */
 public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{    
     public DefaultLuckyExpBuilder() {

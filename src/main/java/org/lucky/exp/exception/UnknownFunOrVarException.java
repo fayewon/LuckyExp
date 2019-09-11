@@ -26,7 +26,7 @@ import org.lucky.exp.tokenizer.Tokenizer;
  * 
 * 每当{@link Tokenizer}发现未知的函数或变量时，就会引发此异常。
 * @author FayeWong
-* @date 2019年8月28日
+* 
  */
 public class UnknownFunOrVarException extends IllegalArgumentException {
 
