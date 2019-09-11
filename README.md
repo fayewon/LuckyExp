@@ -8,7 +8,7 @@
 # requirements:
 * JDK1.8
 # maven
-
+![Alt text](/img/maven.PNG)
 # pom.xml
 
 ```java
