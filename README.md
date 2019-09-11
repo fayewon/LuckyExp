@@ -8,6 +8,7 @@
 # requirements:
 * JDK1.8
 # maven
+[maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
 ![Alt text](/img/maven.PNG)
 # pom.xml
 ![Alt text](/img/pom.PNG)
