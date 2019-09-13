@@ -13,23 +13,39 @@
 ![Alt text](/img/maven.PNG)
 # pom.xml
 ![Alt text](/img/pom.PNG)
+## 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
+## 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果。
 ```java
+//被计算的对象(entity)需要实现序列化接口
+public class Dog implements Serializable
+//绑定计算参数
+@BindDouble(key = "A")
+private Double one;
+//绑定计算公式
+@BindDouble(key = "C")
+@Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
+支持绑定多个公式，通过公式选择器来选择公式
+private Double three;
+//我们也支持绑定对象
+@BindObject
+private Cat cat;
 /**
-	 /**
 	 * 自动计算
 	*
 	* @author FayeWong
 	* @date 2019年8月31日
 	 */
 	ExecutorService executor = Executors.newFixedThreadPool(5);
+	Oper oper = new Oper("#", 2/**操作数只接受1或2**/, true, Oper.PRECEDENCE_ADDITION) {
+        @Override
+        public double call(final double... args) {
+            return args[0] + args[1];
+        }
+    };
+    
 	@Test
 	public void test() {
-		Oper oper = new Oper("#", 2/**操作数只接受1或2**/, true, Oper.PRECEDENCE_ADDITION) {
-            @Override
-            public double call(final double... args) {
-                return args[0] + args[1];
-            }
-        };
+		
 		Selector selector = new Selector();//公式选择器
 		//selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
@@ -43,14 +59,13 @@
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 		//.build(dog,param)//只绑定一个公式
 		.build(dog,param,selector)//复杂的计算  全都要0.0
-		.setRecalLimit(30)//设置重新计算次数，选择默认就好，默认20次。检查完参数和公式算不出结果可以设置
 		.implicitMultiplication(true)//是否插入隐式乘法标记，默认是false。使用默认就行
 		.func(new CustomFunction().roundDown())//自定义公式
 		.func(new CustomFunction().roundUp())//自定义公式
 		.oper(oper)//自定义运算符
 		.result();
 		assertTrue(result);
-		System.out.println("Three: "+dog.getThree());
+		//System.out.println("Three: "+dog.getThree());
 		System.out.println("Four: "+dog.getFour());
 		System.out.println("ten: "+dog.getTen());
 		System.out.println("Fifteen: "+dog.getCat().getFifteen());
@@ -60,17 +75,20 @@
 	}
 	@Test
 	public void test2() {
+		Map<String,Double> param = new HashMap<String,Double>();
+		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
 		dog.setOne(123.0);
 		dog.setTwo(234.1);
-		dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
+		//dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
 		boolean result = new DefaultLuckyExpBuilder()
-				.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+				.build(dog,param)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 				.func(new CustomFunction().roundDown())//自定义公式
 				.func(new CustomFunction().roundUp())//自定义公式
+				.oper(oper)//自定义运算符
 				.result();
 				assertTrue(result);
-				System.out.println(dog.getThree());//该值为默认值
+				//System.out.println(dog.getThree());//该值为默认值
 				System.out.println(dog.getFour());
 	  /**
 	   * 注意还有种情况的处理方式，如果业务需要计算之后的变量进行判断，可以在该变量的get方法里判断
@@ -96,6 +114,7 @@
 					.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
+					.oper(oper)//自定义运算符
 					.result();
 					assertTrue(result);
 			list.add(dog);		
@@ -103,7 +122,7 @@
 		}
 		
 		for(Dog dog : list) {
-			System.out.println(dog.getThree());
+			//System.out.println(dog.getThree());
 			System.out.println(dog.getFour());
 		}
 	}
@@ -115,10 +134,10 @@
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
 			if( i == 4) {
-				dog.setThree(0.0);
+				//dog.setThree(0.0);
 			}
 			if(i == 5) {
-				selector.put("three", Formula_Choose._2);
+				selector.formulaFiled("three", Formula_Choose._2);
 			}
 			Cat cat = new Cat();
 			dog.setCat(cat);
@@ -126,6 +145,7 @@
 					.build(dog,null,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
+					.oper(oper)//自定义运算符
 					.result(executor,new OperResult<T>() {
 
 						@Override
@@ -137,7 +157,7 @@
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)t;
-							System.out.println("Three: "+dog.getThree());
+							//System.out.println("Three: "+dog.getThree());
 							System.out.println("Four: "+dog.getFour());
 							System.out.println("Thirteen: "+dog.getCat().getThirteen());
 						}//带回调的计算结果
@@ -161,8 +181,8 @@
 			dog.setOne(1.0 * i);
 			dog.setTwo(2.1* i);
 			if(i ==2 ) {
-				selector.put("three", Formula_Choose._2);//一层
-				selector.put("cat.fifteen", Formula_Choose._2);//二层  目前最多两层
+				selector.formulaFiled("three", Formula_Choose._2);//一层
+				selector.formulaFiled("cat.fifteen", Formula_Choose._2);//二层  目前最多两层
 			}
 			Cat cat = new Cat();
 			cat.setSixteen(5.8*i);
@@ -172,6 +192,7 @@
 					.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
+					.oper(oper)//自定义运算符
 					.result(executor,new OperResult<T>() {
 						
 						@Override
@@ -183,7 +204,7 @@
 						@Override
 						public void executeAsync(T t, boolean isSuccess) {
 							Dog dog = (Dog)this.t;
-							System.out.println(dog.getThree());
+							//System.out.println(dog.getThree());
 							System.out.println(dog.getFour());
 							
 						}//带回调的计算结果
