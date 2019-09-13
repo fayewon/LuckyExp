@@ -2,19 +2,33 @@
 幸运的表达式，一个快速易用的面向对象计算的开源工具
 ![Alt text](/img/luckyExp.jpg)
 # Introduction
+* 轻量，快速，易用，面向对象计算
 * 极大降低企业项目业务逻辑和计算逻辑的粘度，实现业务和计算结构分离。    
-* 不需要依赖任何jar包，只需要JDK1.8即可。通过绑定对象计算出结果。    
+* 不需要依赖任何jar包，只需要JDK1.8即可。通过绑定对象计算出结果。 
 * 开发者是持续维护的原动力，更多功能敬请期待。  
 
 # requirements:
 * JDK1.8
 # maven
 [maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
-![Alt text](/img/maven.PNG)
+```java
+<mirror>
+    <id>sonatype</id>
+    <name>sonatype Central</name>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+    <mirrorOf>*</mirrorOf>
+</mirror>
+```
 # pom.xml
-![Alt text](/img/pom.PNG)
+```java
+<dependency>
+  <groupId>com.github.fayewon</groupId>
+  <artifactId>LuckyExp</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
-###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果。
+###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果，同时也会有重算的开销。
 ###### 我们内置的函数（Funs.java）和运算符(Opers.java)
 ```java
 //被计算的对象(entity)需要实现序列化接口
