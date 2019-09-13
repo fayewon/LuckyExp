@@ -12,6 +12,14 @@
 # maven
 [maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
 ![Alt text](/img/maven.PNG)
+```java
+<mirror>
+    <id>sonatype</id>
+    <name>sonatype Central</name>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+    <mirrorOf>*</mirrorOf>
+</mirror>
+```
 # pom.xml
 ![Alt text](/img/pom.PNG)
 ```java
