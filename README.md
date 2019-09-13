@@ -11,7 +11,6 @@
 * JDK1.8
 # maven
 [maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
-![Alt text](/img/maven.PNG)
 ```java
 <mirror>
     <id>sonatype</id>
@@ -21,7 +20,6 @@
 </mirror>
 ```
 # pom.xml
-![Alt text](/img/pom.PNG)
 ```java
 <dependency>
   <groupId>com.github.fayewon</groupId>
