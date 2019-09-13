@@ -8,18 +8,10 @@
 # requirements:
 * JDK1.8
 # maven
-* <mirror>
-*    <id>sonatype</id>
-*    <name>sonatype Central</name>
-*    <url>https://oss.sonatype.org/content/groups/public/</url>
-*    <mirrorOf>*</mirrorOf>
-* </mirror>
+[maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
+![Alt text](/img/maven.PNG)
 # pom.xml
-* <dependency>
-*  <groupId>com.github.fayewon</groupId>
-*  <artifactId>LuckyExp</artifactId>
-*  <version>0.0.1-SNAPSHOT</version>
-* </dependency>
+![Alt text](/img/pom.PNG)
 ```java
 /**
 	 /**
