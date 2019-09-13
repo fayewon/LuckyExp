@@ -25,7 +25,7 @@ private Double one;
 //绑定计算公式
 @BindDouble(key = "C")
 @Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
-支持绑定多个公式，通过公式选择器来选择公式
+//支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
 //我们也支持绑定对象
 @BindObject
