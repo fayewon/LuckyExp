@@ -14,6 +14,13 @@
 ![Alt text](/img/maven.PNG)
 # pom.xml
 ![Alt text](/img/pom.PNG)
+```java
+<dependency>
+  <groupId>com.github.fayewon</groupId>
+  <artifactId>LuckyExp</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
 ###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果，同时也会有重算的开销。
 ###### 我们内置的函数（Funs.java）和运算符(Opers.java)
