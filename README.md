@@ -15,6 +15,7 @@
 ![Alt text](/img/pom.PNG)
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
 ###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果。
+###### 我们内置的函数（Funs.java）和运算符(Opers.java)
 ```java
 //被计算的对象(entity)需要实现序列化接口
 public class Dog implements Serializable
