@@ -42,10 +42,10 @@
 //被计算的对象(entity)需要实现序列化接口
 public class Dog implements Serializable
 //绑定计算参数
-@BindDouble(key = "A")
+@BindVar("A")
 private Double one;
 //绑定计算公式
-@BindDouble(key = "C")
+@BindVar("C")
 @Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
 //支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
