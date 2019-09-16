@@ -99,12 +99,12 @@ public class ValiSerializableObj {
 				try {
 					variables.put(bind.value(), Double.valueOf((String)fieldVal));	
 				}catch (NumberFormatException e) {
-					throw new BindException("@Bind('" + bind.value() + "') 绑定变量值无法转换成double ：" + field.getType()
+					throw new BindException("@BindVar('" + bind.value() + "') 绑定变量值无法转换成double ：" + field.getType()
 					+ "{ }{ } :  " + field.getName(),e);
 				}
 			}				
 		}else {
-			throw new BindException("@Bind('" + bind.value() + "') 不能绑定该变量类型上 ：" + field.getType()
+			throw new BindException("@BindVar('" + bind.value() + "') 不能绑定该变量类型上 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());
 		}
 	}
