@@ -18,7 +18,7 @@
 */
 package org.lucky.exp.annotation;
 /**
- * 公式指针，目前最多支持绑定6给公式
+ * 公式指针，目前最多支持绑定6个公式
 *
 * @author FayeWong
 * 

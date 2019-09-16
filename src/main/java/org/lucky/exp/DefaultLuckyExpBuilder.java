@@ -44,7 +44,7 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
 	}
 
 	@Override
-	public void  result(ExecutorService executor,OperResult operResult) {
+	public void  result(ExecutorService executor,@SuppressWarnings("rawtypes") OperResult operResult) {
 		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,this.userFuncs.keySet())
 				.setVariables(variables)
 				.setTokens(tokens)

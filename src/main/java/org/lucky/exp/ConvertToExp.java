@@ -35,7 +35,7 @@ import org.lucky.exp.exception.BindException;
 import org.lucky.exp.exception.UnknownRuntimeException;
 import org.lucky.exp.util.ValiSerializableObj;
 import org.lucky.exp.annotation.Calculation;
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 /**
  * 计算对象组装成计算变量
 *
@@ -63,7 +63,7 @@ public class ConvertToExp {
 				final Object fieldVal = (Object)field.get(entity);
 				parseBindObject(fieldVal, field,selector,variables,passExps,waitExps);
 			}
-			if (field.isAnnotationPresent(BindDouble.class)) {
+			if (field.isAnnotationPresent(BindVar.class)) {
 				final Object fieldVal = (Object)field.get(entity);
 				parseBindDouble(fieldVal, field, variables);
 			}
@@ -150,7 +150,7 @@ public class ConvertToExp {
 			+ "{ }{ } :  " + field.getName());
 		}
 		//对常见的实现序列化进行校验，基本类的包装类和String
-		if(!ValiSerializableObj.validation(field,valiType)) {
+		if(!ValiSerializableObj.validationObject(field,valiType)) {
 			throw new BindException("@BindObject()不能绑定该对象上 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());
 		};
@@ -167,13 +167,6 @@ public class ConvertToExp {
 		}
 	}
 	private  void parseBindDouble(Object fieldVal, Field field, Map<String, Double> variables) throws BindException {
-		BindDouble bind = (BindDouble) field.getAnnotation(BindDouble.class);
-		if(field.getType() != Double.class) {
-			throw new BindException("@BindDouble('" + bind.key() + "') 必须绑定Double类型的字段 ：" + field.getType()
-			+ "{ }{ } :  " + field.getName());
-		}
-		if (bind.enable() && fieldVal != null) {
-			variables.put(bind.key(), (Double) fieldVal);
-		}
+		ValiSerializableObj.bindVar(fieldVal,field,variables);
 	}
 }

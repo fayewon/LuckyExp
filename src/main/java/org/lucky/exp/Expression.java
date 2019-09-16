@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.exception.CallBackException;
@@ -199,7 +199,8 @@ public class Expression {
 	 * 从表达式中推送出来的结果组装到各个对象中
 	 *
 	 * @author FayeWong
-	 * @param exps
+	 * @param exps 拆分的计算对象
+	 * @param operResult 回调对象
 	 * @return 是否算计成功
 	 * @throws CallBackException
 	 */
@@ -212,7 +213,7 @@ public class Expression {
 			Field field = (Field) exp.get(Condition.field);
 			try {
 				String expression = (String) exp.get(Condition.expression);
-				BindDouble bind = field.getAnnotation(BindDouble.class);
+				BindVar bind = field.getAnnotation(BindVar.class);
 				Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,
 						this.variableNames, this.implicitMultiplication, field);
 				this.tokens = tokens;
@@ -228,7 +229,7 @@ public class Expression {
 							exp.get(Condition.entity).getClass());
 					Method getMethod = pd.getReadMethod();
 					Object getResult = getMethod.invoke((Object) exp.get(Condition.entity));
-					this.variables.put(bind.key(), (Double) getResult);
+					this.variables.put(bind.value(), (Double) getResult);
 					this.variableNames.addAll(variables.keySet());
 				}
 			} catch (UnknownFunOrVarException e) {

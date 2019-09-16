@@ -20,20 +20,20 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 
 public class Rabbit implements Serializable{
-	@BindDouble(key = "U")
+	@BindVar("U")
 	private Double twentyFirst;
-	@BindDouble(key = "V")
+	@BindVar("V")
 	private Double twentySecond;
-	@BindDouble(key = "W")
+	@BindVar("W")
 	private Double twentyThird;
-	@BindDouble(key = "X")
+	@BindVar("X")
 	private Double twentyForth;
-	@BindDouble(key = "Y")
+	@BindVar("Y")
 	private Double twentyFifth;
-	@BindDouble(key = "Z")
+	@BindVar("Z")
 	private Double twentySixth;
 	public Double getTwentyFirst() {
 		return twentyFirst;

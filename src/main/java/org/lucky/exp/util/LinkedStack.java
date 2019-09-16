@@ -19,7 +19,13 @@
 package org.lucky.exp.util;
 
 import java.util.LinkedList;
-
+/**
+ * 链表栈
+*
+* @author FayeWong
+* @since 2019年9月16日
+* @param <E>
+ */
 public class LinkedStack<E> {
 	private final LinkedList<E> list ;
 	public LinkedStack(){

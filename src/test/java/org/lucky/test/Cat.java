@@ -20,7 +20,7 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.Status;
 
@@ -31,30 +31,39 @@ import org.lucky.exp.annotation.Status;
 * @date 2019年8月31日
  */
 public class Cat implements Serializable{
-	@BindDouble(key = "K")
+	@BindVar("AK")
+	private String ak;
+	@BindVar("K")
 	private Double eleven;
-	@BindDouble(key = "L")
+	@BindVar("L")
 	private Double twelve;
-	@BindDouble(key = "M")
+	@BindVar("M")
 	@Calculation(formula= {"A","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double thirteen;
-	@BindDouble(key = "N")
+	@BindVar("N")
 	private Double fourteen;	
-	@BindDouble(key = "O")
+	@BindVar("O")
 	@Calculation(formula= {" D ","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double fifteen;
-	@BindDouble(key = "P")
+	@BindVar("P")
 	private Double sixteen;
-	@BindDouble(key = "Q")
+	@BindVar("Q")
 	@Calculation(formula= {"O+R","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double seventeen1;
 	@Calculation(formula= {"O","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
-	@BindDouble(key = "R")
+	@BindVar("R")
 	private Double eighteen;
-	@BindDouble(key = "S")
+	@BindVar("S")
 	private Double nineteen;
-	@BindDouble(key = "T")
+	@BindVar("T")
 	private Double twenty;
+	
+	public String getAk() {
+		return ak;
+	}
+	public void setAk(String ak) {
+		this.ak = ak;
+	}
 	public Double getEleven() {
 		return eleven;
 	}

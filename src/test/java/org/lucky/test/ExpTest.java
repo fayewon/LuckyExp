@@ -42,9 +42,11 @@ public class ExpTest {
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
-		dog.setOne(123.0);
+		dog.setOne((short)1236);
 		dog.setTwo(234.1);
+		dog.setAk("123");
 		Cat cat = new Cat();
+		
 		dog.setCat(cat);
 		boolean result = new DefaultLuckyExpBuilder()
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
@@ -69,7 +71,7 @@ public class ExpTest {
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
-		dog.setOne(123.0);
+		dog.setOne((short)1236);
 		dog.setTwo(234.1);
 		//dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
 		boolean result = new DefaultLuckyExpBuilder()
@@ -97,7 +99,7 @@ public class ExpTest {
 		List<Dog> list = new ArrayList<Dog>();
 		for(int i=0;i<10;i++) {
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			Cat cat = new Cat();
 			dog.setCat(cat);
@@ -122,7 +124,7 @@ public class ExpTest {
 		for(int i=0;i<10;i++) {
 			Selector selector = new Selector();//公式选择器
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			if( i == 4) {
 				//dog.setThree(0.0);
@@ -169,7 +171,7 @@ public class ExpTest {
 			Map<String,Double> param = new HashMap<String,Double>();
 			param.put("M", 20.1);//追加计算参数
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			if(i ==2 ) {
 				selector.formulaFiled("three", Formula_Choose._2);//一层

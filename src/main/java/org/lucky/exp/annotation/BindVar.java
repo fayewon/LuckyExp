@@ -33,8 +33,8 @@ import java.lang.annotation.Target;
 @Target({ ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface BindDouble {
-	String key();
+public @interface BindVar {
+	String value();
 	//保留字
 	boolean enable() default true;
 }

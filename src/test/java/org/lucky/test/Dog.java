@@ -20,7 +20,7 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.Status;
@@ -39,36 +39,45 @@ public class Dog implements Serializable{
 	private String str = "helloworld";
 	@BindObject
 	private Rabbit rabbit;
-	@BindDouble(key = "J")
+	@BindVar("AK")
+	private String ak;
+	@BindVar("J")
 	@Calculation(formula= {"A","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
 	private Double ten;
-	@BindDouble(key = "A")
-	private Double one;
-	@BindDouble(key = "B")
+	@BindVar("A")
+	private short one;
+	@BindVar("B")
 	private Double two;
-	@BindDouble(key = "C")
+	@BindVar("C")
 	@Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
 	private Double three;
-	@BindDouble(key = "D")
+	@BindVar("D")
 	@Calculation(formula= {"100#A+B+J+M"})
 	private Double four;
 	
 	
-	@BindDouble(key = "E")
+	@BindVar("E")
 	private Double five;
-	@BindDouble(key = "F")
+	@BindVar("F")
 	private Double six;
-	@BindDouble(key = "G")
+	@BindVar("G")
 	private Double seven;
-	@BindDouble(key = "H")
+	@BindVar("H")
 	private Double eight;
-	@BindDouble(key = "I")
+	@BindVar("I")
 	private Double nine;
 	
-	public Double getOne() {
+	
+	public String getAk() {
+		return ak;
+	}
+	public void setAk(String ak) {
+		this.ak = ak;
+	}
+	public short getOne() {
 		return one;
 	}
-	public void setOne(Double one) {
+	public void setOne(short one) {
 		this.one = one;
 	}
 	public Double getTwo() {

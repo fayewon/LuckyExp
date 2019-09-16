@@ -20,27 +20,27 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
-import org.lucky.exp.annotation.BindDouble;
+import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 
 public class Two implements Serializable{
-	@BindDouble(key="E")
+	@BindVar("E")
 	private Double age;
-	@BindDouble(key="F")
+	@BindVar("F")
 	private Double clazz;
-	@BindDouble(key="G")
+	@BindVar("G")
 	@Calculation(formula= {"A+B*D","M * roundUp(max(A,2,3,4)/2.1)"})
 	private Double sex;
 	//@BindDouble(key="K")
 	//@Calculation(formula= {"A+B*D","M * roundUp(max(A,2,3,4)/2.1)"})
 	private String hello;
-	@BindDouble(key = "WW")
+	@BindVar("WW")
 	@Calculation(formula= {"(A+1+O)*100","M * roundUp(max(A,2,3,4)/2.1)"})
 	private Double y;
-	@BindDouble(key = "EE")
+	@BindVar("EE")
 	@Calculation(formula= {"(A+1)*100","M * roundUp(max(A,2,3,4)/2.1)"})
 	private Double o;
-	@BindDouble(key = "RR")
+	@BindVar("RR")
 	@Calculation(formula= {"(A+B*D)*100","M * roundUp(max(A,2,3,4)/2.1)*100"})
 	private Double c;
 	public Double getAge() {
