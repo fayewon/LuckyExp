@@ -30,6 +30,14 @@
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
 ###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果，同时也会有重算的开销。
 ###### 我们内置的函数（Funs.java）和运算符(Opers.java)
+###### 20190916更新内容
+* @BindDouble(key = "A") 换成 @BindVar("A")
+* @BindVar支持类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
+* 例如 
+* @BindVar("A")
+* private Double one;
+* @BindVar("B")
+* private String two;
 ```java
 //被计算的对象(entity)需要实现序列化接口
 public class Dog implements Serializable
