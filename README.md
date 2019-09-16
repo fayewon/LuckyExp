@@ -32,7 +32,7 @@
 ###### 我们内置的函数（Funs.java）和运算符(Opers.java)
 ###### 20190916更新内容
 * @BindDouble(key = "A") 换成 @BindVar("A")
-* @BindVar支持类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
+* @BindVar支持绑定类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
 * 例如 
 * @BindVar("A")
 * private Double one;
