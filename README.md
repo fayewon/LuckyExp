@@ -32,12 +32,12 @@
 ###### 我们内置的函数（Funs.java）和运算符(Opers.java)
 ###### 20190916更新内容
 * ###### @BindDouble(key = "A") 换成 @BindVar("A")
-* @BindVar支持绑定类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
-* 例如 
-* @BindVar("A")
-* private Double one;
-* @BindVar("B")
-* private String two;
+* ###### @BindVar支持绑定类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
+* ###### 例如 
+* ###### @BindVar("A")
+* ###### private Double one;
+* ###### @BindVar("B")
+* ###### private String two;
 ```java
 //被计算的对象(entity)需要实现序列化接口
 public class Dog implements Serializable
