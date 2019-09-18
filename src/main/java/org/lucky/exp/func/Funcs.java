@@ -18,7 +18,10 @@
 */
 package org.lucky.exp.func;
 /**
- * 函数集合
+  *   内置函数集合
+ * @author FayeWong
+ * @since 1.0
+ *
  */
 public class Funcs {
 	//内置支持的函数

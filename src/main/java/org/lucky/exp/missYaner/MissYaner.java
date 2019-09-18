@@ -26,7 +26,7 @@ import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;
 /**
- * 中缀表达式转逆波兰表达式
+ * <p>中缀表达式转逆波兰表达式</p>
 *
 * @author FayeWong
 * 
@@ -34,7 +34,8 @@ import org.lucky.exp.tokenizer.Tokenizer;
 public class MissYaner {
 
     /**
-     * 将一组标记从中缀表达式转逆波兰表达式
+         * 将一组标记从中缀表达式转逆波兰表达式
+         * 例如中缀表达式：5 + ( 6 – 4 / 2 ) * 3，逆波兰表达式：5 6 4 2 / - 3 * +
      * @param expression 表达式要转换的表达式
      * @param userFunctions 用户函数使用的自定义函数
      * @param userOperators 用户运算符使用的自定义运算符

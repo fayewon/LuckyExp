@@ -21,10 +21,11 @@ package org.lucky.exp.tokenizer;
 import org.lucky.exp.func.Func;
 /**
  * 
-*
+* <p>函数token</p>
 * @author FayeWong
+* @since 1.0
  */
-public class FunctionToken extends Token{
+public final class FunctionToken extends Token{
     private final Func function;
     public FunctionToken(final Func function) {
         super(Token.TOKEN_FUNCTION);

@@ -18,8 +18,12 @@
 */
 package org.lucky.exp.tokenizer;
 
-
-class CloseParenthesesToken extends Token {
+/**
+ * <p>右括号token</p>
+ * @author FayeWong
+ * @since 1.0
+ */
+public final class  CloseParenthesesToken extends Token {
     CloseParenthesesToken() {
         super(Token.TOKEN_PARENTHESES_CLOSE);
     }

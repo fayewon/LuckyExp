@@ -18,7 +18,11 @@
 */
 package org.lucky.exp.tokenizer;
 
-
+/**
+ * token
+ * @author FayeWong
+ *
+ */
 public abstract class Token {
     public static final short TOKEN_NUMBER = 1;
     public static final short TOKEN_OPERATOR = 2;

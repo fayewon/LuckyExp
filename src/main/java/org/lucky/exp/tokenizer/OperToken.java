@@ -20,7 +20,11 @@ package org.lucky.exp.tokenizer;
 
 import org.lucky.exp.oper.Oper;
 
-
+/**
+ * <p>运算符token</p>
+ * @author FayeWong
+ * @since 1.0
+ */
 public class OperToken extends Token{
     private final Oper oper;
     public OperToken(Oper op) {

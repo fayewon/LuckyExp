@@ -19,10 +19,11 @@
 package org.lucky.exp.tokenizer;
 /**
  * 
-* 
+* <p>逗号token</p>
 * @author FayeWong
+* @since 1.0
  */
-class ArgumentSeparatorToken extends Token{
+public final class ArgumentSeparatorToken extends Token{
 
     ArgumentSeparatorToken() {
         super(Token.TOKEN_SEPARATOR);

@@ -38,8 +38,9 @@ import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.Token;
 /**
  * 
-* 幸运的表达式引擎
+* <p>幸运的表达式引擎</p>
 * @author FayeWong
+* @since 1.0
  */
 
 public  abstract class  AbstractLuckyExpBuilder{

@@ -37,7 +37,7 @@ import org.lucky.exp.util.ValiSerializableObj;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.BindVar;
 /**
- * 计算对象组装成计算变量
+ * <p>计算对象组装成计算变量</p>
 *
 * @author FayeWong
 * 

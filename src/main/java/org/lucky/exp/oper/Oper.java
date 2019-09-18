@@ -19,7 +19,9 @@
 package org.lucky.exp.oper;
 
 /**
- * 表示可在表达式中使用的运算符的类
+ * <p>内置运算符</p>
+ * @author FayeWong
+ * @since 1.0
  */
 public abstract class Oper {
     /**

@@ -17,7 +17,12 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp.tokenizer;
-class OpenParenthesesToken extends Token{
+/**
+ * <p>左括号token
+ * @author FayeWong
+ * @since 1.0
+ */
+public final class OpenParenthesesToken extends Token{
 
     OpenParenthesesToken() {
         super(TOKEN_PARENTHESES_OPEN);
