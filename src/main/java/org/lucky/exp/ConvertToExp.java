@@ -81,7 +81,7 @@ public class ConvertToExp {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private   synchronized void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
 		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
