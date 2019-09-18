@@ -12,11 +12,11 @@
 # maven
 [maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
 ```java
-<mirror>
-    <id>sonatype</id>
-    <name>sonatype Central</name>
-    <url>https://oss.sonatype.org/content/groups/public/</url>
-    <mirrorOf>*</mirrorOf>
+<mirror>  
+    <id>sonatype-nexus-snapshots</id>  
+    <mirrorOf>*</mirrorOf>  
+    <name>sonatype-nexus-snapshots</name>  
+    <url>https://oss.sonatype.org/content/groups/public/</url>  
 </mirror>
 ```
 # pom.xml
@@ -24,7 +24,7 @@
 <dependency>
   <groupId>com.github.fayewon</groupId>
   <artifactId>LuckyExp</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
