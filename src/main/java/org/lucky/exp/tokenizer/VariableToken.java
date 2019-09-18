@@ -18,7 +18,12 @@
 */
 package org.lucky.exp.tokenizer;
 
-
+/**
+ * <p>变量对象<p>
+ * @author FayeWong
+ * @since  1.0
+ * 
+ */
 public class VariableToken extends Token {
     private final String name;
 

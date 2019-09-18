@@ -51,10 +51,10 @@ import org.lucky.exp.util.LinkedStack;
  * 
  *
  * @author FayeWong
- * 
+ * @since 1.0
  */
 public class Expression {
-	/** 解析字符串获取的认证数组（函数，运算符，左括号，右括号，逗号...） **/
+	/** 解析字符串获取的token数组（函数，运算符，左括号，右括号，逗号...） **/
 	private Token[] tokens;
 	/** 条件参数 **/
 	private final Map<String, Double> variables;

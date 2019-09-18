@@ -19,8 +19,9 @@
 package org.lucky.exp.func;
 /**
  * 
-*
+* <p>内置函数</p>
 * @author FayeWong
+* @since 1.0
 * 
  */
 public abstract class Func {

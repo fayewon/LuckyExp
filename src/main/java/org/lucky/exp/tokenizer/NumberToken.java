@@ -19,7 +19,9 @@
 package org.lucky.exp.tokenizer;
 
 /**
- * 
+ * <p>数字token</p>
+ * @author FayeWong
+ * @since 1.0
  */
 public final class NumberToken extends Token {
     private final double value;
