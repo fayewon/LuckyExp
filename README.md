@@ -70,13 +70,15 @@ private Cat cat;
 	public void test() {
 		
 		Selector selector = new Selector();//公式选择器
-		//selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
+		selector.formulaFiled("three",Formula_Choose._1);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
-		dog.setOne(123.0);
+		dog.setOne((short)1236);
 		dog.setTwo(234.1);
+		dog.setAk("123");
 		Cat cat = new Cat();
+		
 		dog.setCat(cat);
 		boolean result = new DefaultLuckyExpBuilder()
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
@@ -88,7 +90,7 @@ private Cat cat;
 		.oper(oper)//自定义运算符
 		.result();
 		assertTrue(result);
-		//System.out.println("Three: "+dog.getThree());
+		System.out.println("Three: "+dog.getThree());
 		System.out.println("Four: "+dog.getFour());
 		System.out.println("ten: "+dog.getTen());
 		System.out.println("Fifteen: "+dog.getCat().getFifteen());
@@ -101,7 +103,7 @@ private Cat cat;
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
-		dog.setOne(123.0);
+		dog.setOne((short)1236);
 		dog.setTwo(234.1);
 		//dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
 		boolean result = new DefaultLuckyExpBuilder()
@@ -129,7 +131,7 @@ private Cat cat;
 		List<Dog> list = new ArrayList<Dog>();
 		for(int i=0;i<10;i++) {
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			Cat cat = new Cat();
 			dog.setCat(cat);
@@ -154,7 +156,7 @@ private Cat cat;
 		for(int i=0;i<10;i++) {
 			Selector selector = new Selector();//公式选择器
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			if( i == 4) {
 				//dog.setThree(0.0);
@@ -162,29 +164,16 @@ private Cat cat;
 			if(i == 5) {
 				selector.formulaFiled("three", Formula_Choose._2);
 			}
-			Cat cat = new Cat();
-			dog.setCat(cat);
+			//Cat cat = new Cat();
+			//dog.setCat(cat);
 			new DefaultLuckyExpBuilder()
 					.build(dog,null,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.oper(oper)//自定义运算符
-					.result(executor,new OperResult<T>() {
-
-						@Override
-						protected void getValiMeg(List<Map<String, String>> message) {
-							//System.out.println("message: "+message);
-							
-						}
-
-						@Override
-						public void executeAsync(T t, boolean isSuccess) {
-							Dog dog = (Dog)t;
-							//System.out.println("Three: "+dog.getThree());
-							System.out.println("Four: "+dog.getFour());
-							System.out.println("Thirteen: "+dog.getCat().getThirteen());
-						}//带回调的计算结果
-						
+					.result((h)->{
+						System.out.println(h.isSuccess());
+						System.out.println(h.getT());
 					});						
 		}
 	}
@@ -196,12 +185,13 @@ private Cat cat;
 	 */
 	@Test
 	public <T> void test5() {
-		for(int i=0;i<10;i++) {
+		Long start = System.currentTimeMillis();
+		for(int i=0;i<1000000;i++) {
 			Selector selector = new Selector();//公式选择器
 			Map<String,Double> param = new HashMap<String,Double>();
 			param.put("M", 20.1);//追加计算参数
 			Dog dog = new Dog();
-			dog.setOne(1.0 * i);
+			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			if(i ==2 ) {
 				selector.formulaFiled("three", Formula_Choose._2);//一层
@@ -216,24 +206,20 @@ private Cat cat;
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.oper(oper)//自定义运算符
-					.result(executor,new OperResult<T>() {
-						
-						@Override
-						protected void getValiMeg(List<Map<String, String>> message) {
-							System.out.println("message: "+message);
-							
+					.result((h)->{//回调结果
+						Dog result = (Dog)h.getT();
+						if(h.isSuccess()) {
+							/**System.out.println("Three: "+result.getThree());
+							System.out.println("Four: "+result.getFour());
+							System.out.println("ten: "+result.getTen());
+							System.out.println("Fifteen: "+result.getCat().getFifteen());
+							System.out.println("Sixteen: "+result.getCat().getSeventeen1());
+							System.out.println("Eighteen: "+result.getCat().getEighteen());
+							System.out.println("Thirteen: "+result.getCat().getThirteen());**/
 						}
-
-						@Override
-						public void executeAsync(T t, boolean isSuccess) {
-							Dog dog = (Dog)this.t;
-							//System.out.println(dog.getThree());
-							System.out.println(dog.getFour());
-							
-						}//带回调的计算结果
-						
-						
 					});						
 		}
+		Long end = System.currentTimeMillis();
+		System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
 ```
