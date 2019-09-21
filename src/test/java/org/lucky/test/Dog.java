@@ -42,7 +42,7 @@ public class Dog implements Serializable{
 	@BindVar("AK")
 	private String ak;
 	@BindVar("J")
-	@Calculation(formula= {"A","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
+	@Calculation(formula= {"A+ERROR","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
 	private Double ten;
 	@BindVar("A")
 	private short one;

@@ -18,7 +18,7 @@
 */
 package org.lucky.exp.parent;
 /**
- * 结果集线程回调操作
+ * 回调结果
 *
 * @author FayeWong
  * 

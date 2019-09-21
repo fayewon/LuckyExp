@@ -24,11 +24,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
+
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
@@ -54,7 +59,7 @@ import org.lucky.exp.util.LinkedStack;
 public class Expression {
 	protected final Configuration configuration;
 	private Serializable entity;
-	private String unknownFunOrVarException;
+	private List<String> evaluateErrors = new ArrayList<String>();
 
 	private static Map<String, Double> createDefaultVariables() {
 		final Map<String, Double> vars = new HashMap<String, Double>(4);
@@ -196,7 +201,7 @@ public class Expression {
 					this.configuration.getVariableNames().addAll(this.configuration.getVariables().keySet());
 				}
 			} catch (UnknownFunOrVarException e) {
-				unknownFunOrVarException = e.getMessage();
+				evaluateErrors.add(e.getMessage()+"\n");
 				iterator.offerLast();
 				convertToBean(iterator.getList(), operResult);
 			} catch (IllegalArgumentException e) {
@@ -225,12 +230,16 @@ public class Expression {
 			} catch (CallBackException e) {
 				throw new IllegalArgumentException(e);
 			} catch (StackOverflowError error) {
-				throw new IllegalArgumentException("重算失败，请检查" + unknownFunOrVarException + "或者相互引用");
+				List<String> errors = evaluateErrors.stream().distinct().collect(Collectors.toList());
+				throw new IllegalArgumentException("重算失败，请检查" + errors + "或者相互引用");
 			}
 		}
 		return false;
 	}
-
+	/**
+	 * 针对比较精细的业务逻辑
+	 * @param operResult
+	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void result(OperResult operResult) {
 		Handle handle = new Handle();		
@@ -248,9 +257,10 @@ public class Expression {
 			} catch (CallBackException e) {
 				handle.setSuccess(false);
 				throw new IllegalArgumentException(e);
-			} catch (StackOverflowError error) {
+			} catch (StackOverflowError error) {				
+				List<String> errors = evaluateErrors.stream().distinct().collect(Collectors.toList());
 				handle.setSuccess(false);
-				throw new IllegalArgumentException("重算失败，请检查" + unknownFunOrVarException + ",是否相互引用");
+				handle.setErrors(errors);
 			}
 		} else {
 			handle.setSuccess(false);

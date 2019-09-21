@@ -152,6 +152,7 @@ public class ExpTest {
 	 */
 	@Test
 	public <T> void test5() {
+		Long start = System.currentTimeMillis();
 		for(int i=0;i<10;i++) {
 			Selector selector = new Selector();//公式选择器
 			Map<String,Double> param = new HashMap<String,Double>();
@@ -175,15 +176,19 @@ public class ExpTest {
 					.result((h)->{//回调结果
 						Dog result = (Dog)h.getT();
 						if(h.isSuccess()) {
-							System.out.println("Three: "+result.getThree());
+							/**System.out.println("Three: "+result.getThree());
 							System.out.println("Four: "+result.getFour());
 							System.out.println("ten: "+result.getTen());
 							System.out.println("Fifteen: "+result.getCat().getFifteen());
 							System.out.println("Sixteen: "+result.getCat().getSeventeen1());
 							System.out.println("Eighteen: "+result.getCat().getEighteen());
-							System.out.println("Thirteen: "+result.getCat().getThirteen());
+							System.out.println("Thirteen: "+result.getCat().getThirteen());**/
+						}else {
+							System.out.println("error: "+h.getErrors());
 						}
 					});						
 		}
+		Long end = System.currentTimeMillis();
+		//System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
 }
