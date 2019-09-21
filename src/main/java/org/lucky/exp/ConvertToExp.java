@@ -24,7 +24,6 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Condition;
@@ -57,19 +56,19 @@ public class ConvertToExp {
 			}
 		return convertToExp;
 	}
-	public   void assignment(Serializable entity,Field field,Map<String,Double> variables,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) {
+	public   void assignment(Serializable entity,Field field,final Configuration configuration) {
 		try {			
 			if (field.isAnnotationPresent(BindObject.class)) {
 				final Object fieldVal = (Object)field.get(entity);
-				parseBindObject(fieldVal, field,selector,variables,passExps,waitExps);
+				parseBindObject(fieldVal, field,configuration);
 			}
 			if (field.isAnnotationPresent(BindVar.class)) {
 				final Object fieldVal = (Object)field.get(entity);
-				parseBindDouble(fieldVal, field, variables);
+				parseBindDouble(fieldVal, field, configuration);
 			}
 			if (field.isAnnotationPresent(Calculation.class)) {
 				final Object fieldVal = (Object)field.get(entity);
-				parseCalculation(fieldVal,entity, field,selector,passExps,waitExps);
+				parseCalculation(fieldVal,entity, field,configuration);
 			}
 		} catch (BindException e) {
 			throw new UnknownRuntimeException(ExceptionCode.C_10043.getCode(),e);
@@ -81,7 +80,7 @@ public class ConvertToExp {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,final Configuration configuration) throws BindException {
 		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
@@ -89,8 +88,8 @@ public class ConvertToExp {
 		}
 		int index = 0;//默认使用第一个公式
 		try {
-			if(selector != null) {
-				Iterator<Map.Entry<String, Formula_Choose>> iterator = selector.selector.entrySet().iterator();
+			if(configuration.getSelector() != null) {
+				Iterator<Map.Entry<String, Formula_Choose>> iterator = configuration.getSelector().selector.entrySet().iterator();
 				while (iterator.hasNext()) {
 					InvocationHandler invocationHandler = Proxy.getInvocationHandler(calculation);
 					Field hField = invocationHandler.getClass().getDeclaredField("memberValues");
@@ -120,10 +119,10 @@ public class ConvertToExp {
 				parseObj.put(Condition.expression, calculation.formula()[index]);
 				switch ((Status) parseObj.get(Condition.status)) {
 				case PASS:
-					passExps.add(parseObj);
+					configuration.getPassExps().add(parseObj);
 					break;
 				case WAIT:
-					waitExps.add(parseObj);
+					configuration.getWaitExps().add(parseObj);
 					break;
 				}
 			}
@@ -136,7 +135,7 @@ public class ConvertToExp {
 		}
 	}
 	
-	private  void parseBindObject(Object fieldVal, Field field,Selector selector,Map<String, Double> variables, List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private  void parseBindObject(Object fieldVal, Field field,final Configuration configuration) throws BindException {
 		boolean valiType = false;
 		Class<?>[] clazzes = field.getType().getInterfaces();
 		for(Class<?> clazz : clazzes) {
@@ -160,13 +159,13 @@ public class ConvertToExp {
 			Arrays.asList(fields).forEach((filed)->{
 				if (fieldVal instanceof Serializable) {
 					filed.setAccessible(true);
-					assignment((Serializable) fieldVal, filed, variables,selector,passExps,waitExps);
+					assignment((Serializable) fieldVal, filed, configuration);
 					filed.setAccessible(field.isAccessible());
 				}
 			});
 		}
 	}
-	private  void parseBindDouble(Object fieldVal, Field field, Map<String, Double> variables) throws BindException {
-		ValiSerializableObj.bindVar(fieldVal,field,variables);
+	private  void parseBindDouble(Object fieldVal, Field field,final Configuration configuration) throws BindException {
+		ValiSerializableObj.bindVar(fieldVal,field,configuration.getVariables());
 	}
 }

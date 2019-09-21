@@ -49,10 +49,10 @@ public class Dog implements Serializable{
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
+	@Calculation(formula= {"100#A+B+J","roundUp(max(A,2,7,9))"},format = "##.###")
 	private Double three;
 	@BindVar("D")
-	@Calculation(formula= {"100#A+B+J+M"})
+	@Calculation(formula= {"roundUp(max(A,2,7,9))"})
 	private Double four;
 	
 	

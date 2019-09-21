@@ -11,7 +11,6 @@ import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Formula_Choose;
 import org.lucky.exp.oper.Oper;
-import org.lucky.exp.parent.OperResult;
 /**
  * 面向对象计算
 *
@@ -38,7 +37,7 @@ public class ExpTest {
 	public void test() {
 		
 		Selector selector = new Selector();//公式选择器
-		//selector.put("three",Formula_Choose._2);//成员变量three选择第二个公式
+		selector.formulaFiled("three",Formula_Choose._1);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
@@ -58,7 +57,7 @@ public class ExpTest {
 		.oper(oper)//自定义运算符
 		.result();
 		assertTrue(result);
-		//System.out.println("Three: "+dog.getThree());
+		System.out.println("Three: "+dog.getThree());
 		System.out.println("Four: "+dog.getFour());
 		System.out.println("ten: "+dog.getTen());
 		System.out.println("Fifteen: "+dog.getCat().getFifteen());
@@ -132,29 +131,16 @@ public class ExpTest {
 			if(i == 5) {
 				selector.formulaFiled("three", Formula_Choose._2);
 			}
-			Cat cat = new Cat();
-			dog.setCat(cat);
+			//Cat cat = new Cat();
+			//dog.setCat(cat);
 			new DefaultLuckyExpBuilder()
 					.build(dog,null,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.oper(oper)//自定义运算符
-					.result(executor,new OperResult<T>() {
-
-						@Override
-						protected void getValiMeg(List<Map<String, String>> message) {
-							//System.out.println("message: "+message);
-							
-						}
-
-						@Override
-						public void executeAsync(T t, boolean isSuccess) {
-							Dog dog = (Dog)t;
-							//System.out.println("Three: "+dog.getThree());
-							System.out.println("Four: "+dog.getFour());
-							System.out.println("Thirteen: "+dog.getCat().getThirteen());
-						}//带回调的计算结果
-						
+					.result((h)->{
+						System.out.println(h.isSuccess());
+						System.out.println(h.getT());
 					});						
 		}
 	}
@@ -186,23 +172,17 @@ public class ExpTest {
 					.func(new CustomFunction().roundDown())//自定义公式
 					.func(new CustomFunction().roundUp())//自定义公式
 					.oper(oper)//自定义运算符
-					.result(executor,new OperResult<T>() {
-						
-						@Override
-						protected void getValiMeg(List<Map<String, String>> message) {
-							System.out.println("message: "+message);
-							
+					.result((h)->{//回调结果
+						Dog result = (Dog)h.getT();
+						if(h.isSuccess()) {
+							System.out.println("Three: "+result.getThree());
+							System.out.println("Four: "+result.getFour());
+							System.out.println("ten: "+result.getTen());
+							System.out.println("Fifteen: "+result.getCat().getFifteen());
+							System.out.println("Sixteen: "+result.getCat().getSeventeen1());
+							System.out.println("Eighteen: "+result.getCat().getEighteen());
+							System.out.println("Thirteen: "+result.getCat().getThirteen());
 						}
-
-						@Override
-						public void executeAsync(T t, boolean isSuccess) {
-							Dog dog = (Dog)this.t;
-							//System.out.println(dog.getThree());
-							System.out.println(dog.getFour());
-							
-						}//带回调的计算结果
-						
-						
 					});						
 		}
 	}

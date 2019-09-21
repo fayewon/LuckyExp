@@ -29,16 +29,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.exception.UnknownFunOrVarException;
-import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.missYaner.MissYaner;
-import org.lucky.exp.oper.Oper;
+import org.lucky.exp.parent.Handle;
 import org.lucky.exp.parent.OperResult;
 import org.lucky.exp.tokenizer.FunctionToken;
 import org.lucky.exp.tokenizer.NumberToken;
@@ -54,24 +52,7 @@ import org.lucky.exp.util.LinkedStack;
  * @since 1.0
  */
 public class Expression {
-	/** 解析字符串获取的token数组（函数，运算符，左括号，右括号，逗号...） **/
-	private Token[] tokens;
-	/** 条件参数 **/
-	private final Map<String, Double> variables;
-	/** 自定义函数名 **/
-	private final Set<String> userFunctionNames;
-	/** 直接结果集 **/
-	private final List<Map<Condition, Object>> passExps;
-	/** 等待直接结果集 **/
-	private final List<Map<Condition, Object>> waitExps;
-	/** 用户自定义的函数，不包含内置的函数 **/
-	private final Map<String, Func> userFuncs;
-	/** 用户自定义的运算符，不包含内置运算符 **/
-	private final Map<String, Oper> userOperators;
-	/** 参数名 **/
-	private final Set<String> variableNames;
-	/** 是否追加隐式乘法 **/
-	private final boolean implicitMultiplication;
+	protected final Configuration configuration;
 	private Serializable entity;
 	private String unknownFunOrVarException;
 
@@ -84,28 +65,20 @@ public class Expression {
 		return vars;
 	}
 
-	Expression(final Map<String, Func> userFuncs, final Map<String, Oper> userOperators,
-			final Set<String> variableNames, final boolean implicitMultiplication,
-			final List<Map<Condition, Object>> passExps, final List<Map<Condition, Object>> waitExps,
-			final Set<String> userFunctionNames) {
-		this.userFuncs = userFuncs;
-		this.userOperators = userOperators;
-		this.variableNames = variableNames;
-		this.implicitMultiplication = implicitMultiplication;
-		this.passExps = passExps;
-		this.waitExps = waitExps;
-		this.userFunctionNames = userFunctionNames;
-		this.variables = createDefaultVariables();
+	Expression(final Configuration configuration) {
+		this.configuration = configuration;
+		this.configuration.getVariables().putAll(createDefaultVariables());
+		setVariables(configuration.getVariables());
 	}
 
 	public Expression setVariable(final String name, final double value) {
 		this.checkVariableName(name);
-		this.variables.put(name, Double.valueOf(value));
+		this.configuration.getVariables().put(name, Double.valueOf(value));
 		return this;
 	}
 
 	private void checkVariableName(String name) {
-		if (this.userFunctionNames.contains(name) || Funcs.getBuiltinFunction(name) != null) {
+		if (this.configuration.getUserFuncs().keySet().contains(name) || Funcs.getBuiltinFunction(name) != null) {
 			throw new IllegalArgumentException("变量名称无效或函数名重复： '" + name + "'");
 		}
 	}
@@ -120,11 +93,6 @@ public class Expression {
 		return this;
 	}
 
-	public Expression setTokens(Token[] tokens) {
-		this.tokens = tokens;
-		return this;
-	}
-
 	public Expression setEntity(Serializable entity) {
 		this.entity = entity;
 		return this;
@@ -132,7 +100,7 @@ public class Expression {
 
 	public Set<String> getVariableNames() {
 		final Set<String> variables = new HashSet<String>();
-		for (final Token t : tokens) {
+		for (final Token t : this.configuration.getTokens()) {
 			if (t.getType() == Token.TOKEN_VARIABLE)
 				variables.add(((VariableToken) t).getName());
 		}
@@ -154,7 +122,7 @@ public class Expression {
 				output.push(((NumberToken) t).getValue());
 			} else if (t.getType() == Token.TOKEN_VARIABLE) {
 				final String name = ((VariableToken) t).getName();
-				final Double value = this.variables.get(name);
+				final Double value = this.configuration.getVariables().get(name);
 				if (value == null) {
 					throw new CallBackException("变量 '" + field.getName() + "',参数为空 '" + name + "'.");
 				}
@@ -204,7 +172,6 @@ public class Expression {
 	 * @return 是否算计成功
 	 * @throws CallBackException
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private boolean convertToBean(final List<Map<Condition, Object>> exps, final OperResult operResult) throws CallBackException {
 		Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(exps);
 		boolean isSuccess = false;
@@ -214,12 +181,8 @@ public class Expression {
 			try {
 				String expression = (String) exp.get(Condition.expression);
 				BindVar bind = field.getAnnotation(BindVar.class);
-				Token[] tokens = MissYaner.convertToRPN(expression, this.userFuncs, this.userOperators,
-						this.variableNames, this.implicitMultiplication, field);
-				this.tokens = tokens;
-				if (operResult != null) {
-					operResult.validate(tokens, this.variables, field);// 验证表达式是否合法
-				}
+				Token[] tokens = MissYaner.convertToRPN(expression,field,configuration);
+				this.configuration.setTokens(tokens);
 				double result = evaluate(tokens, field);
 				result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
 				field.set(exp.get(Condition.entity), result);
@@ -229,8 +192,8 @@ public class Expression {
 							exp.get(Condition.entity).getClass());
 					Method getMethod = pd.getReadMethod();
 					Object getResult = getMethod.invoke((Object) exp.get(Condition.entity));
-					this.variables.put(bind.value(), (Double) getResult);
-					this.variableNames.addAll(variables.keySet());
+					this.configuration.getVariables().put(bind.value(), (Double) getResult);
+					this.configuration.getVariableNames().addAll(this.configuration.getVariables().keySet());
 				}
 			} catch (UnknownFunOrVarException e) {
 				unknownFunOrVarException = e.getMessage();
@@ -252,10 +215,10 @@ public class Expression {
 	}
 
 	public boolean result() {
-		if (!passExps.isEmpty()) {
+		if (!this.configuration.getPassExps().isEmpty()) {
 			try {
-				if (convertToBean(passExps, null)) {
-					return convertToBean(waitExps, null);
+				if (convertToBean(this.configuration.getPassExps(), null)) {
+					return convertToBean(this.configuration.getWaitExps(), null);
 				} else {
 					return false;
 				}
@@ -269,27 +232,30 @@ public class Expression {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void result(ExecutorService executor, OperResult operResult) {
-		if (!passExps.isEmpty()) {
+	public void result(OperResult operResult) {
+		Handle handle = new Handle();		
+		if (!this.configuration.getPassExps().isEmpty()) {
 			try {
-				if (convertToBean(passExps, operResult)) {
-					if (convertToBean(waitExps, operResult)) {
-						operResult.setObject(executor, entity, true);
+				if (convertToBean(this.configuration.getPassExps(), operResult)) {
+					if (convertToBean(this.configuration.getWaitExps(), operResult)) {
+						handle.setSuccess(true);
 					} else {
-						operResult.setObject(executor, entity, false);
+						handle.setSuccess(false);
 					}
 				} else {
-					operResult.setObject(executor, entity, false);
+					handle.setSuccess(false);
 				}
 			} catch (CallBackException e) {
-				operResult.setObject(executor, entity, false);
+				handle.setSuccess(false);
 				throw new IllegalArgumentException(e);
 			} catch (StackOverflowError error) {
-				operResult.setObject(executor, entity, false);
+				handle.setSuccess(false);
 				throw new IllegalArgumentException("重算失败，请检查" + unknownFunOrVarException + ",是否相互引用");
 			}
 		} else {
-			operResult.setObject(executor, entity, false);
+			handle.setSuccess(false);
 		}
+		handle.setT(entity);
+		operResult.setHandle(handle);
 	}
 }

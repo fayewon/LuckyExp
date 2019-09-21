@@ -19,9 +19,8 @@
 package org.lucky.exp.missYaner;
 import java.lang.reflect.Field;
 import java.util.*;
+import org.lucky.exp.Configuration;
 import org.lucky.exp.exception.CallBackException;
-import org.lucky.exp.func.Func;
-import org.lucky.exp.oper.Oper;
 import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;
@@ -45,11 +44,10 @@ public class MissYaner {
      * @return 包含结果的{@link org.lucky.exp.tokenizer.Token} 数组
      * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
      */
-    public static Token[] convertToRPN(final String expression, final Map<String, Func> userFunctions,
-        final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication,Field field) throws CallBackException{
+    public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration) throws CallBackException{
         final Stack<Token> stack = new Stack<Token>();
         final List<Token> output = new ArrayList<Token>();
-        final Tokenizer tokenizer = new Tokenizer(expression, userFunctions, userOperators, variableNames, implicitMultiplication,field);
+        final Tokenizer tokenizer = new Tokenizer(expression,field,configuration);
         while (tokenizer.hasNext()) {
             Token token = tokenizer.nextToken();
             switch (token.getType()) {

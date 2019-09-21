@@ -20,6 +20,8 @@ package org.lucky.exp.tokenizer;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Set;
+
+import org.lucky.exp.Configuration;
 import org.lucky.exp.exception.UnknownFunOrVarException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
@@ -50,14 +52,13 @@ public class Tokenizer {
 
     private Token lastToken;
     
-    public Tokenizer(String expression, final Map<String, Func> userFunctions,
-            final Map<String, Oper> userOperators, final Set<String> variableNames, final boolean implicitMultiplication,Field field) {
+    public Tokenizer(String expression, Field field,final Configuration configuration) {
         this.expression = expression.trim().toCharArray();
         this.expressionLength = this.expression.length;
-        this.userFunctions = userFunctions;
-        this.userOperators = userOperators;
-        this.variableNames = variableNames;
-        this.implicitMultiplication = implicitMultiplication;
+        this.userFunctions = configuration.getUserFuncs();
+        this.userOperators = configuration.getUserOperators();
+        this.variableNames = configuration.getVariableNames();
+        this.implicitMultiplication = configuration.isImplicitMultiplication();
         this.field = field;
     }
 
