@@ -24,7 +24,7 @@
 <dependency>
   <groupId>com.github.fayewon</groupId>
   <artifactId>LuckyExp</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 ###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
