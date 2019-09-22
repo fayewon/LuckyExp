@@ -42,17 +42,17 @@ public class Dog implements Serializable{
 	@BindVar("AK")
 	private String ak;
 	@BindVar("J")
-	@Calculation(formula= {"A+ERROR","2.1 * roundUp(max(A,1,2,3))"},format = "##.###")
+	@Calculation(formula= {"A","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
 	private Double ten;
 	@BindVar("A")
 	private short one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"100#A+B+J","roundUp(max(A,2,7,9))"},format = "##.###")
+	@Calculation(formula= {"A+B","roundUp(max(A,2,7,300000))"},format = "##.###")
 	private Double three;
 	@BindVar("D")
-	@Calculation(formula= {"roundUp(max(A,2,7,9))"})
+	@Calculation(formula= {"C + B / A"})
 	private Double four;
 	
 	

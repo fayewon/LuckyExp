@@ -25,15 +25,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
-
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
@@ -59,7 +56,7 @@ import org.lucky.exp.util.LinkedStack;
 public class Expression {
 	protected final Configuration configuration;
 	private Serializable entity;
-	private List<String> evaluateErrors = new ArrayList<String>();
+	private final List<String> evaluateErrors = new ArrayList<String>();
 
 	private static Map<String, Double> createDefaultVariables() {
 		final Map<String, Double> vars = new HashMap<String, Double>(4);
@@ -173,11 +170,10 @@ public class Expression {
 	 *
 	 * @author FayeWong
 	 * @param exps 拆分的计算对象
-	 * @param operResult 回调对象
 	 * @return 是否算计成功
 	 * @throws CallBackException
 	 */
-	private boolean convertToBean(final List<Map<Condition, Object>> exps, final OperResult operResult) throws CallBackException {
+	private boolean convertToBean(final List<Map<Condition, Object>> exps) throws CallBackException {
 		Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(exps);
 		boolean isSuccess = false;
 		while(iterator.hasNext()) {
@@ -203,7 +199,7 @@ public class Expression {
 			} catch (UnknownFunOrVarException e) {
 				evaluateErrors.add(e.getMessage()+"\n");
 				iterator.offerLast();
-				convertToBean(iterator.getList(), operResult);
+				convertToBean(iterator.getList());
 			} catch (IllegalArgumentException e) {
 				throw new CallBackException(ExceptionCode.C_10042.getCode(), e);
 			} catch (IllegalAccessException e) {
@@ -222,12 +218,12 @@ public class Expression {
 	public boolean result() {
 		if (!this.configuration.getPassExps().isEmpty()) {
 			try {
-				if (convertToBean(this.configuration.getPassExps(), null)) {
-					return convertToBean(this.configuration.getWaitExps(), null);
+				if (convertToBean(this.configuration.getPassExps())) {
+					return convertToBean(this.configuration.getWaitExps());
 				} else {
 					return false;
 				}
-			} catch (CallBackException e) {
+			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
 			} catch (StackOverflowError error) {
 				List<String> errors = evaluateErrors.stream().distinct().collect(Collectors.toList());
@@ -238,34 +234,34 @@ public class Expression {
 	}
 	/**
 	 * 针对比较精细的业务逻辑
-	 * @param operResult
+	 * @param operResult 回调函数
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void result(OperResult operResult) {
-		Handle handle = new Handle();		
-		if (!this.configuration.getPassExps().isEmpty()) {
-			try {
-				if (convertToBean(this.configuration.getPassExps(), operResult)) {
-					if (convertToBean(this.configuration.getWaitExps(), operResult)) {
-						handle.setSuccess(true);
+		Handle handle = new Handle();
+		handle.setT(entity);
+			if (!this.configuration.getPassExps().isEmpty()) {
+				try {
+					if (convertToBean(this.configuration.getPassExps())) {
+						if (convertToBean(this.configuration.getWaitExps())) {
+							handle.setSuccess(true);
+						} else {
+							handle.setSuccess(false);
+						}
 					} else {
 						handle.setSuccess(false);
 					}
-				} else {
+				} catch (StackOverflowError error) {				
+					List<String> errors = evaluateErrors.stream().distinct().collect(Collectors.toList());
 					handle.setSuccess(false);
+					handle.setErrors(errors);
+				} catch (Exception e){
+					handle.setSuccess(false);
+					throw new IllegalArgumentException(e);
 				}
-			} catch (CallBackException e) {
+			} else {
 				handle.setSuccess(false);
-				throw new IllegalArgumentException(e);
-			} catch (StackOverflowError error) {				
-				List<String> errors = evaluateErrors.stream().distinct().collect(Collectors.toList());
-				handle.setSuccess(false);
-				handle.setErrors(errors);
 			}
-		} else {
-			handle.setSuccess(false);
-		}
-		handle.setT(entity);
-		operResult.setHandle(handle);
+			operResult.setHandle(handle);		
 	}
 }

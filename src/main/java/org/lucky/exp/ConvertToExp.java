@@ -24,7 +24,10 @@ import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
+
+import org.lucky.exp.Selector.SelectorHandler;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
@@ -88,9 +91,10 @@ public class ConvertToExp {
 		}
 		int index = 0;//默认使用第一个公式
 		try {
-			if(configuration.getSelector() != null) {
-				Iterator<Map.Entry<String, Formula_Choose>> iterator = configuration.getSelector().selector.entrySet().iterator();
-				while (iterator.hasNext()) {
+			Selector selector = configuration.getSelector();
+			if(selector != null) {
+				List<SelectorHandler> selectors = selector.getSelectors();
+				for(SelectorHandler handler : selectors) {
 					InvocationHandler invocationHandler = Proxy.getInvocationHandler(calculation);
 					Field hField = invocationHandler.getClass().getDeclaredField("memberValues");
 					hField.setAccessible(true);
@@ -98,18 +102,15 @@ public class ConvertToExp {
 					String[] formula = (String[]) memberValues.get("formula");
 					field.setAccessible(field.isAccessible());
 					hField.setAccessible(hField.isAccessible());
-					Map.Entry<String, Formula_Choose> it = iterator.next();
-					String key = it.getKey();
-					key = key.contains(".") ? key.split("\\.")[1] : key;
-					if (key.equals(field.getName())) {
-						Formula_Choose value = it.getValue();
+					if(handler.getClazz() == entity.getClass() && handler.getFiledName().equals(field.getName())) {
+						Formula_Choose value = handler.getSelect();
 						index = value.getIndex();
 						if (value.getIndex() + 1 > formula.length) {
-							throw new BindException("公式值选择过大，请检查字段：{" + field.getName() + "}绑定的@Calculation的公式数");
-						}
-					}
-				}
-			}			
+							throw new BindException("公式值选择过大，请检查变量'" +entity.getClass()+"'，'"+field.getName() + "'绑定的@Calculation的公式数");
+						   }
+					    }
+			    	}
+				}	
 			if (calculation != null && fieldVal == null ) {
 				Map<Condition, Object> parseObj = new HashMap<Condition, Object>();
 				parseObj.put(Condition.field, field);

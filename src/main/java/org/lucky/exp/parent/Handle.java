@@ -9,7 +9,9 @@ import java.util.List;
  *
  */
 public class Handle<T> {
+	/**计算的结果对象**/
 	private T t;
+	/**1.成功计算完成，2.计算失败，及时返回t结果**/
 	private boolean isSuccess;
 	/**计算过程中计算字段参数引发的异常**/
 	private List<String> errors;

@@ -20,6 +20,7 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
+import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.Status;
@@ -31,6 +32,8 @@ import org.lucky.exp.annotation.Status;
 * @date 2019年8月31日
  */
 public class Cat implements Serializable{
+	@BindObject
+	private Rabbit rabbit;
 	@BindVar("AK")
 	private String ak;
 	@BindVar("K")
@@ -43,7 +46,7 @@ public class Cat implements Serializable{
 	@BindVar("N")
 	private Double fourteen;	
 	@BindVar("O")
-	@Calculation(formula= {"1+M * roundUp(max(A,2,3,4)/2.1)+D","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	@Calculation(formula= {"1+M * roundUp(max(A,2,3,9)/2.1)+D","1+M * roundUp(max(A,2,3,90000)/2.1)"},format = "##.###")
 	private Double fifteen;
 	@BindVar("P")
 	private Double sixteen;
@@ -124,6 +127,12 @@ public class Cat implements Serializable{
 	}
 	public void setTwenty(Double twenty) {
 		this.twenty = twenty;
+	}
+	public Rabbit getRabbit() {
+		return rabbit;
+	}
+	public void setRabbit(Rabbit rabbit) {
+		this.rabbit = rabbit;
 	}
 	
 }

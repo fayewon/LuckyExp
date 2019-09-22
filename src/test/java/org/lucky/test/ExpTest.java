@@ -37,7 +37,7 @@ public class ExpTest {
 	public void test() {
 		
 		Selector selector = new Selector();//公式选择器
-		selector.formulaFiled("three",Formula_Choose._1);//成员变量three选择第二个公式
+		selector.formulaFiled(Dog.class,"three",Formula_Choose._1);//成员变量three选择第二个公式
 		Map<String,Double> param = new HashMap<String,Double>();
 		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
@@ -45,7 +45,9 @@ public class ExpTest {
 		dog.setTwo(234.1);
 		dog.setAk("123");
 		Cat cat = new Cat();
-		
+		Rabbit rabbit = new Rabbit();
+		rabbit.setTwentySecond(900.9);
+		cat.setRabbit(rabbit);
 		dog.setCat(cat);
 		boolean result = new DefaultLuckyExpBuilder()
 		//.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
@@ -64,6 +66,7 @@ public class ExpTest {
 		System.out.println("Sixteen: "+dog.getCat().getSeventeen1());
 		System.out.println("Eighteen: "+dog.getCat().getEighteen());
 		System.out.println("Thirteen: "+dog.getCat().getThirteen());
+		System.out.println("TwentyFirst: "+dog.getCat().getRabbit().getTwentyFirst());
 	}
 	@Test
 	public void test2() {
@@ -129,7 +132,7 @@ public class ExpTest {
 				//dog.setThree(0.0);
 			}
 			if(i == 5) {
-				selector.formulaFiled("three", Formula_Choose._2);
+				selector.formulaFiled(Dog.class,"three", Formula_Choose._2);
 			}
 			//Cat cat = new Cat();
 			//dog.setCat(cat);
@@ -157,17 +160,23 @@ public class ExpTest {
 			Selector selector = new Selector();//公式选择器
 			Map<String,Double> param = new HashMap<String,Double>();
 			param.put("M", 20.1);//追加计算参数
+			//param.put("V", 20.1);//追加计算参数
 			Dog dog = new Dog();
 			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
-			if(i ==2 ) {
-				selector.formulaFiled("three", Formula_Choose._2);//一层
-				selector.formulaFiled("cat.fifteen", Formula_Choose._2);//二层  目前最多两层
+			if(i % 2 == 0) {
+				selector.formulaFiled(Dog.class,"three", Formula_Choose._2);
+				selector.formulaFiled(Cat.class,"fifteen", Formula_Choose._2);
+				selector.formulaFiled(Rabbit.class,"twentyFirst", Formula_Choose._3);
 			}
+				
+			
 			Cat cat = new Cat();
 			cat.setSixteen(5.8*i);
 			cat.setEleven(3.1*i);
 			dog.setCat(cat);
+			Rabbit rabbit = new Rabbit();
+			cat.setRabbit(rabbit);
 			new DefaultLuckyExpBuilder()
 					.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 					.func(new CustomFunction().roundDown())//自定义公式
@@ -176,17 +185,18 @@ public class ExpTest {
 					.result((h)->{//回调结果
 						Dog result = (Dog)h.getT();
 						if(h.isSuccess()) {
-							/**System.out.println("Three: "+result.getThree());
+							System.out.println("TwentyFirst: "+result.getCat().getRabbit().getTwentyFirst());
+							System.out.println("Three: "+result.getThree());
 							System.out.println("Four: "+result.getFour());
 							System.out.println("ten: "+result.getTen());
 							System.out.println("Fifteen: "+result.getCat().getFifteen());
 							System.out.println("Sixteen: "+result.getCat().getSeventeen1());
 							System.out.println("Eighteen: "+result.getCat().getEighteen());
-							System.out.println("Thirteen: "+result.getCat().getThirteen());**/
+							System.out.println("Thirteen: "+result.getCat().getThirteen());
 						}else {
 							System.out.println("error: "+h.getErrors());
 						}
-					});						
+					});	
 		}
 		Long end = System.currentTimeMillis();
 		//System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");

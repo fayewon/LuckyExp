@@ -166,7 +166,6 @@ public  abstract class  AbstractLuckyExpBuilder{
 	 * 
 	*
 	* @author FayeWong
-	* @param executor 线程池
 	* @param operResult 回调函数
 	 */
 	public  abstract void  result(OperResult operResult);

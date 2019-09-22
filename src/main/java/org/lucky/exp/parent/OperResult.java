@@ -32,8 +32,8 @@ public interface OperResult{
 	 * 
 	*
 	* @author FayeWong
-	* @param t 结果
-	* @param isSuccess 1.成功计算完成，2.计算失败，3.产生CallBack异常均会及时返回t结果。
+	* @param handle 结果
+	* @since 1.0
 	 */
     void accept(Handle<?> handle); 
 }
