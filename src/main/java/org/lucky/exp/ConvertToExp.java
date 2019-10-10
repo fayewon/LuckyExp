@@ -23,16 +23,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.lucky.exp.Selector.SelectorHandler;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.annotation.Formula_Choose;
-import org.lucky.exp.annotation.Status;
 import org.lucky.exp.exception.BindException;
 import org.lucky.exp.exception.UnknownRuntimeException;
 import org.lucky.exp.util.ValiSerializableObj;
@@ -46,10 +43,7 @@ import org.lucky.exp.annotation.BindVar;
  */
 public class ConvertToExp {
 	private static ConvertToExp convertToExp;
-
-	private ConvertToExp() {
-
-	}
+	private ConvertToExp() {}
 
 	public static ConvertToExp getInstance() {
 			synchronized (ConvertToExp.class) {
@@ -85,6 +79,7 @@ public class ConvertToExp {
 	@SuppressWarnings("unchecked")
 	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,final Configuration configuration) throws BindException {
 		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
+		
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());
@@ -115,17 +110,9 @@ public class ConvertToExp {
 				Map<Condition, Object> parseObj = new HashMap<Condition, Object>();
 				parseObj.put(Condition.field, field);
 				parseObj.put(Condition.entity, entity);
-				parseObj.put(Condition.status, calculation.action());
 				parseObj.put(Condition.format, calculation.format());
 				parseObj.put(Condition.expression, calculation.formula()[index]);
-				switch ((Status) parseObj.get(Condition.status)) {
-				case PASS:
-					configuration.getPassExps().add(parseObj);
-					break;
-				case WAIT:
-					configuration.getWaitExps().add(parseObj);
-					break;
-				}
+				configuration.getPassExps().add(parseObj);
 			}
 		} catch (IllegalArgumentException e) {
 			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);

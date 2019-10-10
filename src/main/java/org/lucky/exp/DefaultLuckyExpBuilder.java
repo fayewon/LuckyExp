@@ -17,6 +17,7 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp;
+import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.parent.AbstractLuckyExpBuilder;
 import org.lucky.exp.parent.OperResult;
 /**
@@ -34,16 +35,17 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
     }
 
 	@Override
-	public boolean result() {		
-		Expression expression = new Expression(configuration);
-		return expression.result();
+	public void result() throws CallBackException{	
+		new Expression(configuration)
+		        .result();
+
 	}
 
 	@Override
-	public void  result(OperResult operResult) {
-		Expression expression = new Expression(configuration)
-				.setEntity(entity);
-		expression.result(operResult);
+	public void  result(OperResult operResult){
+		new Expression(configuration)
+				.setEntity(entity)
+		        .result(operResult);
 	}   
 }
 

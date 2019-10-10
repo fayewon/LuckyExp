@@ -24,7 +24,7 @@ package org.lucky.exp.parent;
  * 
  */
 @FunctionalInterface
-public interface OperResult{
+public interface OperResult extends Cloneable {
 	default void setHandle(Handle<?> handle) {
 		accept(handle);
 	};

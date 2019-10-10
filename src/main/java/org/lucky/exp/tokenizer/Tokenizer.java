@@ -19,8 +19,6 @@
 package org.lucky.exp.tokenizer;
 import java.lang.reflect.Field;
 import java.util.Map;
-import java.util.Set;
-
 import org.lucky.exp.Configuration;
 import org.lucky.exp.exception.UnknownFunOrVarException;
 import org.lucky.exp.func.Func;
@@ -35,17 +33,9 @@ import org.lucky.exp.oper.Opers;
 public class Tokenizer {
 
     private final char[] expression;
-
     public final int expressionLength;
-
     private final Map<String, Func> userFunctions;
-
-    private final Map<String, Oper> userOperators;
-
-    private final Set<String> variableNames;
-
-    private final boolean implicitMultiplication;
-       
+    private final Map<String, Oper> userOperators;       
     private final Field field;
 
     public int pos = 0;
@@ -57,8 +47,6 @@ public class Tokenizer {
         this.expressionLength = this.expression.length;
         this.userFunctions = configuration.getUserFuncs();
         this.userOperators = configuration.getUserOperators();
-        this.variableNames = configuration.getVariableNames();
-        this.implicitMultiplication = configuration.isImplicitMultiplication();
         this.field = field;
     }
 
@@ -84,14 +72,7 @@ public class Tokenizer {
             if (lastToken != null) {
                 if (lastToken.getType() == Token.TOKEN_NUMBER) {
                     throw new IllegalArgumentException("无法解析字符 '" + ch + "' (编码:" + (int) ch + ") 位置 [" + pos + "]");
-                } else if (implicitMultiplication && (lastToken.getType() != Token.TOKEN_OPERATOR
-                        && lastToken.getType() != Token.TOKEN_PARENTHESES_OPEN
-                        && lastToken.getType() != Token.TOKEN_FUNCTION
-                        && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
-                    /* 插入隐式乘法标记*/
-                    lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
-                    return lastToken;
-                }
+                } 
             }
             return parseNumberToken(ch);
             /*如果是逗号则返回一个逗号token*/
@@ -99,15 +80,7 @@ public class Tokenizer {
             return parseArgumentSeparatorToken(ch);
             /*如果是左括号则返回一个左括号token*/
         } else if (isOpenParentheses(ch)) {
-            if (lastToken != null && implicitMultiplication &&
-                    (lastToken.getType() != Token.TOKEN_OPERATOR
-                            && lastToken.getType() != Token.TOKEN_PARENTHESES_OPEN
-                            && lastToken.getType() != Token.TOKEN_FUNCTION
-                            && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
-            	/* 插入隐式乘法标记*/
-                lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
-                return lastToken;
-            }
+            
             return parseParentheses(true);
             /*如果是右括号则返回一个右括号token*/
         } else if (isCloseParentheses(ch)) {
@@ -117,16 +90,7 @@ public class Tokenizer {
             return parseOperatorToken(ch);
             /*如果是字母则返回一个函数或变量token*/
         } else if (isAlphabetic(ch) || ch == '_') {
-            // 分析可以是集合变量或函数的名称
-            if (lastToken != null && implicitMultiplication &&
-                    (lastToken.getType() != Token.TOKEN_OPERATOR
-                            && lastToken.getType() != Token.TOKEN_PARENTHESES_OPEN
-                            && lastToken.getType() != Token.TOKEN_FUNCTION
-                            && lastToken.getType() != Token.TOKEN_SEPARATOR)) {
-                // 插入隐式乘法标记
-                lastToken = new OperToken(Opers.getBuiltinOperator('*', 2));
-                return lastToken;
-            }
+            
             return parseFunctionOrVariable();
 
         }
@@ -184,20 +148,26 @@ public class Tokenizer {
                 isVariableOrFunctionCharacter(expression[testPos])) {
             String name = new String(expression, offset, len);//函数名或者变量名
             /*
-                       * 如果name在变量池中则返回一个变量token
+             * 如果name在变量池中则返回一个变量token
              */
-            if (variableNames != null && variableNames.contains(name)) {
+            /**if (variableNames != null && variableNames.contains(name)) {
                 lastValidLen = len;
                 lastValidToken = new VariableToken(name);
             } else {
-            	/*
-            	 * 如果该函数在自定义函数或者内置函数内，返回函数token
-            	 */
-                final Func f = getFunction(name);
+            	
+                final Func f = getFunction(name);//如果该函数在自定义函数或者内置函数内，返回函数token
                 if (f != null) {
                     lastValidLen = len;
                     lastValidToken = new FunctionToken(f);
                 }
+            }**/
+            final Func f = getFunction(name);
+            if(f != null) {
+            	lastValidLen = len;
+                lastValidToken = new FunctionToken(f);
+            }else {
+            	lastValidLen = len;
+                lastValidToken = new VariableToken(name);
             }
             len++;
             testPos = offset + len - 1;
@@ -211,7 +181,7 @@ public class Tokenizer {
         return lastToken;
     }
     /**
-        * 判断是否在自定义的函数名和内置函数中
+     * 判断是否在自定义的函数名和内置函数中
      * @param name 函数名
      * @return 存在则返回
      */

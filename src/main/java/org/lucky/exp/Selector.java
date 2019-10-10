@@ -29,7 +29,7 @@ import org.lucky.exp.annotation.Formula_Choose;
  */
 public class Selector {
 	private final List<SelectorHandler> selectors = new ArrayList<SelectorHandler>();
-	class SelectorHandler{
+	final class SelectorHandler{
 		private Class<?> clazz;
 		private String filedName;
 		private Formula_Choose select;

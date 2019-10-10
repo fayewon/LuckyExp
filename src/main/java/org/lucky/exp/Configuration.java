@@ -1,12 +1,12 @@
 package org.lucky.exp;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
@@ -29,23 +29,21 @@ public class Configuration {
 	protected  final Map<String, Double> variables = new HashMap<String, Double>(0); 
     /**计算公式和输入结果**/
 	protected  final List<Map<Condition, Object>> passExps = new LinkedList<Map<Condition, Object>>(); 
-    /**待计算公式和输入结果**/
-	protected  final List<Map<Condition, Object>> waitExps = new LinkedList<Map<Condition, Object>>(); 
-    /**是否追加隐式乘法**/
-	protected  boolean implicitMultiplication = false;
 	/**公式选择器**/
 	protected Selector selector;
+	/**计算时异常信息**/
+	protected final List<String> evaluateErrors = new ArrayList<String>();
+	public void addErrors(String errorMeg) {
+		evaluateErrors.add(errorMeg);
+	}
+	public List<String> getErrors(){
+		return this.evaluateErrors;
+	}
 	public Token[] getTokens() {
 		return tokens;
 	}
 	public void setTokens(Token[] tokens) {
 		this.tokens = tokens;
-	}
-	public boolean isImplicitMultiplication() {
-		return implicitMultiplication;
-	}
-	public void setImplicitMultiplication(boolean implicitMultiplication) {
-		this.implicitMultiplication = implicitMultiplication;
 	}
 	public Selector getSelector() {
 		return selector;
@@ -67,9 +65,5 @@ public class Configuration {
 	}
 	public List<Map<Condition, Object>> getPassExps() {
 		return passExps;
-	}
-	public List<Map<Condition, Object>> getWaitExps() {
-		return waitExps;
-	}
-	
+	}	
 }

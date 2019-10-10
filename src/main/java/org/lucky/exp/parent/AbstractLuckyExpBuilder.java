@@ -27,6 +27,7 @@ import org.lucky.exp.Configuration;
 import org.lucky.exp.ConvertToExp;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.ExceptionCode;
+import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.oper.Oper;
@@ -43,10 +44,6 @@ public  abstract class  AbstractLuckyExpBuilder{
     protected Serializable entity;
     private  void setVariables(Set<String> variableNames) {
         this.configuration.getVariableNames().addAll(variableNames);
-    }
-    public AbstractLuckyExpBuilder implicitMultiplication(boolean implicitMultiplication) {
-    	this.configuration.setImplicitMultiplication(implicitMultiplication); 
-        return this;
     }
     /**
 	*
@@ -161,7 +158,7 @@ public  abstract class  AbstractLuckyExpBuilder{
     * @author FayeWong
     * @return 是否计算成功
      */
-	public abstract boolean result();
+	public abstract void result() throws CallBackException;
 	/**
 	 * 
 	*

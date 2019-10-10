@@ -41,19 +41,20 @@ public class Dog implements Serializable{
 	private Rabbit rabbit;
 	@BindVar("AK")
 	private String ak;
+	@BindVar("D")
+	@Calculation(formula= {"C + B / A + HelloKitty"},format = "##.###")
+	private Double four;
 	@BindVar("J")
-	@Calculation(formula= {"A","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
+	@Calculation(formula= {"A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
 	private Double ten;
 	@BindVar("A")
 	private short one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"A+B","roundUp(max(A,2,7,300000))"},format = "##.###")
+	@Calculation(formula= {"A+B"},format = "##.###")
 	private Double three;
-	@BindVar("D")
-	@Calculation(formula= {"C + B / A"})
-	private Double four;
+	
 	
 	
 	@BindVar("E")
