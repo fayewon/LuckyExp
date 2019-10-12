@@ -5,6 +5,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import org.lucky.exp.annotation.BindVar;
@@ -145,7 +146,7 @@ public class HandlerResult {
 	 */
 	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken) throws CallBackException {
 		final Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(configuration.getPassExps());
-		final Map<String,Token[]> tokensMap = new ConcurrentHashMap<String,Token[]>();
+		final Map<String,Token[]> tokensMap = new HashMap<String,Token[]>();
 		while (iterator.hasNext()) {
 			Map<Condition, Object> exp = iterator.next();
 			Field field = (Field) exp.get(Condition.field);
