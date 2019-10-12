@@ -33,10 +33,8 @@ import org.lucky.exp.annotation.Status;
 public class Dog implements Serializable{
 	//13 17;16 12;
 	//
-	//@BindObject
+	@BindObject
 	private Cat cat;
-	//@BindObject
-	private String str = "helloworld";
 	@BindObject
 	private Rabbit rabbit;
 	@BindVar("AK")
@@ -45,14 +43,17 @@ public class Dog implements Serializable{
 	@Calculation(formula= {"max(if(A>B,A,B),1,2,300000)"},format = "##.###")
 	private Double four;
 	@BindVar("J")
-	@Calculation(formula= {"helloworld+A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
+	@Calculation(formula= {"HelloKitty+A + 2.1 * roundUp(max(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
+			+ "A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
 	private Double ten;
 	@BindVar("A")
 	private short one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	//@Calculation(formula= {"A+B"},format = "##.###")
+	@Calculation(formula= {"max(if(cos(A)>tan(B),cos(A),tan(B)),1,2,3)","A+B"},format = "##.###")
 	private Double three;
 	
 	
@@ -149,11 +150,4 @@ public class Dog implements Serializable{
 	public void setThree(Double three) {
 		this.three = three;
 	}
-	public String getStr() {
-		return str;
-	}
-	public void setStr(String str) {
-		this.str = str;
-	}
-	
 }
