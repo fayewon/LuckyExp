@@ -24,6 +24,7 @@ import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;
+import org.lucky.exp.util.LinkedStack;
 /**
  * <p>中缀表达式转逆波兰表达式</p>
 *
@@ -41,7 +42,7 @@ public class MissYaner {
 	 * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
 	 */
     public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration){
-        final Stack<Token> stack = new Stack<Token>();
+        final LinkedStack<Token> stack = new LinkedStack<Token>();
         final List<Token> output = new ArrayList<Token>();
         final Tokenizer tokenizer = new Tokenizer(expression,field,configuration);
         while (tokenizer.hasNext()) {
@@ -52,18 +53,18 @@ public class MissYaner {
                 output.add(token);
                 break;
             case Token.TOKEN_FUNCTION:
-                stack.add(token);
+                stack.push(token);
                 break;
             case Token.TOKEN_SEPARATOR:
-                while (!stack.empty() && stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
+                while (!stack.isEmpty() && stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
                     output.add(stack.pop());
                 }
-                if (stack.empty() || stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
+                if (stack.isEmpty() || stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
                     throw new IllegalArgumentException("变量 '"+field.getName()+"',函数分隔符','位置错误或括号不匹配");
                 }
                 break;
             case Token.TOKEN_OPERATOR:
-                while (!stack.empty() && stack.peek().getType() == Token.TOKEN_OPERATOR) {
+                while (!stack.isEmpty() && stack.peek().getType() == Token.TOKEN_OPERATOR) {
                     OperToken o1 = (OperToken) token;
                     OperToken o2 = (OperToken) stack.peek();
                     if (o1.getOper().getNumOperands() == 1 && o2.getOper().getNumOperands() == 2) {
@@ -93,7 +94,7 @@ public class MissYaner {
                 throw new IllegalArgumentException("未知的认证类型");
             }
         }
-        while (!stack.empty()) {
+        while (!stack.isEmpty()) {
             Token t = stack.pop();
             if (t.getType() == Token.TOKEN_PARENTHESES_CLOSE || t.getType() == Token.TOKEN_PARENTHESES_OPEN) {
                 throw new IllegalArgumentException("变量 '"+field.getName()+"',检测到不匹配的括号。请检查表达式");
