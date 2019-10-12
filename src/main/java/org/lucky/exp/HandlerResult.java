@@ -6,6 +6,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.cache.Cache;
@@ -70,7 +71,7 @@ public class HandlerResult {
 	private static  void evaluate(Configuration configuration, Map<String, Token[]> tokensMap,
 			Iterator<Map<Condition, Object>> iterator) throws CallBackException {		
 		while (iterator.hasNext()) {
-			LinkedStack<Double> output = new LinkedStack<Double>();
+			LinkedStack<Object> output = new LinkedStack<Object>();
 			Map<Condition, Object> exp = iterator.removeNext();
 			String expressionKey = (String) exp.get(Condition.expression);
 			Token[] tokens = tokensMap.get(expressionKey);
@@ -92,7 +93,7 @@ public class HandlerResult {
 							output.push(value);
 						}
 					}catch (StackOverflowError error) {
-						throw new CallBackException(error);
+						throw new CallBackException("重新计算失败，有未知参数 ' "+" ' "+error);
 					}
 					
 				} else if (t.getType() == Token.TOKEN_OPERATOR) {
@@ -103,12 +104,12 @@ public class HandlerResult {
 					}
 					if (op.getOper().getNumOperands() == 2) {
 						/* 弹出操作数并推送操作结果 */
-						double rightArg = output.pop();
-						double leftArg = output.pop();
+						double rightArg = (double)output.pop();
+						double leftArg = (double)output.pop();
 						output.push(op.getOper().call(leftArg, rightArg));
 					} else if (op.getOper().getNumOperands() == 1) {
 						/* 弹出操作数并推送操作结果 */
-						double arg = output.pop();
+						double arg = (double)output.pop();
 						output.push(op.getOper().call(arg));
 					}
 				} else if (t.getType() == Token.TOKEN_FUNCTION) {
@@ -119,9 +120,9 @@ public class HandlerResult {
 								+ func.getFunction().getName() + "' function");
 					}
 					/* 从堆栈收集参数 */
-					double[] args = new double[numArguments];
+					Object[] args = new Object[numArguments];
 					for (int j = numArguments - 1; j >= 0; j--) {
-						args[j] = output.pop();
+						args[j] = (Object)output.pop();
 					}
 					output.push(func.getFunction().call(args));
 				}
@@ -129,7 +130,7 @@ public class HandlerResult {
 			if (output.size() > 1) {
 				throw new CallBackException("变量 ' " + field.getName() + " ',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
 			}
-			double result = output.pop();
+			double result = (double)output.pop();
 			Handler(configuration, result, exp);
 		};
 	}
@@ -144,20 +145,27 @@ public class HandlerResult {
 	 */
 	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken) throws CallBackException {
 		final Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(configuration.getPassExps());
+		final Map<String,Token[]> tokensMap = new ConcurrentHashMap<String,Token[]>();
 		while (iterator.hasNext()) {
 			Map<Condition, Object> exp = iterator.next();
 			Field field = (Field) exp.get(Condition.field);
 			final String expression = (String) exp.get(Condition.expression);
-			cacheToken  = Cache.getInstance().builder((b)->{
+			cacheToken  = Cache.getInstance().builder((cToken)->{
+				if(cToken.openCache()) {
+					Token[] cacheTokens = cToken.getToken(expression);
+					if(cacheTokens == null) {
+						cacheTokens = MissYaner.convertToRPN(expression, field, configuration);
+						cToken.putTokens(expression, cacheTokens,cToken.expire());
+					}
+				}else {
+					Token[] tokens = MissYaner.convertToRPN(expression, field, configuration);
+					tokensMap.put(expression, tokens);
+				}
 			});
-			Token[] tokens = cacheToken.getToken(expression);
-			if(tokens == null) {
-				tokens = MissYaner.convertToRPN(expression, field, configuration);
-				cacheToken.putTokens(expression, tokens,CacheToken.expire);
-			}
+			
 		}
 		iterator.reset();
-		evaluate(configuration, cacheToken.getTokensMap(), iterator);
+		evaluate(configuration, cacheToken.openCache() ? cacheToken.getTokensMap() : tokensMap, iterator);
 		if(iterator.isEmpty()) {
 			configuration.getErrors().clear();
 			return true;

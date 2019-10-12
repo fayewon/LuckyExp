@@ -6,6 +6,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+import org.lucky.exp.Configuration;
 import org.lucky.exp.tokenizer.Token;
 /**
  * 缓存计算
@@ -14,13 +16,18 @@ import org.lucky.exp.tokenizer.Token;
  */
 @FunctionalInterface
 public interface CacheToken extends Cloneable{
-	final static int  expire = 3 * 60 * 1000;//默认3分钟刷新一次缓存，暂时不提供配置入口
 	final static Map<String,TokenObject> tokensObject = new ConcurrentHashMap<String,TokenObject>();
 	final static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-	default void setOpenCache(boolean openCache) {
-		apply(openCache);
+	default void setCacheToken(CacheToken cacheToken) {
+		apply(cacheToken);
 	}
-	void apply(boolean openCache);
+	void apply(CacheToken cacheToken);
+	default  boolean openCache() {
+		return Configuration.openCache;
+	}
+	default  int expire() {
+		return Configuration.expire;
+	}
 	default  void putTokens(String key, Token[] value) {
 		putTokens(key, value, 0);
 	}

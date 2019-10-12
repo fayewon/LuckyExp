@@ -40,7 +40,7 @@ public class MissYaner {
 	 * @return 包含结果的{@link org.lucky.exp.tokenizer.Token} 数组
 	 * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
 	 */
-    public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration) throws CallBackException{
+    public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration){
         final Stack<Token> stack = new Stack<Token>();
         final List<Token> output = new ArrayList<Token>();
         final Tokenizer tokenizer = new Tokenizer(expression,field,configuration);
@@ -59,7 +59,7 @@ public class MissYaner {
                     output.add(stack.pop());
                 }
                 if (stack.empty() || stack.peek().getType() != Token.TOKEN_PARENTHESES_OPEN) {
-                    throw new CallBackException("变量 '"+field.getName()+"',函数分隔符','位置错误或括号不匹配");
+                    throw new IllegalArgumentException("变量 '"+field.getName()+"',函数分隔符','位置错误或括号不匹配");
                 }
                 break;
             case Token.TOKEN_OPERATOR:
@@ -90,13 +90,13 @@ public class MissYaner {
                 }
                 break;
             default:
-                throw new CallBackException("未知的认证类型");
+                throw new IllegalArgumentException("未知的认证类型");
             }
         }
         while (!stack.empty()) {
             Token t = stack.pop();
             if (t.getType() == Token.TOKEN_PARENTHESES_CLOSE || t.getType() == Token.TOKEN_PARENTHESES_OPEN) {
-                throw new CallBackException("变量 '"+field.getName()+"',检测到不匹配的括号。请检查表达式");
+                throw new IllegalArgumentException("变量 '"+field.getName()+"',检测到不匹配的括号。请检查表达式");
             } else {
                 output.add(t);
             }

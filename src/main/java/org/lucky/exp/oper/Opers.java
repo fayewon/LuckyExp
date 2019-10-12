@@ -31,43 +31,45 @@ public abstract class Opers {
     private static final int INDEX_MODULO = 5;
     private static final int INDEX_UNARYMINUS = 6;
     private static final int INDEX_UNARYPLUS = 7;
+    private static final int INDEX_GREATER = 8;
+    private static final int INDEX_LESS = 9;
 
-    private static final Oper[] builtinOperators = new Oper[8];
+    private static final Oper[] builtinOperators = new Oper[10];
 
     static {
         builtinOperators[INDEX_ADDITION]= new Oper("+", 2, true, Oper.PRECEDENCE_ADDITION) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return args[0] + args[1];
             }
         };
         builtinOperators[INDEX_SUBTRACTION]= new Oper("-", 2, true, Oper.PRECEDENCE_ADDITION) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return args[0] - args[1];
             }
         };
         builtinOperators[INDEX_UNARYMINUS]= new Oper("-", 1, false, Oper.PRECEDENCE_UNARY_MINUS) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return -args[0];
             }
         };
         builtinOperators[INDEX_UNARYPLUS]= new Oper("+", 1, false, Oper.PRECEDENCE_UNARY_PLUS) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return args[0];
             }
         };
         builtinOperators[INDEX_MUTLIPLICATION]= new Oper("*", 2, true, Oper.PRECEDENCE_MULTIPLICATION) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return args[0] * args[1];
             }
         };
         builtinOperators[INDEX_DIVISION]= new Oper("/", 2, true, Oper.PRECEDENCE_DIVISION) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 if (args[1] == 0d) {
                     throw new ArithmeticException("被除数为0!");
                 }
@@ -76,19 +78,39 @@ public abstract class Opers {
         };
         builtinOperators[INDEX_POWER]= new Oper("^", 2, false, Oper.PRECEDENCE_POWER) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 return Math.pow(args[0], args[1]);
             }
         };
         builtinOperators[INDEX_MODULO]= new Oper("%", 2, true, Oper.PRECEDENCE_MODULO) {
             @Override
-            public double call(final double... args) {
+            public Object call(final double... args) {
                 if (args[1] == 0d) {
                     throw new ArithmeticException("被余数为0!");
                 }
                 return args[0] % args[1];
             }
         };
+        /**
+         * 主要为了搭配函数if设定的布尔判断取值
+         */
+        builtinOperators[INDEX_GREATER]= new Oper(">", 2, true, Oper.PRECEDENCE_UNARY_MINUS) {
+            @Override
+            public Object call(final double... args) {
+                
+                return args[0] > args[1];
+            }
+        };
+        /**
+         * 主要为了搭配函数if设定的布尔判断取值
+         */
+        builtinOperators[INDEX_LESS]= new Oper("<", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
+            @Override
+            public Object call(final double... args) {
+            	return args[0] < args[1];
+            }
+        };
+        
     }
 
     public static Oper getBuiltinOperator(final char symbol, final int numArguments) {
@@ -113,6 +135,10 @@ public abstract class Opers {
                 return builtinOperators[INDEX_POWER];
             case '%':
                 return builtinOperators[INDEX_MODULO];
+            case '>':
+                return builtinOperators[INDEX_GREATER];
+            case '<':
+                return builtinOperators[INDEX_LESS];
             default:
                 return null;
         }

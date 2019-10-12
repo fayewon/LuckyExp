@@ -105,7 +105,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @param func 自定义函数
 	* @return this
 	 */
-	public AbstractLuckyExpBuilder func(Func func) {
+	public AbstractLuckyExpBuilder addFunc(Func func) {
         this.configuration.getUserFuncs().put(func.getName(), func);
         return this;
     }
@@ -116,7 +116,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @param funcs 自定义函数
 	* @return this
 	 */
-	public AbstractLuckyExpBuilder funcs(Func... funcs) {
+	public AbstractLuckyExpBuilder addFunc(Func... funcs) {
     	Arrays.asList(funcs).stream().forEach( f -> this.configuration.getUserFuncs().put(f.getName(), f));
         return this;
     }
@@ -127,7 +127,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @param funcs 自定义函数
 	* @return this
 	 */
-	public AbstractLuckyExpBuilder funcs(List<Func> funcs) {
+	public AbstractLuckyExpBuilder addFunc(List<Func> funcs) {
     	funcs.forEach(f -> this.configuration.getUserFuncs().put(f.getName(), f));
         return this;
     }  
@@ -139,31 +139,40 @@ public  abstract class  AbstractLuckyExpBuilder{
         	}
         }
     }
-	public AbstractLuckyExpBuilder oper(Oper oper) {
+	public AbstractLuckyExpBuilder addOper(Oper oper) {
         this.checkOperatorSymbol(oper);
         this.configuration.getUserOperators().put(oper.getSymbol(), oper);
         return this;
     }
-	public AbstractLuckyExpBuilder oper(Oper... oper) {
-    	Arrays.asList(oper).stream().forEach( o -> this.oper(o));
+	public AbstractLuckyExpBuilder addOper(Oper... oper) {
+    	Arrays.asList(oper).stream().forEach( o -> this.addOper(o));
         return this;
     }
-	public AbstractLuckyExpBuilder oper(List<Oper> oper) {
-    	oper.forEach( o -> this.oper(o));
+	public AbstractLuckyExpBuilder addOper(List<Oper> oper) {
+    	oper.forEach( o -> this.addOper(o));
         return this;
     }
+	public AbstractLuckyExpBuilder addCache(boolean openCache) {
+		Configuration.openCache = openCache;
+		return this;
+	}
+	public AbstractLuckyExpBuilder addCache(boolean openCache,int expire) {
+		Configuration.openCache = openCache;
+		Configuration.expire = expire;
+		return this;
+	}
 	/**
      * 
     *
     * @author FayeWong
     * @return 是否计算成功
      */
-	public abstract void result() throws CallBackException;
+	public abstract void result();
 	/**
 	 * 
 	*
 	* @author FayeWong
 	* @param operResult 回调函数
 	 */
-	public  abstract void  result(OperResult operResult);
+	public  abstract void  result(OperResult operResult) throws CallBackException;
 }

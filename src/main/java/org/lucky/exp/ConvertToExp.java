@@ -68,11 +68,11 @@ public class ConvertToExp {
 				parseCalculation(fieldVal,entity, field,configuration);
 			}
 		} catch (BindException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10043.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalArgumentException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalAccessException e) {
-			throw new UnknownRuntimeException("成员变量 '"+field.getName()+"' 没有get()方法",e);
+			throw new IllegalArgumentException("成员变量 '"+field.getName()+"' 没有get()方法",e);
 		}
 	}
 	
@@ -115,11 +115,11 @@ public class ConvertToExp {
 				configuration.getPassExps().add(parseObj);
 			}
 		} catch (IllegalArgumentException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalAccessException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (NoSuchFieldException | SecurityException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		}
 	}
 	

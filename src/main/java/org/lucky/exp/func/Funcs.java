@@ -17,6 +17,11 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp.func;
+
+import java.util.Arrays;
+
+import org.lucky.exp.ConvertToExp;
+
 /**
   *   内置函数集合
  * @author FayeWong
@@ -50,12 +55,14 @@ public class Funcs {
     private static final int INDEX_SGN   = 22;
     private static final int INDEX_MIN   = 23;
     private static final int INDEX_MAX   = 24;
+    private static final int INDEX_IF    = 25;
 
-    public static final Func[] builtinFunctions = new Func[25];
+    public static final Func[] builtinFunctions = new Func[26];
     static {
     	builtinFunctions[INDEX_MIN] = new Func("min",4) {
 			@Override
-			public double call(double... args) {
+			public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 				double min = args[0];
 				for(double d : args) {
 					min = min < d ? min : d;
@@ -65,7 +72,8 @@ public class Funcs {
     	};
     	builtinFunctions[INDEX_MAX] = new Func("max",4) {
 			@Override
-			public double call(double... args) {
+			public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 				double max = args[0];
 				for(double d : args) {
 					max = max > d ? max : d;
@@ -75,25 +83,29 @@ public class Funcs {
     	};
         builtinFunctions[INDEX_SIN] = new Func("sin") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.sin(args[0]);
             }
         };
         builtinFunctions[INDEX_COS] = new Func("cos") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.cos(args[0]);
             }
         };
         builtinFunctions[INDEX_TAN] = new Func("tan") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.tan(args[0]);
             }
         };
         builtinFunctions[INDEX_COT] = new Func("cot") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 double tan = Math.tan(args[0]);
                 if (tan == 0d) {
                     throw new ArithmeticException("余切中被零除!");
@@ -103,115 +115,134 @@ public class Funcs {
         };
         builtinFunctions[INDEX_LOG] = new Func("log") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.log(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG2] = new Func("log2") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.log(args[0]) / Math.log(2d);
             }
         };
         builtinFunctions[INDEX_LOG10] = new Func("log10") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.log10(args[0]);
             }
         };
         builtinFunctions[INDEX_LOG1P] = new Func("log1p") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.log1p(args[0]);
             }
         };
         builtinFunctions[INDEX_ABS] = new Func("abs") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.abs(args[0]);
             }
         };
         builtinFunctions[INDEX_ACOS] = new Func("acos") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.acos(args[0]);
             }
         };
         builtinFunctions[INDEX_ASIN] = new Func("asin") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.asin(args[0]);
             }
         };
         builtinFunctions[INDEX_ATAN] = new Func("atan") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.atan(args[0]);
             }
         };
         builtinFunctions[INDEX_CBRT] = new Func("cbrt") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.cbrt(args[0]);
             }
         };
         builtinFunctions[INDEX_FLOOR] = new Func("floor") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.floor(args[0]);
             }
         };
         builtinFunctions[INDEX_SINH] = new Func("sinh") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.sinh(args[0]);
             }
         };
         builtinFunctions[INDEX_SQRT] = new Func("sqrt") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.sqrt(args[0]);
             }
         };
         builtinFunctions[INDEX_TANH] = new Func("tanh") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.tanh(args[0]);
             }
         };
         builtinFunctions[INDEX_COSH] = new Func("cosh") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.cosh(args[0]);
             }
         };
         builtinFunctions[INDEX_CEIL] = new Func("ceil") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.ceil(args[0]);
             }
         };
         builtinFunctions[INDEX_POW] = new Func("pow",2) {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.pow(args[0], args[1]);
             }
         };
         builtinFunctions[INDEX_EXP] = new Func("exp") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.exp(args[0]);
             }
         };
         builtinFunctions[INDEX_EXPM1] = new Func("expm1") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 return Math.expm1(args[0]);
             }
         };
         builtinFunctions[INDEX_SGN] = new Func("signum") {
             @Override
-            public double call(double... args) {
+            public double call(Object... objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
                 if (args[0] > 0) {
                     return 1;
                 } else if (args[0] < 0) {
@@ -219,6 +250,12 @@ public class Funcs {
                 } else {
                     return 0;
                 }
+            }
+        };
+        builtinFunctions[INDEX_IF] = new Func("if",3) {
+            @Override
+            public double call(Object... objects) {
+                return (boolean)objects[0] ? (double)objects[1] : (double)objects[2];
             }
         };
     }
@@ -275,6 +312,8 @@ public class Funcs {
             return builtinFunctions[INDEX_EXPM1];
         } else if (name.equals("signum")) {
             return builtinFunctions[INDEX_SGN];
+        } else if (name.equals("if")) {
+            return builtinFunctions[INDEX_IF];
         } else {
             return null;
         }

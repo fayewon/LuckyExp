@@ -33,7 +33,7 @@ import org.lucky.exp.annotation.Status;
 public class Dog implements Serializable{
 	//13 17;16 12;
 	//
-	@BindObject
+	//@BindObject
 	private Cat cat;
 	//@BindObject
 	private String str = "helloworld";
@@ -42,17 +42,17 @@ public class Dog implements Serializable{
 	@BindVar("AK")
 	private String ak;
 	@BindVar("D")
-	@Calculation(formula= {"C + B / A + HelloKitty"},format = "##.###")
+	@Calculation(formula= {"max(if(A>B,A,B),1,2,300000)"},format = "##.###")
 	private Double four;
 	@BindVar("J")
-	@Calculation(formula= {"A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
+	@Calculation(formula= {"helloworld+A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
 	private Double ten;
 	@BindVar("A")
 	private short one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"A+B"},format = "##.###")
+	//@Calculation(formula= {"A+B"},format = "##.###")
 	private Double three;
 	
 	

@@ -94,11 +94,11 @@ public class Expression {
 	 * 普通计算
 	 *  
 	 */
-	public void result() throws CallBackException{
+	public void result(){
 		try {
 			HandlerResult.evaluateObject(configuration,(b)->{});
 		} catch (Exception e) {
-			throw new CallBackException(e);
+			throw new IllegalArgumentException(e);
 		} 
 	}
 
@@ -108,16 +108,18 @@ public class Expression {
 	 * @param operResult 回调函数
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void result(OperResult operResult){
+	public void result(OperResult operResult) throws CallBackException {
 		Handle handle = new Handle();
 		handle.setT(entity);
 		try {
-			handle.setSuccess(HandlerResult.evaluateObject(configuration,(b)->{}));
-			handle.setErrors(configuration.getErrors().stream().distinct().collect(Collectors.toList()));
+			handle.setSuccess(HandlerResult.evaluateObject(configuration,(b)->{}));			
 		} catch (Exception e) {
-			handle.setErrors(configuration.getErrors().stream().distinct().collect(Collectors.toList()));
 			handle.setSuccess(false);
+			throw new CallBackException(e);
+		}finally {
+			handle.setErrors(configuration.getErrors().stream().distinct().collect(Collectors.toList()));
+			operResult.setHandle(handle);
 		}
-		operResult.setHandle(handle);
+		
 	}
 }

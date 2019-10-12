@@ -33,6 +33,8 @@ public class Configuration {
 	protected Selector selector;
 	/**计算时异常信息**/
 	protected final List<String> evaluateErrors = new ArrayList<String>();
+	public static boolean openCache = true;//默认开启缓存计算
+	public static int  expire = 3 * 60 * 1000;//默认3分钟刷新一次缓存
 	public void addErrors(String errorMeg) {
 		evaluateErrors.add(errorMeg);
 	}

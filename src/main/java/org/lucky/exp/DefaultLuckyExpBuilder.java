@@ -35,14 +35,14 @@ public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{
     }
 
 	@Override
-	public void result() throws CallBackException{	
+	public void result(){	
 		new Expression(configuration)
 		        .result();
 
 	}
 
 	@Override
-	public void  result(OperResult operResult){
+	public void  result(OperResult operResult) throws CallBackException {
 		new Expression(configuration)
 				.setEntity(entity)
 		        .result(operResult);
