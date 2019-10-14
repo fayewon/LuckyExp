@@ -106,6 +106,7 @@ public class Cat implements Serializable{
   @BindVar("K")
   private Double eleven;
   @BindVar("L")
+  //max 求4位最大值，位数不够添加占位符。if：高级函数，搭配运算符 '>','<','='使用 三目运算函数 第1位返回布尔值.2，3位返回浮点数
   @Calculation(formula= {"C+K","max(if(A>B,A,B),1,2,300000)"},format = "##.###")
   private Double twelve;
 }
