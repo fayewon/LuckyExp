@@ -56,7 +56,35 @@ public void test(){
 	.result();//计算结果
 	System.out.println(dog.getThree());//A+B=100
 }
-
+```
+#### 选择公式和追加参数计算
+```java 
+public class Dog implements Serializable{
+  //绑定计算参数
+  @BindVar("A")
+  private Double one;
+  //绑定计算参数
+  @BindVar("B")
+  private int two;
+  //绑定计算参数和公式
+  @BindVar("C")
+  @Calculation(formula= {"A+B","A+B*HelloKitty"},format = "##.###")//format = "##.###" 格式，默认是保留后五位小数
+  private Double three;
+}
+@Test
+public void test() {
+  Map<String,Double> param = new HashMap<String,Double>();
+  param.put("HelloKitty", 5.0);//追加计算参数
+  Selector selector = new Selector();//创建一个公式选择器
+  selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象dog的类信息，需要选择的变量名称，选择第二个公式
+  Dog dog = new Dog();
+  dog.setOne(40);//计算参数 'A'
+  dog.setTwo(60.0);//计算参数 'B'
+  new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+  .build(dog,param,selector)//计算入口  计算对象，追加计算参数，公式选择器
+  .result();//获取结果
+  System.out.println(dog.getThree());//A+B*HelloKitty=340.0
+}
 //支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
 //我们也支持绑定对象
