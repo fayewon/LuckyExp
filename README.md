@@ -212,6 +212,6 @@ public void test3() {
   System.out.println("简单测试一百万条不缓存计算时间："+(end-start)/1000+"秒"); // 26秒
 }
 ```
-#### 内置函数
+##### &nbsp;&nbsp;&nbsp;&nbsp;内置函数
 #####        函数名      位数       作用
 ######       min          4          取最小值，位数不够添加占位符
