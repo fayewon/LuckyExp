@@ -193,8 +193,17 @@ public void test3() {
   .build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
   .addCache(false)//关闭缓存计算
   .addCache(true,3 * 60 * 1000)//开启缓存计算，缓存3分钟  默认关闭缓存计算
-  .result();
-  //System.out.println(dog.getTen());
+  .result((handle)->{//回调结果
+        if(handle.isSuccess()) {//全部计算成功返回 true
+	Dog successDog = (Dog)handle.getT();
+	System.out.println(successDog);
+	}else {//部分计算成功或没有计算成功 都会返回该对象
+	Dog errorDog = (Dog)handle.getT();
+	Set<String> errors = handle.getErrors();
+	System.out.println(errors);
+	System.out.println(errorDog);
+	}
+    });
  }
   Long end = System.currentTimeMillis();
   System.out.println("简单测试一百万条缓存计算时间："+(end-start)/1000+"秒"); // 19秒
