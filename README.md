@@ -34,13 +34,28 @@
 #### 计算一个对象
 ```java
 //被计算的对象(entity)需要实现序列化接口
-public class Dog implements Serializable
-//绑定计算参数
-@BindVar("A")
-private Double one;
-//绑定计算公式
-@BindVar("C")
-@Calculation(formula= {"100#A+B+J+M","M * roundUp(max(A,2,7,9))"},format = "##.###")
+public class Dog implements Serializable{
+  //绑定计算参数
+  @BindVar("A")
+  private Double one;
+  //绑定计算参数
+  @BindVar("B")
+  private int two;
+  //绑定计算参数和公式
+  @BindVar("C")
+  @Calculation(formula= {"A+B"},format = "##.###")//format = "##.###" 格式，默认是保留后五位小数
+}
+@Test
+public void test(){
+	Dog dog = new Dog();
+	dog.setOne(40);//计算参数 'A'
+	dog.setTwo(60.0);//计算参数 'B'
+	new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+	.build(dog)//计算入口
+	.result();//计算结果
+	System.out.println(dog.getThree());//A+B=100
+}
+
 //支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
 //我们也支持绑定对象
