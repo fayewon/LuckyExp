@@ -135,6 +135,7 @@ public void test() {
   .result();//获取结果
   System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
 	}
+```
 ```java
 //支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
