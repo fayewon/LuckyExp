@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.cache.Cache;
@@ -64,13 +63,14 @@ public class HandlerResult {
 
 	/**
 	 * 从栈堆推送结果
-	 *
-	 * @author FayeWong
-	 * @return 结果
+	 * @param configuration 配置对象
+	 * @param tokensMap Tokens
+	 * @param iterator 公式对象
+	 * @param throwable 回调结果不抛找不到变量异常
 	 * @throws CallBackException 回调异常
 	 */
 	private static  void evaluate(Configuration configuration, Map<String, Token[]> tokensMap,
-			Iterator<Map<Condition, Object>> iterator) throws CallBackException {		
+			Iterator<Map<Condition, Object>> iterator,boolean throwable) throws CallBackException {		
 		while (iterator.hasNext()) {
 			LinkedStack<Object> output = new LinkedStack<Object>();
 			Map<Condition, Object> exp = iterator.removeNext();
@@ -88,13 +88,17 @@ public class HandlerResult {
 						if (value == null) {
 							configuration.addErrors("' 公式 "+expressionKey+" ' 变量 ' "+field.getName()+" ',参数 ' "+name+" ' 为空\r\n");
 							iterator.offerLast(exp);
-							evaluate(configuration, tokensMap, iterator);
+							evaluate(configuration, tokensMap, iterator,throwable);
 							return;
 						} else {
 							output.push(value);
 						}
 					}catch (StackOverflowError error) {
-						throw new CallBackException("重新计算失败，有未知参数 ' "+" ' "+error);
+						iterator.offerLast(exp);
+						if(throwable) {
+							throw new CallBackException("重新计算失败，有未知参数 ' "+" ' "+configuration.getErrors());
+						}
+						return;
 					}
 					
 				} else if (t.getType() == Token.TOKEN_OPERATOR) {
@@ -135,16 +139,15 @@ public class HandlerResult {
 			Handler(configuration, result, exp);
 		};
 	}
-
 	/**
 	 * 从表达式中推送出来的结果组装到各个对象中
-	 *
-	 * @author FayeWong
-	 * @param exps 拆分的计算对象
-	 * @return 是否算计成功
-	 * @throws CallBackException
+	 * @param configuration 配置对象
+	 * @param cacheToken 缓存对象
+	 * @param throwable 回调结果不抛找不到变量异常
+	 * @return 是否计算成
+	 * @throws CallBackException 回调异常
 	 */
-	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken) throws CallBackException {
+	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken,boolean throwable) throws CallBackException {
 		final Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(configuration.getPassExps());
 		final Map<String,Token[]> tokensMap = new HashMap<String,Token[]>();
 		while (iterator.hasNext()) {
@@ -166,7 +169,7 @@ public class HandlerResult {
 			
 		}
 		iterator.reset();
-		evaluate(configuration, cacheToken.openCache() ? cacheToken.getTokensMap() : tokensMap, iterator);
+		evaluate(configuration, cacheToken.openCache() ? cacheToken.getTokensMap() : tokensMap, iterator,throwable);
 		if(iterator.isEmpty()) {
 			configuration.getErrors().clear();
 			return true;

@@ -31,33 +31,22 @@ import org.lucky.exp.annotation.Status;
 * @date 2019年8月31日
  */
 public class Dog implements Serializable{
-	//13 17;16 12;
-	//
-	@BindObject
+	@BindObject //绑定对象变量 当setCat的时候该注解生效
 	private Cat cat;
 	@BindObject
 	private Rabbit rabbit;
 	@BindVar("AK")
 	private String ak;
-	@BindVar("D")
-	@Calculation(formula= {"max(if(A>B,A,B),1,2,300000)"},format = "##.###")
-	private Double four;
-	@BindVar("J")
-	@Calculation(formula= {"HelloKitty+A + 2.1 * roundUp(max(A,1,2,300000)) + "
-			+ "2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
-			+ "A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
-			+ "2.1 * roundUp(max(A,1,2,300000))","2.1 * roundUp(max(A,1,2,300000))"},format = "##.###")
-	private Double ten;
 	@BindVar("A")
-	private short one;
+	private int one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"max(if(cos(A)>tan(B),cos(A),tan(B)),1,2,3)","A+B"},format = "##.###")
+	@Calculation(formula= {"A+B","A+B*HelloKitty"},format = "##.###")
 	private Double three;
-	
-	
-	
+	@BindVar("D")
+	@Calculation(formula= {"max(if(A>B,A,B),1,2,300000)"},format = "##.###")
+	private Double four;
 	@BindVar("E")
 	private Double five;
 	@BindVar("F")
@@ -68,7 +57,12 @@ public class Dog implements Serializable{
 	private Double eight;
 	@BindVar("I")
 	private Double nine;
-	
+	@BindVar("J")
+	@Calculation(formula= {"A + 2.1 * floor(max(A,1,2,300000)) + "
+			+ "2.1 * ceil(max(A,1,2,300000)) + 2.1 * floor(max(A,1,2,300000)) + "
+			+ "A + 2.1 * floor(max(A,1,2,300000)) + 2.1 * floor(max(A,1,2,300000)) + "
+			+ "2.1 * ceil(max(A,1,2,300000))","2.1 * floor(max(A,1,2,300000))"},format = "##.###")
+	private Double ten;
 	
 	public String getAk() {
 		return ak;
@@ -76,10 +70,10 @@ public class Dog implements Serializable{
 	public void setAk(String ak) {
 		this.ak = ak;
 	}
-	public short getOne() {
+	public int getOne() {
 		return one;
 	}
-	public void setOne(short one) {
+	public void setOne(int one) {
 		this.one = one;
 	}
 	public Double getTwo() {
@@ -126,7 +120,6 @@ public class Dog implements Serializable{
 		this.nine = nine;
 	}
 	public Double getTen() {
-		//return ten < 160 ?  160.0:ten;
 		return ten;
 	}
 	public void setTen(Double ten) {

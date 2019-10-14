@@ -22,8 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.parent.Handle;
@@ -96,7 +94,7 @@ public class Expression {
 	 */
 	public void result(){
 		try {
-			HandlerResult.evaluateObject(configuration,(b)->{});
+			HandlerResult.evaluateObject(configuration,(b)->{},true);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		} 
@@ -104,22 +102,21 @@ public class Expression {
 
 	/**
 	 * 针对比较精细的业务逻辑
-	 * 
 	 * @param operResult 回调函数
+	 * @throws CallBackException 回调异常
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void result(OperResult operResult) throws CallBackException {
 		Handle handle = new Handle();
 		handle.setT(entity);
 		try {
-			handle.setSuccess(HandlerResult.evaluateObject(configuration,(b)->{}));			
+			handle.setSuccess(HandlerResult.evaluateObject(configuration,(b)->{},false));			
 		} catch (Exception e) {
 			handle.setSuccess(false);
 			throw new CallBackException(e);
 		}finally {
-			handle.setErrors(configuration.getErrors().stream().distinct().collect(Collectors.toList()));
+			handle.setErrors(configuration.getErrors());
 			operResult.setHandle(handle);
 		}
-		
 	}
 }

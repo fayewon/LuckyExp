@@ -39,7 +39,6 @@ public class MissYaner {
 	 * @param field field 抛出异常信息时使用
 	 * @param configuration 配置对象
 	 * @return 包含结果的{@link org.lucky.exp.tokenizer.Token} 数组
-	 * @throws CallBackException  计算无法通过则把异常信息给回调函数，及时返回结果
 	 */
     public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration){
         final LinkedStack<Token> stack = new LinkedStack<Token>();

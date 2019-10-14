@@ -39,27 +39,28 @@ public class Cat implements Serializable{
 	@BindVar("K")
 	private Double eleven;
 	@BindVar("L")
+	@Calculation(formula= {"C+K","max(if(A>B,A,B),1,2,3)"},format = "##.###")
 	private Double twelve;
 	@BindVar("M")
-	@Calculation(formula= {"A+B + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
+	/**@Calculation(formula= {"A+B + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
 			+ "2.1 * roundUp(max(A,1,2,300000)) + A + 2.1 * roundUp(max(A,1,2,300000)) + "
-			+ "2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+			+ "2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000))","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")**/
 	private Double thirteen;
 	@BindVar("N")
 	private Double fourteen;	
 	@BindVar("O")
-	@Calculation(formula= {"A+B + 2.1 * roundUp(max(A,1,2,300000)) + "
+	/**@Calculation(formula= {"A+B + 2.1 * roundUp(max(A,1,2,300000)) + "
 			+ "2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
 			+ "A + 2.1 * roundUp(max(A,1,2,300000)) + 2.1 * roundUp(max(A,1,2,300000)) + "
-			+ "2.1 * roundUp(max(A,1,2,300000))","1+M * roundUp(max(A,2,3,90000)/2.1)"},format = "##.###")
+			+ "2.1 * roundUp(max(A,1,2,300000))","1+M * roundUp(max(A,2,3,90000)/2.1)"},format = "##.###")**/
 	private Double fifteen;
 	@BindVar("P")
 	private Double sixteen;
 	@BindVar("Q")
-	@Calculation(formula= {"O+R","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	//@Calculation(formula= {"O+R","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double seventeen1;	
 	@BindVar("R")
-	@Calculation(formula= {"O","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	//@Calculation(formula= {"O","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
 	private Double eighteen;
 	@BindVar("S")
 	private Double nineteen;

@@ -77,7 +77,7 @@ public interface CacheToken extends Cloneable{
 	 * 缓存对象
 	 *
 	 * @author FayeWong
-	 * @date 2019年5月8日
+	 * 
 	 */
 	static class TokenObject {
 		private Token[] tokens;

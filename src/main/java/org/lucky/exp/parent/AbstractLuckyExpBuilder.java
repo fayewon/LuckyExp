@@ -165,7 +165,7 @@ public  abstract class  AbstractLuckyExpBuilder{
      * 
     *
     * @author FayeWong
-    * @return 是否计算成功
+    * 
      */
 	public abstract void result();
 	/**
@@ -173,6 +173,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	*
 	* @author FayeWong
 	* @param operResult 回调函数
+	* @throws CallBackException 回调异常
 	 */
 	public  abstract void  result(OperResult operResult) throws CallBackException;
 }

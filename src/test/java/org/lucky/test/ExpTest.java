@@ -1,9 +1,10 @@
 package org.lucky.test;
-import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import org.junit.Test;
@@ -11,6 +12,7 @@ import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Formula_Choose;
 import org.lucky.exp.exception.CallBackException;
+import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
 /**
  * 面向对象计算
@@ -35,113 +37,92 @@ public class ExpTest {
     };
     
 	@Test
-	public void test() throws CallBackException {
-		Long start = System.currentTimeMillis();
-		for (int i = 0; i < 1000000; i++) {
-			Selector selector = new Selector();// 公式选择器
-			Map<String, Double> param = new HashMap<String, Double>();
-			param.put("M", 20.1);// 追加计算参数
-			param.put("HelloKitty", 123.0);
-			Dog dog = new Dog();
-			dog.setOne((short) 1236);
-			dog.setTwo(234.1);
-			dog.setAk("123");
-			Cat cat = new Cat();
-			cat.setEighteen(100.0);
-			Rabbit rabbit = new Rabbit();
-			rabbit.setTwentySecond(900.9);
-			cat.setRabbit(rabbit);
-			dog.setCat(cat);
-			if (i == 9)
-			selector.formulaFiled(Dog.class, "three", Formula_Choose._2);
-			new DefaultLuckyExpBuilder()
-					// .build(dog)//不需要追加计算参数和只绑定一个公式 //默认使用第一个公式,param,selector
-					// .build(dog,param)//只绑定一个公式
-					.build(dog, param, selector)// 复杂的计算 全都要0.0
-					.addFunc(new CustomFunction().roundDown())// 自定义公式
-					.addFunc(new CustomFunction().roundUp())// 自定义公式
-					.addOper(oper)// 自定义运算符
-					.addCache(true)//使用缓存
-					.result((h) -> {});
-
-		}
-		Long end = System.currentTimeMillis();
-		System.out.println("简单测试一百万条使用计算时间：" + (end - start) / 1000 + "秒");
-		/**
-		 * 						Dog result = (Dog) h.getT();
-						if (h.isSuccess()) {
-							System.out.println("Three: " + result.getThree());
-							System.out.println("Four: " + result.getFour());
-							System.out.println("ten: " + result.getTen());
-							System.out.println("Fifteen: " + result.getCat().getFifteen());
-							System.out.println("Sixteen: " + result.getCat().getSeventeen1());
-							System.out.println("Eighteen: " + result.getCat().getEighteen());
-							System.out.println("Thirteen: " + result.getCat().getThirteen());
-						} else {
-							System.out.println("errors: " + h.getErrors());
-							System.out.println("Three: " + result.getThree());
-							System.out.println("Four: " + result.getFour());
-							System.out.println("ten: " + result.getTen());
-							System.out.println("Fifteen: " + result.getCat().getFifteen());
-							System.out.println("Sixteen: " + result.getCat().getSeventeen1());
-							System.out.println("Eighteen: " + result.getCat().getEighteen());
-							System.out.println("Thirteen: " + result.getCat().getThirteen());
-						}
-
-		 */
+	public void test() {
+		Map<String,Double> param = new HashMap<String,Double>();
+		param.put("HelloKitty", 5.0);//追加计算参数
+		Selector selector = new Selector();//创建一个公式选择器
+		selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象Dog的类信息，需要选择的变量名称，选择第二个公式
+	    Dog dog = new Dog();
+		dog.setOne(40);//计算参数 'A' = 40
+		dog.setTwo(60.0);//计算参数 'B' = 60.0
+		Cat cat = new Cat();
+		cat.setEleven(50.0);//计算参数 'K' = 50.0
+		dog.setCat(cat);//使@BindObject注解生效
+		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		.build(dog,param,selector)//计算入口
+		.result();//获取结果
+		System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
+		System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
+		dog.getCat().setTwelve(null);
+		
+		//选择cat的twelve第二个公式
+		selector.formulaFiled(Cat.class, "twelve", Formula_Choose._2);//计算对象Cat的类信息，需要选择的变量名称，选择第二个公式
+		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		.build(dog,param,selector)//计算入口
+		.result();//获取结果
+		System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
+		//给计算公式变量设置默认值 则解绑自动计算属性，结果为默认值
+		dog.setThree(123.8);
+		dog.getCat().setTwelve(520.0);
+		System.out.println(dog.getThree());//123.8
+		System.out.println(dog.getCat().getTwelve());//520.0
 	}
 	@Test
 	public void test2() {
-		Map<String,Double> param = new HashMap<String,Double>();
-		param.put("M", 20.1);//追加计算参数
 		Dog dog = new Dog();
-		dog.setOne((short)234.1);
-		dog.setTwo(1111111.09);
-		//dog.setThree(5201314.1);//给自动计算变量设置默认值，则解绑自动计算的属性
-			new DefaultLuckyExpBuilder()
-					.build(dog,param)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
-					.addFunc(new CustomFunction().roundDown())//自定义公式
-					.addFunc(new CustomFunction().roundUp())//自定义公式
-					.addOper(oper)//自定义运算符
-					.result();
-		
-				//System.out.println(dog.getThree());//该值为默认值
-				System.out.println(dog.getFour());
-	  /**
-	   * 注意还有种情况的处理方式，如果业务需要计算之后的变量进行判断，可以在该变量的get方法里判断
-	   * 因为计算完的数据我最终的从get方法里获取的，建议在get里判断是对该值null判断
-	   */
+		dog.setOne(40);//计算参数 'A'
+		dog.setTwo(60.0);//计算参数 'B'
+		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		.build(dog)//计算入口
+		.addFunc(new Func("funTest") {//自定义公式
+			public double call(Object... args) {
+				 return Math.ceil(((double)args[0]));//向上取整
+			 }
+        })
+	    .addOper(new Oper("#", 2/**操作数只接受1或2**/, true/**true:向左运算：false向右运算**/, Oper.PRECEDENCE_ADDITION/**加法优先值**/) {//自定义运算符
+			public Object call(final double... args) {
+                   return args[0] + args[1];
+             }
+        })
+		.result();//计算结果
+		System.out.println(dog.getThree());//funTest(A+B#1.5)=102.0   40+60+1.5向上取整 = 102
 	}
 	/**
-	 * 循环计算
+	 * 缓存计算
 	*
 	* @author FayeWong
+	 * @throws CallBackException 
 	* @date 2019年8月31日
 	 */
 	@Test
-	public void test3() {
-		List<Dog> list = new ArrayList<Dog>();
-		for(int i=0;i<10;i++) {
+	public void test3() throws CallBackException {
+		Long start = System.currentTimeMillis();
+		for(int i=0;i<1000000;i++) {
 			Dog dog = new Dog();
 			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
 			Cat cat = new Cat();
+			cat.setEleven(123.9);
 			dog.setCat(cat);
-				new DefaultLuckyExpBuilder()
-						.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
-						.addFunc(new CustomFunction().roundDown())//自定义公式
-						.addFunc(new CustomFunction().roundUp())//自定义公式
-						.addOper(oper)//自定义运算符
-						.addCache(false)
-						.result();
-			list.add(dog);		
-			
+			new DefaultLuckyExpBuilder()
+			.build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+			//.addCache(false)//关闭缓存计算
+			.addCache(true,3 * 60 * 1000)//开启缓存计算，缓存3分钟
+			.result((handle)->{//回调结果
+				if(handle.isSuccess()) {//全部计算成功返回 true
+					Dog successDog = (Dog)handle.getT();
+					//System.out.println(successDog);
+				}else {//部分计算成功或没有计算成功 都会返回该对象
+					Dog errorDog = (Dog)handle.getT();
+					Set<String> errors = handle.getErrors();
+					//System.out.println(errors);
+					//System.out.println(errorDog);
+				}
+			});
+			//System.out.println(dog.getTen());
 		}
-		
-		for(Dog dog : list) {
-			//System.out.println(dog.getThree());
-			System.out.println(dog.getFour());
-		}
+		Long end = System.currentTimeMillis();
+		System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
 	@Test
 	public <T> void test4() {

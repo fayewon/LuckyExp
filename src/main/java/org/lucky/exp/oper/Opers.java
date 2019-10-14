@@ -33,8 +33,9 @@ public abstract class Opers {
     private static final int INDEX_UNARYPLUS = 7;
     private static final int INDEX_GREATER = 8;
     private static final int INDEX_LESS = 9;
+    private static final int INDEX_EQUAL = 10;
 
-    private static final Oper[] builtinOperators = new Oper[10];
+    private static final Oper[] builtinOperators = new Oper[11];
 
     static {
         builtinOperators[INDEX_ADDITION]= new Oper("+", 2, true, Oper.PRECEDENCE_ADDITION) {
@@ -110,6 +111,15 @@ public abstract class Opers {
             	return args[0] < args[1];
             }
         };
+        /**
+         * 主要为了搭配函数if设定的布尔判断取值
+         */
+        builtinOperators[INDEX_EQUAL]= new Oper("=", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
+            @Override
+            public Object call(final double... args) {
+            	return args[0] = args[1];
+            }
+        };
         
     }
 
@@ -139,6 +149,8 @@ public abstract class Opers {
                 return builtinOperators[INDEX_GREATER];
             case '<':
                 return builtinOperators[INDEX_LESS];
+            case '=':
+                return builtinOperators[INDEX_EQUAL];
             default:
                 return null;
         }

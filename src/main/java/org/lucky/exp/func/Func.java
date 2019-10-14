@@ -67,7 +67,7 @@ public abstract class Func {
     * see org.lucky.exp.function.Funcs;
     * @return 结果
      */
-    public abstract double call(Object... objects);
+    public abstract double call(Object... args);
     /**
      * 校验函数名是否有效
     *
