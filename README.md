@@ -48,13 +48,13 @@ public class Dog implements Serializable{
 }
 @Test
 public void test(){
-	Dog dog = new Dog();
-	dog.setOne(40);//计算参数 'A'
-	dog.setTwo(60.0);//计算参数 'B'
-	new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-	.build(dog)//计算入口
-	.result();//计算结果
-	System.out.println(dog.getThree());//A+B=100
+  Dog dog = new Dog();
+  dog.setOne(40);//计算参数 'A'
+  dog.setTwo(60.0);//计算参数 'B'
+  new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+  .build(dog)//计算入口
+  .result();//计算结果
+  System.out.println(dog.getThree());//A+B=100
 }
 ```
 #### 选择公式和追加参数计算
@@ -177,3 +177,26 @@ public void test2() {
   System.out.println(dog.getThree());//funTest(A+B#1.5)=102.0   40+60+1.5向上取整 = 102
 }
 ```
+#### 缓存计算
+###### 公式多且复杂，遍历次数多建议开启缓存计算
+@Test
+public void test3() {
+  Long start = System.currentTimeMillis();
+  for(int i=0;i<1000000;i++) {
+  Dog dog = new Dog();
+  dog.setOne((short)3);
+  dog.setTwo(2.1* i);
+  Cat cat = new Cat();
+  cat.setEleven(123.9);
+  dog.setCat(cat);
+  new DefaultLuckyExpBuilder()
+  .build(dog)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+  .addCache(false)//关闭缓存计算
+  .addCache(true,3 * 60 * 1000)//开启缓存计算，缓存3分钟  默认关闭缓存计算
+  .result();
+  //System.out.println(dog.getTen());
+ }
+  Long end = System.currentTimeMillis();
+  System.out.println("简单测试一百万条缓存计算时间："+(end-start)/1000+"秒"); // 19秒
+  System.out.println("简单测试一百万条不缓存计算时间："+(end-start)/1000+"秒"); // 26秒
+}
