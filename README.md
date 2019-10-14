@@ -27,8 +27,8 @@
 </dependency>
 ```
 # 简述
-  *LuckyExp是一款快速易用的面向对象计算的引擎，通过绑定实体类的全局变量作为计算参数并且自动注入结果。注入结果的变量也可做为绑定参数为下一个结果变量的计算参数。*    
-  *LuckyExp的制作目的是为了整合项目开发中的计算业务，通过配置注解的方式即可完成整个计算过程达到与其他的业务逻辑实现分离的目的。
+&nbsp;&nbsp;&nbsp;*LuckyExp是一款快速易用的面向对象计算的引擎，通过绑定实体类的全局变量作为计算参数并且自动注入结果。注入结果的变量也可做为绑定参数为下一个结果变量的计算参数。*    
+&nbsp;&nbsp;&nbsp;*LuckyExp的制作目的是为了整合项目开发中的计算业务，通过配置注解的方式即可完成整个计算过程达到与其他的业务逻辑实现分离的目的。
 这样的好处是方便修改计算规则。*  
 # 快速开始
 #### 简单计算
@@ -213,5 +213,5 @@ public void test3() {
 }
 ```
 ##### &nbsp;&nbsp;&nbsp;&nbsp;内置函数
-#####        函数名      位数       作用
-######       min          4          取最小值，位数不够添加占位符
+##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最小值，位数不够添加占位符
