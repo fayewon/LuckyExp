@@ -212,11 +212,11 @@ public void test3() {
   System.out.println("简单测试一百万条不缓存计算时间："+(end-start)/1000+"秒"); // 26秒
 }
 ```
-##### &nbsp;&nbsp;&nbsp;&nbsp;内置函数
+##### &nbsp;&nbsp;&nbsp;&nbsp;内置函数 Funcs.java
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nbsp;&nbsp;&nbsp;取最小值，位数不够添加占位符  
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最小值，位数不够添加占位符  
+###### 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
