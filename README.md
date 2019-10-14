@@ -85,6 +85,31 @@ public void test() {
   .result();//获取结果
   System.out.println(dog.getThree());//A+B*HelloKitty=340.0
 }
+```
+#### 依赖计算和复杂计算
+```java
+public class Dog implements Serializable{
+  @BindObject //绑定对象变量,当setCat的时候该注解生效
+  private Cat cat;
+  //绑定计算参数
+  @BindVar("A")
+  private Double one;
+  //绑定计算参数
+  @BindVar("B")
+  private int two;
+  //绑定计算参数和公式
+  @BindVar("C")
+  @Calculation(formula= {"A+B","A+B*HelloKitty"},format = "##.###")//format = "##.###" 格式，默认是保留后五位小数
+  private Double three;
+}
+public class Cat implements Serializable{
+  @BindVar("K")
+  private Double eleven;
+  @BindVar("L")
+  @Calculation(formula= {"C+K","max(if(A>B,A,B),1,2,300000)"},format = "##.###")
+  private Double twelve;
+}
+```java
 //支持绑定多个公式，通过公式选择器来选择公式
 private Double three;
 //我们也支持绑定对象
