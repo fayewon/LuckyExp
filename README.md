@@ -27,17 +27,12 @@
   <version>1.0.1</version>
 </dependency>
 ```
-###### 我们的循序读取公式并计算出结果，再把结果绑定到参数池中。
-###### 如果依赖的几个公式不是循序绑定则会进行重算，也可以算出结果，同时也会有重算的开销。
-###### 我们内置的函数（Funs.java）和运算符(Opers.java)
-###### 20190916更新内容
-* ###### @BindDouble(key = "A") 换成 @BindVar("A")
-* ###### @BindVar支持绑定类型（float,Float,double,Double,short,Short,int,Integer,long,Long,String）
-* ###### 例如 
-* ###### @BindVar("A")
-* ###### private Double one;
-* ###### @BindVar("B")
-* ###### private String two;
+# 简述
+  LuckyExp是一款快速易用的面向对象计算的引擎，通过绑定实体类的全局变量作为计算参数并且自动注入结果。注入结果的变量也可做为绑定参数为下一个结果变量的计算参数。
+  LuckyExp的制作目的是为了整合项目开发中的计算业务，通过配置注解的方式即可完成整个计算过程达到与其他的业务逻辑实现分离的目的。
+这样的好处是方便修改计算规则。
+# 使用说明
+## 创建一个LuckyExp对象
 ```java
 //被计算的对象(entity)需要实现序列化接口
 public class Dog implements Serializable
