@@ -44,6 +44,7 @@ public class Dog implements Serializable{
   //绑定计算参数和公式
   @BindVar("C")
   @Calculation(formula= {"A+B"},format = "##.###")//format = "##.###" 格式，默认是保留后五位小数
+  private Double three;
 }
 @Test
 public void test(){
