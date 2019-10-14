@@ -23,7 +23,7 @@
 <dependency>
   <groupId>com.github.fayewon</groupId>
   <artifactId>LuckyExp</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
 </dependency>
 ```
 # 简述
