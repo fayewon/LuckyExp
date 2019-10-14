@@ -134,6 +134,12 @@ public void test() {
   .build(dog,param,selector)//计算入口
   .result();//获取结果
   System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
+  
+  //给计算公式变量设置默认值 则解绑自动计算属性，结果为默认值
+  dog.setThree(123.8);
+  dog.getCat().setTwelve(520.0);
+  System.out.println(dog.getThree());//123.8
+  System.out.println(dog.getCat().getTwelve());//520.0
 }
 ```
 #### 自定义函数和运算符
