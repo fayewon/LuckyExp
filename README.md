@@ -199,9 +199,9 @@ public void test3() {
         if(handle.isSuccess()) {//全部计算成功返回 true
 	Dog successDog = (Dog)handle.getT();
 	System.out.println(successDog);
-	}else {//部分计算成功或没有计算成功 都会返回该对象
+	}else {//部分计算出来或没有计算出来 都会返回该对象
 	Dog errorDog = (Dog)handle.getT();
-	Set<String> errors = handle.getErrors();
+	Set<String> errors = handle.getErrors();//没有计算出来的变量缺少的计算参数
 	System.out.println(errors);
 	System.out.println(errorDog);
 	}
@@ -212,3 +212,6 @@ public void test3() {
   System.out.println("简单测试一百万条不缓存计算时间："+(end-start)/1000+"秒"); // 26秒
 }
 ```
+#### 内置函数
+#####        函数名      位数       作用
+######       min          4          取最小值，位数不够添加占位符
