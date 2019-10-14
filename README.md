@@ -177,8 +177,9 @@ public void test2() {
   System.out.println(dog.getThree());//funTest(A+B#1.5)=102.0   40+60+1.5向上取整 = 102
 }
 ```
-#### 缓存计算
+#### 缓存计算和回调结果
 ###### 公式多且复杂，遍历次数多建议开启缓存计算
+```java
 @Test
 public void test3() {
   Long start = System.currentTimeMillis();
@@ -209,3 +210,4 @@ public void test3() {
   System.out.println("简单测试一百万条缓存计算时间："+(end-start)/1000+"秒"); // 19秒
   System.out.println("简单测试一百万条不缓存计算时间："+(end-start)/1000+"秒"); // 26秒
 }
+```
