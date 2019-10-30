@@ -67,7 +67,7 @@ public abstract class Func {
     * see org.lucky.exp.function.Funcs;
     * @return 结果
      */
-    public abstract double call(double... args);
+    public abstract double call(Object... args);
     /**
      * 校验函数名是否有效
     *
@@ -85,7 +85,6 @@ public abstract class Func {
         if (size == 0) {
             return false;
         }
-
         for (int i = 0; i < size; i++) {
             final char c = name.charAt(i);
             if (Character.isLetter(c) || c == '_') {

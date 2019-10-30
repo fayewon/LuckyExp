@@ -23,16 +23,13 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.lucky.exp.Selector.SelectorHandler;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Condition;
-import org.lucky.exp.annotation.ExceptionCode;
 import org.lucky.exp.annotation.Formula_Choose;
-import org.lucky.exp.annotation.Status;
 import org.lucky.exp.exception.BindException;
-import org.lucky.exp.exception.UnknownRuntimeException;
 import org.lucky.exp.util.ValiSerializableObj;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.BindVar;
@@ -44,10 +41,7 @@ import org.lucky.exp.annotation.BindVar;
  */
 public class ConvertToExp {
 	private static ConvertToExp convertToExp;
-
-	private ConvertToExp() {
-
-	}
+	private ConvertToExp() {}
 
 	public static ConvertToExp getInstance() {
 			synchronized (ConvertToExp.class) {
@@ -57,41 +51,42 @@ public class ConvertToExp {
 			}
 		return convertToExp;
 	}
-	public   void assignment(Serializable entity,Field field,Map<String,Double> variables,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) {
+	public   void assignment(Serializable entity,Field field,final Configuration configuration) {
 		try {			
-			if (field.isAnnotationPresent(BindObject.class)) {
-				final Object fieldVal = (Object)field.get(entity);
-				parseBindObject(fieldVal, field,selector,variables,passExps,waitExps);
-			}
 			if (field.isAnnotationPresent(BindVar.class)) {
 				final Object fieldVal = (Object)field.get(entity);
-				parseBindDouble(fieldVal, field, variables);
+				parseBindDouble(fieldVal, field, configuration);
 			}
 			if (field.isAnnotationPresent(Calculation.class)) {
 				final Object fieldVal = (Object)field.get(entity);
-				parseCalculation(fieldVal,entity, field,selector,passExps,waitExps);
+				parseCalculation(fieldVal,entity, field,configuration);
+			}
+			if (field.isAnnotationPresent(BindObject.class)) {
+				final Object fieldVal = (Object)field.get(entity);
+				parseBindObject(fieldVal, field,configuration);
 			}
 		} catch (BindException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10043.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalArgumentException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalAccessException e) {
-			throw new UnknownRuntimeException("成员变量 '"+field.getName()+"' 没有get()方法",e);
+			throw new IllegalArgumentException("成员变量 '"+field.getName()+"' 没有get()方法",e);
 		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,Selector selector,List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
-		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
+	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,final Configuration configuration) throws BindException {
+		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);			
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());
 		}
 		int index = 0;//默认使用第一个公式
 		try {
+			Selector selector = configuration.getSelector();
 			if(selector != null) {
-				Iterator<Map.Entry<String, Formula_Choose>> iterator = selector.selector.entrySet().iterator();
-				while (iterator.hasNext()) {
+				List<SelectorHandler> selectors = selector.getSelectors();
+				for(SelectorHandler handler : selectors) {
 					InvocationHandler invocationHandler = Proxy.getInvocationHandler(calculation);
 					Field hField = invocationHandler.getClass().getDeclaredField("memberValues");
 					hField.setAccessible(true);
@@ -99,44 +94,33 @@ public class ConvertToExp {
 					String[] formula = (String[]) memberValues.get("formula");
 					field.setAccessible(field.isAccessible());
 					hField.setAccessible(hField.isAccessible());
-					Map.Entry<String, Formula_Choose> it = iterator.next();
-					String key = it.getKey();
-					key = key.contains(".") ? key.split("\\.")[1] : key;
-					if (key.equals(field.getName())) {
-						Formula_Choose value = it.getValue();
+					if(handler.getClazz() == entity.getClass() && handler.getFiledName().equals(field.getName())) {
+						Formula_Choose value = handler.getSelect();
 						index = value.getIndex();
 						if (value.getIndex() + 1 > formula.length) {
-							throw new BindException("公式值选择过大，请检查字段：{" + field.getName() + "}绑定的@Calculation的公式数");
-						}
-					}
-				}
-			}			
+							throw new BindException("公式值选择过大，请检查变量'" +entity.getClass()+"'，'"+field.getName() + "'绑定的@Calculation的公式数");
+						   }
+					    }
+			    	}
+				}	
 			if (calculation != null && fieldVal == null ) {
 				Map<Condition, Object> parseObj = new HashMap<Condition, Object>();
 				parseObj.put(Condition.field, field);
 				parseObj.put(Condition.entity, entity);
-				parseObj.put(Condition.status, calculation.action());
 				parseObj.put(Condition.format, calculation.format());
 				parseObj.put(Condition.expression, calculation.formula()[index]);
-				switch ((Status) parseObj.get(Condition.status)) {
-				case PASS:
-					passExps.add(parseObj);
-					break;
-				case WAIT:
-					waitExps.add(parseObj);
-					break;
-				}
+				configuration.getPassExps().add(parseObj);
 			}
 		} catch (IllegalArgumentException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (IllegalAccessException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		} catch (NoSuchFieldException | SecurityException e) {
-			throw new UnknownRuntimeException(ExceptionCode.C_10042.getCode(),e);
+			throw new IllegalArgumentException(e);
 		}
 	}
 	
-	private  void parseBindObject(Object fieldVal, Field field,Selector selector,Map<String, Double> variables, List<Map<Condition, Object>> passExps,List<Map<Condition, Object>> waitExps) throws BindException {
+	private  void parseBindObject(Object fieldVal, Field field,final Configuration configuration) throws BindException {
 		boolean valiType = false;
 		Class<?>[] clazzes = field.getType().getInterfaces();
 		for(Class<?> clazz : clazzes) {
@@ -160,13 +144,13 @@ public class ConvertToExp {
 			Arrays.asList(fields).forEach((filed)->{
 				if (fieldVal instanceof Serializable) {
 					filed.setAccessible(true);
-					assignment((Serializable) fieldVal, filed, variables,selector,passExps,waitExps);
+					assignment((Serializable) fieldVal, filed, configuration);
 					filed.setAccessible(field.isAccessible());
 				}
 			});
 		}
 	}
-	private  void parseBindDouble(Object fieldVal, Field field, Map<String, Double> variables) throws BindException {
-		ValiSerializableObj.bindVar(fieldVal,field,variables);
+	private  void parseBindDouble(Object fieldVal, Field field,final Configuration configuration) throws BindException {
+		ValiSerializableObj.bindVar(fieldVal,field,configuration.getVariables());
 	}
 }

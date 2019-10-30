@@ -20,6 +20,7 @@ package org.lucky.test;
 
 import java.io.Serializable;
 
+import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.Status;
@@ -31,27 +32,35 @@ import org.lucky.exp.annotation.Status;
 * @date 2019年8月31日
  */
 public class Cat implements Serializable{
+	@BindObject
+	private Rabbit rabbit;
 	@BindVar("AK")
 	private String ak;
 	@BindVar("K")
 	private Double eleven;
 	@BindVar("L")
+	@Calculation(formula= {"C+K","max4(if(A>B,A,B),1,2,3)"},format = "##.###")
 	private Double twelve;
 	@BindVar("M")
-	@Calculation(formula= {"A","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	/**@Calculation(formula= {"A+B + 2.1 * roundUp(max4(A,1,2,300000)) + 2.1 * roundUp(max4(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max4(A,1,2,300000)) + A + 2.1 * roundUp(max4(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max4(A,1,2,300000)) + 2.1 * roundUp(max4(A,1,2,300000))","1+M * roundUp(max4(A,2,3,4)/2.1)"},format = "##.###")**/
 	private Double thirteen;
 	@BindVar("N")
 	private Double fourteen;	
 	@BindVar("O")
-	@Calculation(formula= {" D ","1+M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	/**@Calculation(formula= {"A+B + 2.1 * roundUp(max4(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max4(A,1,2,300000)) + 2.1 * roundUp(max4(A,1,2,300000)) + "
+			+ "A + 2.1 * roundUp(max4(A,1,2,300000)) + 2.1 * roundUp(max4(A,1,2,300000)) + "
+			+ "2.1 * roundUp(max4(A,1,2,300000))","1+M * roundUp(max4(A,2,3,90000)/2.1)"},format = "##.###")**/
 	private Double fifteen;
 	@BindVar("P")
 	private Double sixteen;
 	@BindVar("Q")
-	@Calculation(formula= {"O+R","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
-	private Double seventeen1;
-	@Calculation(formula= {"O","M * roundUp(max(A,2,3,4)/2.1)"},format = "##.###")
+	//@Calculation(formula= {"O+R","M * roundUp(max4(A,2,3,4)/2.1)"},format = "##.###")
+	private Double seventeen1;	
 	@BindVar("R")
+	//@Calculation(formula= {"O","M * roundUp(max4(A,2,3,4)/2.1)"},format = "##.###")
 	private Double eighteen;
 	@BindVar("S")
 	private Double nineteen;
@@ -124,6 +133,12 @@ public class Cat implements Serializable{
 	}
 	public void setTwenty(Double twenty) {
 		this.twenty = twenty;
+	}
+	public Rabbit getRabbit() {
+		return rabbit;
+	}
+	public void setRabbit(Rabbit rabbit) {
+		this.rabbit = rabbit;
 	}
 	
 }

@@ -1,11 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  
-
   <groupId>com.github.fayewon</groupId>
   <artifactId>LuckyExp</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.2</version>
   <description>幸运的表达式，一个快速易用的面向对象计算的开源工具.</description>
   <packaging>jar</packaging>
   <name>LuckyExp</name>

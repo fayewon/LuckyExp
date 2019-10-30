@@ -35,6 +35,5 @@ import java.lang.annotation.Target;
 @Documented
 public @interface Calculation {
 	String[] formula();//公式
-	Status action() default Status.PASS;//默认直接计算
 	String format() default "#.#####"; //数据格式
 }

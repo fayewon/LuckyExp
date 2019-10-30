@@ -1,5 +1,7 @@
 package org.lucky.test;
 
+import java.util.Arrays;
+
 import org.lucky.exp.func.Func;
 
 /**
@@ -18,7 +20,8 @@ public class CustomFunction {
 	 */
 	public Func roundUp() {
 		Func roundUp = new Func("roundUp") {
-		    public double call(double... args) {
+		    public double call(Object[] objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 		        return Math.ceil(args[0]);
 		    }
 		};
@@ -33,7 +36,8 @@ public class CustomFunction {
 	 */
 	public Func roundDown() {
 		Func roundDown = new Func("roundDown") {
-		    public double call(double... args) {
+		    public double call(Object[] objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 		        return Math.floor(args[0]);
 		    }
 		};
@@ -49,7 +53,8 @@ public class CustomFunction {
 	 */
 	public Func max() {
 		Func max = new Func("max",4) {
-		    public double call(double... args) {
+		    public double call(Object[] objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 		    	double max = args[0];
 		    	for(double d : args) {
 		    		max = max > d ? max : d;
@@ -69,7 +74,8 @@ public class CustomFunction {
 	 */
 	public Func min() {
 		Func min = new Func("min",4) {
-		    public double call(double... args) {
+		    public double call(Object[] objects) {
+				Double[] args= (Double[])Arrays.asList(objects).toArray(new Double[objects.length]);
 		    	double min = args[0];
 		    	for(double d : args) {
 		    		min = min < d ? min : d;

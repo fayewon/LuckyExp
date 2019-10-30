@@ -29,22 +29,19 @@ import java.util.List;
 public class Iterator<E> {
 	private  final LinkedList<E> exps;
 	private  int i = 0;
-	private  E iterator;
 	public Iterator(List<E> exps) {
 		this.exps = (LinkedList<E>)exps;
 	}
 	public boolean hasNext() {
 		return i < this.exps.size();
 	}
-	public E removeNext() {
-		iterator = exps.removeFirst();
-		return iterator;
+	public E removeNext() {		
+		return exps.removeFirst();
 	}
 	public E next() {
 		return exps.get(i++);		
 	}
-	public boolean offerLast() {
-		if(iterator == null) throw new IllegalArgumentException("未先删除下一个元素.");
+	public boolean offerLast(E iterator) {
 		return exps.offerLast(iterator);
 	}
 	public LinkedList<E> getList() {
@@ -52,5 +49,8 @@ public class Iterator<E> {
 	}
 	public boolean isEmpty() {
 		return exps.isEmpty();
+	}
+	public void reset() {
+		i = 0;
 	}
 }

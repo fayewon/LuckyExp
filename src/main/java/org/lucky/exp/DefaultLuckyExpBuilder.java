@@ -17,8 +17,7 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp;
-import java.util.concurrent.ExecutorService;
-
+import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.parent.AbstractLuckyExpBuilder;
 import org.lucky.exp.parent.OperResult;
 /**
@@ -29,27 +28,24 @@ import org.lucky.exp.parent.OperResult;
  */
 public class DefaultLuckyExpBuilder extends AbstractLuckyExpBuilder{    
     public DefaultLuckyExpBuilder() {
-    	this.variableNames.add("pi");
-    	this.variableNames.add("π");
-    	this.variableNames.add("e");
-    	this.variableNames.add("φ");
+    	this.configuration.getVariableNames().add("pi");
+    	this.configuration.getVariableNames().add("π");
+    	this.configuration.getVariableNames().add("e");
+    	this.configuration.getVariableNames().add("φ");
     }
 
 	@Override
-	public boolean result() {		
-		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,this.userFuncs.keySet())
-				.setVariables(variables)
-				.setTokens(tokens);
-		return expression.result();
+	public void result(){	
+		new Expression(configuration)
+		        .result();
+
 	}
 
 	@Override
-	public void  result(ExecutorService executor,@SuppressWarnings("rawtypes") OperResult operResult) {
-		Expression expression = new Expression(userFuncs,userOperators,variableNames,implicitMultiplication,passExps,waitExps,this.userFuncs.keySet())
-				.setVariables(variables)
-				.setTokens(tokens)
-				.setEntity(entity);
-		expression.result(executor,operResult);
+	public void  result(OperResult operResult) throws CallBackException {
+		new Expression(configuration)
+				.setEntity(entity)
+		        .result(operResult);
 	}   
 }
 

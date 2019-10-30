@@ -27,7 +27,7 @@ public abstract class Oper {
     /**
      * 加法运算的优先值
      */
-    public static final int PRECEDENCE_ADDITION = 500;
+    public static final int PRECEDENCE_ADDITION = 2;//巨浪-2
     /**
      * 减法运算的优先值
      */
@@ -35,7 +35,7 @@ public abstract class Oper {
     /**
      * 乘法运算的优先值
      */
-    public static final int PRECEDENCE_MULTIPLICATION = 1000;
+    public static final int PRECEDENCE_MULTIPLICATION = 5;//东风-5
     /**
      * 除法运算的优先值
      */
@@ -47,11 +47,11 @@ public abstract class Oper {
     /**
      * 电源操作的优先值
      */
-    public static final int PRECEDENCE_POWER = 10000;
+    public static final int PRECEDENCE_POWER = 31;//东风-31
     /**
      * 一元减号运算的优先值
      */
-    public static final int PRECEDENCE_UNARY_MINUS = 5000;
+    public static final int PRECEDENCE_UNARY_MINUS = 41;//东风-41
     /**
      * 一元加运算的优先值
      */
@@ -118,7 +118,7 @@ public abstract class Oper {
      * @param args 该操作的操作数
      * @return 操作的计算结果
      */
-    public abstract double call(double ... args);
+    public abstract Object call(double ... args);
 
     /**
      * 

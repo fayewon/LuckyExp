@@ -28,30 +28,31 @@ import org.lucky.exp.exception.BindException;
 * @author FayeWong
  */
 public class ValiSerializableObj {
-	public static boolean validationObject(Field field,boolean valiType) throws BindException {
+	public static boolean validationObject(Field field, boolean valiType) throws BindException {
 		Class<?> clazz = field.getType();
-			if(clazz == String.class) {
-				return valiType = false;
-			}else if(clazz == Byte.class) {
-				return valiType = false;
-			}else if(clazz == Character.class) {
-				return valiType = false;
-			}else if(clazz == Short.class) {
-				return valiType = false;
-			}else if(clazz == Integer.class) {
-				return valiType = false;
-			}else if(clazz == Long.class) {
-				return valiType = false;
-			}else if(clazz == Float.class) {
-				return valiType = false;
-			}else if(clazz == Double.class) {
-				return valiType = false;
-			}else if(clazz == Boolean.class) {
-				return valiType = false;
-			}
-			//.....
+		if (clazz == String.class) {
+			return valiType = false;
+		} else if (clazz == Byte.class) {
+			return valiType = false;
+		} else if (clazz == Character.class) {
+			return valiType = false;
+		} else if (clazz == Short.class) {
+			return valiType = false;
+		} else if (clazz == Integer.class) {
+			return valiType = false;
+		} else if (clazz == Long.class) {
+			return valiType = false;
+		} else if (clazz == Float.class) {
+			return valiType = false;
+		} else if (clazz == Double.class) {
+			return valiType = false;
+		} else if (clazz == Boolean.class) {
+			return valiType = false;
+		}
+		// .....
 		return valiType;
 	}
+
 	/**
 	 * 
 	* 绑定变量转计算参数,支持类型(float,Float,double,Double,short,Short,int,Integer,long,Long,String)
