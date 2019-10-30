@@ -85,7 +85,6 @@ public abstract class Func {
         if (size == 0) {
             return false;
         }
-
         for (int i = 0; i < size; i++) {
             final char c = name.charAt(i);
             if (Character.isLetter(c) || c == '_') {

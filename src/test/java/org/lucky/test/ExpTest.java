@@ -1,4 +1,11 @@
 package org.lucky.test;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -111,7 +118,7 @@ public class ExpTest {
 			.result((handle)->{//回调结果
 				if(handle.isSuccess()) {//全部计算成功返回 true
 					Dog successDog = (Dog)handle.getT();
-					//System.out.println(successDog);
+					System.out.println(successDog);
 				}else {//部分计算成功或没有计算成功 都会返回该对象
 					Dog errorDog = (Dog)handle.getT();
 					Set<String> errors = handle.getErrors();
@@ -128,6 +135,8 @@ public class ExpTest {
 	public <T> void test4() {
 		for(int i=0;i<10;i++) {
 			Selector selector = new Selector();//公式选择器
+			Map<String,Double> param = new HashMap<String,Double>();
+			param.put("HelloKitty", 5.0);//追加计算参数
 			Dog dog = new Dog();
 			dog.setOne((short)3);
 			dog.setTwo(2.1* i);
@@ -141,7 +150,7 @@ public class ExpTest {
 			//dog.setCat(cat);
 			try {
 				new DefaultLuckyExpBuilder()
-						.build(dog,null,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+						.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
 						.addFunc(new CustomFunction().roundDown())//自定义公式
 						.addFunc(new CustomFunction().roundUp())//自定义公式
 						.addOper(oper)//自定义运算符
@@ -214,4 +223,34 @@ public class ExpTest {
 		Long end = System.currentTimeMillis();
 		//System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
+	public static void main(String[] args) {
+		Dog dog = new Dog();
+		Cat cat = new Cat();
+		cat.setSixteen(5.8);
+		cat.setEleven(3.1);
+		dog.setCat(cat);
+		Rabbit rabbit = new Rabbit();
+		cat.setRabbit(rabbit);
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		try {
+			ObjectOutput oo = new ObjectOutputStream(os);
+			oo.writeObject(dog);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		ByteArrayInputStream bis = new ByteArrayInputStream(os.toByteArray());
+		try {
+			ObjectInputStream ois = new ObjectInputStream(bis);
+			Dog dog1 = (Dog)ois.readObject();
+			//System.out.println(dog1.getCat().getSixteen());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}	
 }

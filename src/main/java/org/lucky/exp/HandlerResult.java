@@ -1,9 +1,5 @@
 package org.lucky.exp;
-import java.beans.IntrospectionException;
-import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +18,7 @@ import org.lucky.exp.util.Iterator;
 import org.lucky.exp.util.LinkedStack;
 /**
  * 计算结果处理，
- * 目的是在组装回对象时，把计算的记过给组装进来
+ * 目的是在组装回对象时，把计算的结果给组装进来
  * @author FayeWong
  * @since 1.0
  *
@@ -35,7 +31,7 @@ public class HandlerResult {
 	 * @param exp 被拆分的对象
 	 * @throws CallBackException 回调异常
 	 */
-	private static  void Handler(Configuration configuration, double result, Map<Condition, Object> exp)
+	private static  void setBean(Configuration configuration, double result, Map<Condition, Object> exp)
 			throws CallBackException {
 		Field field = (Field) exp.get(Condition.field);
 		BindVar bind = field.getAnnotation(BindVar.class);
@@ -44,21 +40,17 @@ public class HandlerResult {
 			field.set(exp.get(Condition.entity), result);
 			if (bind != null) {
 				// 从get中获取结果变量，get方法逻辑返回的值给下一个结果计算
-				PropertyDescriptor pd = new PropertyDescriptor(field.getName(), exp.get(Condition.entity).getClass());
-				Method getMethod = pd.getReadMethod();
-				Object getResult = getMethod.invoke((Object) exp.get(Condition.entity));
-				configuration.getVariables().put(bind.value(), (Double) getResult);
+				//PropertyDescriptor pd = new PropertyDescriptor(field.getName(), exp.get(Condition.entity).getClass());
+				//Method getMethod = pd.getReadMethod();
+				//Object getResult = getMethod.invoke((Object) exp.get(Condition.entity));
+				configuration.getVariables().put(bind.value(), result);
 				configuration.getVariableNames().addAll(configuration.getVariables().keySet());
 			}
 		} catch (IllegalArgumentException e) {
 			throw new CallBackException(e);
 		} catch (IllegalAccessException e) {
 			throw new CallBackException(e);
-		} catch (InvocationTargetException e) {
-			throw new CallBackException(e);
-		} catch (IntrospectionException e) {
-			throw new CallBackException("变量 '" + field.getName() + "' 没有get()方法", e);
-		}
+		} 
 	}
 
 	/**
@@ -99,8 +91,7 @@ public class HandlerResult {
 							throw new CallBackException("重新计算失败，有未知参数 ' "+" ' "+configuration.getErrors());
 						}
 						return;
-					}
-					
+					}	
 				} else if (t.getType() == Token.TOKEN_OPERATOR) {
 					OperToken op = (OperToken) t;
 					if (output.size() < op.getOper().getNumOperands()) {
@@ -136,7 +127,7 @@ public class HandlerResult {
 				throw new CallBackException("变量 ' " + field.getName() + " ',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
 			}
 			double result = (double)output.pop();
-			Handler(configuration, result, exp);
+			setBean(configuration, result, exp);
 		};
 	}
 	/**
@@ -165,9 +156,8 @@ public class HandlerResult {
 					Token[] tokens = MissYaner.convertToRPN(expression, field, configuration);
 					tokensMap.put(expression, tokens);
 				}
-			});
-			
-		}
+			});			
+		};
 		iterator.reset();
 		evaluate(configuration, cacheToken.openCache() ? cacheToken.getTokensMap() : tokensMap, iterator,throwable);
 		if(iterator.isEmpty()) {

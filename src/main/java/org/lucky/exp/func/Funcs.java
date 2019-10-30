@@ -50,36 +50,14 @@ public class Funcs {
     private static final int INDEX_LOG10 = 20;
     private static final int INDEX_LOG2  = 21;
     private static final int INDEX_SGN   = 22;
-    private static final int INDEX_MIN   = 23;
-    private static final int INDEX_MAX   = 24;
-    private static final int INDEX_IF    = 25;
+    private static final int INDEX_MIN4  = 23;
+    private static final int INDEX_MAX4  = 24;
+    private static final int INDEX_MIN2  = 25;
+    private static final int INDEX_MAX2  = 26;
+    private static final int INDEX_IF    = 27;
 
-    public static final Func[] builtinFunctions = new Func[26];
+    public static final Func[] builtinFunctions = new Func[28];
     static {
-    	/**取最小值,支持4位，不满足4位需要追加占位符**/
-    	builtinFunctions[INDEX_MIN] = new Func("min",4) {
-			@Override
-			public double call(Object... args) {
-				Double[] doubles = (Double[])Arrays.asList(args).toArray(new Double[args.length]);
-				double min = doubles[0];
-				for(double d : doubles) {
-					min = min < d ? min : d;
-				}
-				return min;
-			}
-    	};
-    	/**取最大值,支持4位，不满足4位需要追加占位符**/
-    	builtinFunctions[INDEX_MAX] = new Func("max",4) {
-			@Override
-			public double call(Object... args) {
-				Double[] doubles = (Double[])Arrays.asList(args).toArray(new Double[args.length]);
-				double max = doubles[0];
-				for(double d : doubles) {
-					max = max > d ? max : d;
-				}
-				return max;
-			}
-    	};
     	/**正弦函数**/
         builtinFunctions[INDEX_SIN] = new Func("sin") {
             @Override
@@ -250,9 +228,47 @@ public class Funcs {
                 }
             }
         };
+        /**取最小值,支持2位**/
+        builtinFunctions[INDEX_MIN2] = new Func("min2",4) {
+			@Override
+			public double call(Object... args) {
+				return Math.min((double)args[0], (double)args[1]);
+			}
+    	};
+    	/**取最大值,支持2位**/
+    	builtinFunctions[INDEX_MAX2] = new Func("max2",4) {
+			@Override
+			public double call(Object... args) {
+				return Math.max((double)args[0], (double)args[1]);
+			}
+    	};
+    	/**取最小值,支持4位，不满足4位需要追加占位符**/
+    	builtinFunctions[INDEX_MIN4] = new Func("min4",4) {
+			@Override
+			public double call(Object... args) {
+				Double[] doubles = (Double[])Arrays.asList(args).toArray(new Double[args.length]);
+				double min = doubles[0];
+				for(double d : doubles) {
+					min = min < d ? min : d;
+				}
+				return min;
+			}
+    	};
+    	/**取最大值,支持4位，不满足4位需要追加占位符**/
+    	builtinFunctions[INDEX_MAX4] = new Func("max4",4) {
+			@Override
+			public double call(Object... args) {
+				Double[] doubles = (Double[])Arrays.asList(args).toArray(new Double[args.length]);
+				double max = doubles[0];
+				for(double d : doubles) {
+					max = max > d ? max : d;
+				}
+				return max;
+			}
+    	};
         /**
          * 高级函数
-         * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>' 使用
+         * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>','=' 使用
          */
         builtinFunctions[INDEX_IF] = new Func("if",3) {
             @Override
@@ -264,61 +280,65 @@ public class Funcs {
 
     
     public static Func getBuiltinFunction(final String name) {
-    	if(name.equals("min")) {
-    		return builtinFunctions[INDEX_MIN];
-    	} else if (name.equals("max")) {
-            return builtinFunctions[INDEX_MAX];
-        } else if (name.equals("sin")) {
-            return builtinFunctions[INDEX_SIN];
-        } else if (name.equals("cos")) {
-            return builtinFunctions[INDEX_COS];
-        } else if (name.equals("tan")) {
-            return builtinFunctions[INDEX_TAN];
-        } else if (name.equals("cot")) {
-            return builtinFunctions[INDEX_COT];
-        } else if (name.equals("asin")) {
-            return builtinFunctions[INDEX_ASIN];
-        } else if (name.equals("acos")) {
-            return builtinFunctions[INDEX_ACOS];
-        } else if (name.equals("atan")) {
-            return builtinFunctions[INDEX_ATAN];
-        } else if (name.equals("sinh")) {
-            return builtinFunctions[INDEX_SINH];
-        } else if (name.equals("cosh")) {
-            return builtinFunctions[INDEX_COSH];
-        } else if (name.equals("tanh")) {
-            return builtinFunctions[INDEX_TANH];
-        } else if (name.equals("abs")) {
-            return builtinFunctions[INDEX_ABS];
-        } else if (name.equals("log")) {
-            return builtinFunctions[INDEX_LOG];
-        } else if (name.equals("log10")) {
-            return builtinFunctions[INDEX_LOG10];
-        } else if (name.equals("log2")) {
-            return builtinFunctions[INDEX_LOG2];
-        } else if (name.equals("log1p")) {
-            return builtinFunctions[INDEX_LOG1P];
-        } else if (name.equals("ceil")) {
-            return builtinFunctions[INDEX_CEIL];
-        } else if (name.equals("floor")) {
-            return builtinFunctions[INDEX_FLOOR];
-        } else if (name.equals("sqrt")) {
-            return builtinFunctions[INDEX_SQRT];
-        } else if (name.equals("cbrt")) {
-            return builtinFunctions[INDEX_CBRT];
-        } else if (name.equals("pow")) {
-            return builtinFunctions[INDEX_POW];
-        } else if (name.equals("exp")) {
-            return builtinFunctions[INDEX_EXP];
-        } else if (name.equals("expm1")) {
-            return builtinFunctions[INDEX_EXPM1];
-        } else if (name.equals("signum")) {
-            return builtinFunctions[INDEX_SGN];
-        } else if (name.equals("if")) {
-            return builtinFunctions[INDEX_IF];
-        } else {
-            return null;
-        }
+    	switch (name) {
+		case "sin":
+			return builtinFunctions[INDEX_SIN];
+		case "cos":
+			return builtinFunctions[INDEX_COS];
+		case "tan":
+			return builtinFunctions[INDEX_TAN];
+		case "cot":
+			return builtinFunctions[INDEX_COT];
+		case "asin":
+			return builtinFunctions[INDEX_ASIN];
+		case "acos":
+			return builtinFunctions[INDEX_ACOS];
+		case "atan":
+			return builtinFunctions[INDEX_ATAN];
+		case "sinh":
+			return builtinFunctions[INDEX_SINH];
+		case "cosh":
+			return builtinFunctions[INDEX_COSH];
+		case "tanh":
+			return builtinFunctions[INDEX_TANH];
+		case "abs":
+			return builtinFunctions[INDEX_ABS];
+		case "log":
+			return builtinFunctions[INDEX_LOG];
+		case "log10":
+			return builtinFunctions[INDEX_LOG10];
+		case "log2":
+			return builtinFunctions[INDEX_LOG2];
+		case "log1p":
+			return builtinFunctions[INDEX_LOG1P];
+		case "ceil":
+			return builtinFunctions[INDEX_CEIL];
+		case "floor":
+			return builtinFunctions[INDEX_FLOOR];
+		case "sqrt":
+			return builtinFunctions[INDEX_SQRT];
+		case "cbrt":
+			return builtinFunctions[INDEX_CBRT];
+		case "pow":
+			return builtinFunctions[INDEX_POW];
+		case "exp":
+			return builtinFunctions[INDEX_EXP];
+		case "expm1":
+			return builtinFunctions[INDEX_EXPM1];
+		case "signum":
+			return builtinFunctions[INDEX_SGN];
+		case "min4":
+			return builtinFunctions[INDEX_MIN4];
+		case "max4":
+			return builtinFunctions[INDEX_MAX4];
+		case "min2":
+			return builtinFunctions[INDEX_MIN2];
+		case "max2":
+			return builtinFunctions[INDEX_MAX2];
+		case "if":
+			return builtinFunctions[INDEX_IF];
+		default:
+			return null;
+		}
     }
-
 }

@@ -34,9 +34,7 @@ public abstract class Opers {
     private static final int INDEX_GREATER = 8;
     private static final int INDEX_LESS = 9;
     private static final int INDEX_EQUAL = 10;
-
     private static final Oper[] builtinOperators = new Oper[11];
-
     static {
         builtinOperators[INDEX_ADDITION]= new Oper("+", 2, true, Oper.PRECEDENCE_ADDITION) {
             @Override
@@ -155,5 +153,4 @@ public abstract class Opers {
                 return null;
         }
     }
-
 }

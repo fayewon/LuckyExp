@@ -20,7 +20,6 @@ package org.lucky.exp.missYaner;
 import java.lang.reflect.Field;
 import java.util.*;
 import org.lucky.exp.Configuration;
-import org.lucky.exp.exception.CallBackException;
 import org.lucky.exp.tokenizer.OperToken;
 import org.lucky.exp.tokenizer.Token;
 import org.lucky.exp.tokenizer.Tokenizer;

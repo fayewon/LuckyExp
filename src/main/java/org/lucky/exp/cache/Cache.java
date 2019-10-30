@@ -17,7 +17,7 @@ public  class Cache extends AbstractCache{
 	    return cache;
 	};
 	public  CacheToken builder(CacheToken cacheToken) {
-		cacheToken.setCacheToken(cacheToken);
+		cacheToken.apply(cacheToken);
 		return cacheToken;
     }
 }

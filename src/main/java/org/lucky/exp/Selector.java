@@ -51,7 +51,7 @@ public class Selector {
 	 * @since 1.0
 	 */
 	public void formulaFiled(Class<?> clazz,String filedName, Formula_Choose select)  {
-		if(clazz == null || filedName == null || "".equals(filedName.trim()))
+		if(clazz == null || filedName == null || filedName.length() == 0)
 			throw new IllegalArgumentException("公式选择器选择无效.");
 		SelectorHandler handler = new SelectorHandler();
 		handler.clazz = clazz;

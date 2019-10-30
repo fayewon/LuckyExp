@@ -53,10 +53,6 @@ public class ConvertToExp {
 	}
 	public   void assignment(Serializable entity,Field field,final Configuration configuration) {
 		try {			
-			if (field.isAnnotationPresent(BindObject.class)) {
-				final Object fieldVal = (Object)field.get(entity);
-				parseBindObject(fieldVal, field,configuration);
-			}
 			if (field.isAnnotationPresent(BindVar.class)) {
 				final Object fieldVal = (Object)field.get(entity);
 				parseBindDouble(fieldVal, field, configuration);
@@ -64,6 +60,10 @@ public class ConvertToExp {
 			if (field.isAnnotationPresent(Calculation.class)) {
 				final Object fieldVal = (Object)field.get(entity);
 				parseCalculation(fieldVal,entity, field,configuration);
+			}
+			if (field.isAnnotationPresent(BindObject.class)) {
+				final Object fieldVal = (Object)field.get(entity);
+				parseBindObject(fieldVal, field,configuration);
 			}
 		} catch (BindException e) {
 			throw new IllegalArgumentException(e);
@@ -76,8 +76,7 @@ public class ConvertToExp {
 	
 	@SuppressWarnings("unchecked")
 	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,final Configuration configuration) throws BindException {
-		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
-		
+		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);			
 		if(field.getType() != Double.class) {
 			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());

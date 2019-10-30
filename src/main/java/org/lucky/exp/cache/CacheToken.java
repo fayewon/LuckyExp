@@ -17,10 +17,7 @@ import org.lucky.exp.tokenizer.Token;
 @FunctionalInterface
 public interface CacheToken extends Cloneable{
 	final static Map<String,TokenObject> tokensObject = new ConcurrentHashMap<String,TokenObject>();
-	final static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-	default void setCacheToken(CacheToken cacheToken) {
-		apply(cacheToken);
-	}
+	final static ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();	
 	void apply(CacheToken cacheToken);
 	default  boolean openCache() {
 		return Configuration.openCache;
@@ -36,7 +33,6 @@ public interface CacheToken extends Cloneable{
 		if (expire > 0) {
 			Future<?> future = executor.schedule(new Runnable() {
 				public void run() {
-
 					synchronized (CacheToken.class) {
 						tokensObject.remove(key);
 					}
@@ -51,8 +47,6 @@ public interface CacheToken extends Cloneable{
 		TokenObject tokenObject = tokensObject.get(key);
 		return tokenObject == null ? null : tokenObject.getValue();
 	}
-
-
 	default  Map<String,Token[]> getTokensMap(){
 		final Map<String,Token[]> tokensMap = new HashMap<String,Token[]>();
 		tokensObject.forEach((k,v)->{
@@ -71,8 +65,7 @@ public interface CacheToken extends Cloneable{
 	}
 	default  int size() {
 		return tokensObject.size();
-	}
-	
+	}	
 	/**
 	 * 缓存对象
 	 *

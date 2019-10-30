@@ -94,7 +94,7 @@ public class Expression {
 	 */
 	public void result(){
 		try {
-			HandlerResult.evaluateObject(configuration,(b)->{},true);
+			HandlerResult.evaluateObject(configuration,(helloWorld)->{},true);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		} 
@@ -110,7 +110,7 @@ public class Expression {
 		Handle handle = new Handle();
 		handle.setT(entity);
 		try {
-			handle.setSuccess(HandlerResult.evaluateObject(configuration,(b)->{},false));			
+			handle.setSuccess(HandlerResult.evaluateObject(configuration,(helloWorld)->{},false));			
 		} catch (Exception e) {
 			handle.setSuccess(false);
 			throw new CallBackException(e);

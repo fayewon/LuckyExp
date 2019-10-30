@@ -45,7 +45,7 @@ public class Dog implements Serializable{
 	@Calculation(formula= {"A+B","A+B*HelloKitty"},format = "##.###")
 	private Double three;
 	@BindVar("D")
-	@Calculation(formula= {"max(if(A>B,A,B),1,2,300000)"},format = "##.###")
+	@Calculation(formula= {"max4(if(A>B,A,B),1,2,300000)"},format = "##.###")
 	private Double four;
 	@BindVar("E")
 	private Double five;
@@ -58,10 +58,10 @@ public class Dog implements Serializable{
 	@BindVar("I")
 	private Double nine;
 	@BindVar("J")
-	@Calculation(formula= {"A + 2.1 * floor(max(A,1,2,300000)) + "
-			+ "2.1 * ceil(max(A,1,2,300000)) + 2.1 * floor(max(A,1,2,300000)) + "
-			+ "A + 2.1 * floor(max(A,1,2,300000)) + 2.1 * floor(max(A,1,2,300000)) + "
-			+ "2.1 * ceil(max(A,1,2,300000))","2.1 * floor(max(A,1,2,300000))"},format = "##.###")
+	@Calculation(formula= {"A + 2.1 * floor(max4(A,1,2,300000)) + "
+			+ "2.1 * ceil(max4(A,1,2,300000)) + 2.1 * floor(max4(A,1,2,300000)) + "
+			+ "A + 2.1 * floor(max4(A,1,2,300000)) + 2.1 * floor(max4(A,1,2,300000)) + "
+			+ "2.1 * ceil(max4(A,1,2,300000))","2.1 * floor(max4(A,1,2,300000))"},format = "##.###")
 	private Double ten;
 	
 	public String getAk() {

@@ -35,8 +35,7 @@ public class Iterator<E> {
 	public boolean hasNext() {
 		return i < this.exps.size();
 	}
-	public E removeNext() {
-		
+	public E removeNext() {		
 		return exps.removeFirst();
 	}
 	public E next() {

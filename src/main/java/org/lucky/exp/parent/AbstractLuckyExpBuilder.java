@@ -39,8 +39,7 @@ import org.lucky.exp.oper.Oper;
  */
 
 public  abstract class  AbstractLuckyExpBuilder{
-	protected final Configuration configuration = new Configuration();
-    
+	protected final Configuration configuration = new Configuration();    
     protected Serializable entity;
     private  void setVariables(Set<String> variableNames) {
         this.configuration.getVariableNames().addAll(variableNames);
