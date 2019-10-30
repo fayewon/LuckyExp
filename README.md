@@ -214,8 +214,8 @@ public void test3() {
 ```
 ##### &nbsp;&nbsp;&nbsp;&nbsp;内置函数 Funcs.java
 ##### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;函数名&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;位数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作用
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最小值，位数不够添加占位符  
-###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最大值，位数不够添加占位符   
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最小值，位数不够添加占位符  
+###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;取最大值，位数不够添加占位符   
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正弦函数   
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cos&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;余弦函数  
 ###### &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tan&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;正切函数  
