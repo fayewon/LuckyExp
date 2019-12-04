@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -171,57 +172,61 @@ public class ExpTest {
 	* @date 2019年8月31日
 	 */
 	@Test
-	public <T> void test5() {
+	public <T> void test5() throws CallBackException {
 		Long start = System.currentTimeMillis();
-		for(int i=0;i<10;i++) {
-			Selector selector = new Selector();//公式选择器
-			Map<String,Double> param = new HashMap<String,Double>();
-			param.put("M", 20.1);//追加计算参数
-			//param.put("V", 20.1);//追加计算参数
+		for (int i = 0; i < 1; i++) {
+			Selector selector = new Selector();// 公式选择器
+			Map<String, Double> param = new HashMap<String, Double>();
+			param.put("M", 20.1);// 追加计算参数
+			param.put("HelloKitty", 5.0);// 追加计算参数
+			// param.put("V", 20.1);//追加计算参数
 			Dog dog = new Dog();
-			dog.setOne((short)3);
-			dog.setTwo(2.1* i);
-			if(i % 2 == 0) {
-				selector.formulaFiled(Dog.class,"three", Formula_Choose._2);
-				selector.formulaFiled(Cat.class,"fifteen", Formula_Choose._2);
-				selector.formulaFiled(Rabbit.class,"twentyFirst", Formula_Choose._3);
-			}
-				
-			
+			dog.setOne((short) 3);
+			dog.setTwo(2.1 * i);
+			/**
+			 * if(i % 2 == 0) { selector.formulaFiled(Dog.class,"three", Formula_Choose._2);
+			 * selector.formulaFiled(Cat.class,"fifteen", Formula_Choose._2);
+			 * selector.formulaFiled(Rabbit.class,"twentyFirst", Formula_Choose._3); }
+			 **/
+
 			Cat cat = new Cat();
-			cat.setSixteen(5.8*i);
-			cat.setEleven(3.1*i);
+			cat.setSixteen(5.8 * i);
+			cat.setEleven(3.1 * i);
 			dog.setCat(cat);
 			Rabbit rabbit = new Rabbit();
 			cat.setRabbit(rabbit);
-			try {
-				new DefaultLuckyExpBuilder()
-						.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
-						.addFunc(new CustomFunction().roundDown())//自定义公式
-						.addFunc(new CustomFunction().roundUp())//自定义公式
-						.addOper(oper)//自定义运算符
-						.result((h)->{//回调结果
-							Dog result = (Dog)h.getT();
-							if(h.isSuccess()) {
-								System.out.println("TwentyFirst: "+result.getCat().getRabbit().getTwentyFirst());
-								System.out.println("Three: "+result.getThree());
-								System.out.println("Four: "+result.getFour());
-								System.out.println("ten: "+result.getTen());
-								System.out.println("Fifteen: "+result.getCat().getFifteen());
-								System.out.println("Sixteen: "+result.getCat().getSeventeen1());
-								System.out.println("Eighteen: "+result.getCat().getEighteen());
-								System.out.println("Thirteen: "+result.getCat().getThirteen());
-							}else {
-								System.out.println("error: "+h.getErrors());
-							}
-						});
-			} catch (CallBackException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}	
+
+			new DefaultLuckyExpBuilder().build(dog, param, selector)// 不需要追加计算参数和只绑定一个公式 //默认使用第一个公式,param,selector
+					.addFunc(new CustomFunction().roundDown())// 自定义公式
+					.addFunc(new CustomFunction().roundUp())// 自定义公式
+					.addOper(oper)// 自定义运算符
+					.result((h) -> {// 回调结果
+						Dog result = (Dog) h.getT();
+						if (h.isSuccess()) {
+							System.out.println("TwentyFirst: " + result.getCat().getRabbit().getTwentyFirst());
+							System.out.println("Three: " + result.getThree());
+							System.out.println("Four: " + result.getFour());
+							System.out.println("ten: " + result.getTen());
+							System.out.println("Fifteen: " + result.getCat().getFifteen());
+							System.out.println("Sixteen: " + result.getCat().getSeventeen1());
+							System.out.println("Eighteen: " + result.getCat().getEighteen());
+							System.out.println("Thirteen: " + result.getCat().getThirteen());
+						} else {
+							System.out.println("TwentyFirst: " + result.getCat().getRabbit().getTwentyFirst());
+							System.out.println("Three: " + result.getThree());
+							System.out.println("Four: " + result.getFour());
+							System.out.println("ten: " + result.getTen());
+							System.out.println("Fifteen: " + result.getCat().getFifteen());
+							System.out.println("Sixteen: " + result.getCat().getSeventeen1());
+							System.out.println("Eighteen: " + result.getCat().getEighteen());
+							System.out.println("Thirteen: " + result.getCat().getThirteen());
+							System.out.println("error: " + h.getErrors());
+						}
+					});
+
 		}
 		Long end = System.currentTimeMillis();
-		//System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
+		// System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
 	public static void main(String[] args) {
 		Dog dog = new Dog();

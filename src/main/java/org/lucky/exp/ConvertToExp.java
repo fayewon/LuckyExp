@@ -30,7 +30,6 @@ import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.Formula_Choose;
 import org.lucky.exp.exception.BindException;
-import org.lucky.exp.util.ValiSerializableObj;
 import org.lucky.exp.annotation.Calculation;
 import org.lucky.exp.annotation.BindVar;
 /**
@@ -41,6 +40,36 @@ import org.lucky.exp.annotation.BindVar;
  */
 public class ConvertToExp {
 	private static ConvertToExp convertToExp;
+	private static final Class<?>[] BINDVAR_TYPE;
+	private static final Class<?>[] VOLIOBJECT_TYPE;
+	static {
+		/*允许 @BindVar 绑定的对象支持的类型*/
+		BINDVAR_TYPE = new Class[] {
+				float.class,
+				Float.class,
+				double.class,
+				Double.class,
+				short.class,
+				Short.class,
+				int.class,
+				Integer.class,
+				long.class,
+				Long.class,
+				String.class
+	   };
+		/*常见序列化对象*/
+		VOLIOBJECT_TYPE = new Class[] {
+				String.class,
+				Byte.class,
+				Character.class,
+				Short.class,
+				Integer.class,
+				Long.class,
+				Float.class,
+				Double.class,
+				Boolean.class
+	   };
+	};
 	private ConvertToExp() {}
 
 	public static ConvertToExp getInstance() {
@@ -97,8 +126,8 @@ public class ConvertToExp {
 					if(handler.getClazz() == entity.getClass() && handler.getFiledName().equals(field.getName())) {
 						Formula_Choose value = handler.getSelect();
 						index = value.getIndex();
-						if (value.getIndex() + 1 > formula.length) {
-							throw new BindException("公式值选择过大，请检查变量'" +entity.getClass()+"'，'"+field.getName() + "'绑定的@Calculation的公式数");
+						if (index + 1 > formula.length) {
+							throw new BindException("公式值选择过大，请检查变量'" +entity.getClass()+"'，'"+field.getName() + "'绑定的@Calculation的公式数："+(index+1));
 						   }
 					    }
 			    	}
@@ -134,7 +163,7 @@ public class ConvertToExp {
 			+ "{ }{ } :  " + field.getName());
 		}
 		//对常见的实现序列化进行校验，基本类的包装类和String
-		if(!ValiSerializableObj.validationObject(field,valiType)) {
+		if(!checkObject(field,valiType)) {
 			throw new BindException("@BindObject()不能绑定该对象上 ：" + field.getType()
 			+ "{ }{ } :  " + field.getName());
 		};
@@ -151,6 +180,86 @@ public class ConvertToExp {
 		}
 	}
 	private  void parseBindDouble(Object fieldVal, Field field,final Configuration configuration) throws BindException {
-		ValiSerializableObj.bindVar(fieldVal,field,configuration.getVariables());
+		bindVar(fieldVal,field,configuration.getVariables());
+	}
+	/**
+	 * 
+	 * @param field 检查bindObject对象
+	 * @param valiType 检查类型
+	 * @return 是否检查通过
+	 * @throws BindException 绑定异常
+	 */
+	private static boolean checkObject(Field field, boolean valiType) throws BindException {
+		Class<?> clazz = field.getType();
+		if (clazz == VOLIOBJECT_TYPE[0]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[1]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[2]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[3]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[4]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[5]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[6]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[7]) {
+			return valiType = false;
+		} else if (clazz == VOLIOBJECT_TYPE[8]) {
+			return valiType = false;
+		}
+		// .....
+		return valiType;
+	}
+	/**
+	 * 
+	* 绑定变量转计算参数,支持类型(float,Float,double,Double,short,Short,int,Integer,long,Long,String)
+	* @author FayeWong
+	* @since 2019年9月16日
+	* @param fieldVal 变量值
+	* @param field 变量
+	* @param variables 计算参数
+	* @throws BindException 绑定异常
+	 */
+	private static void bindVar(Object fieldVal, Field field, Map<String, Double> variables) throws BindException{
+		BindVar bind = (BindVar) field.getAnnotation(BindVar.class);
+		if(!bind.enable() && fieldVal != null) 
+			throw new BindException("@BindVar('" + bind.value() + "') 未启用 ：" + field.getType()+ "{ }{ } :  " + field.getName());
+		
+		if(fieldVal != null) {
+			if(field.getType() == BINDVAR_TYPE[0]) {
+				variables.put(bind.value(), Double.valueOf((float)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[1]) {
+				variables.put(bind.value(), Double.valueOf((Float)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[2]) {
+				variables.put(bind.value(), (double)fieldVal);			
+			}else if(field.getType() == BINDVAR_TYPE[3]) {
+				variables.put(bind.value(), (Double)fieldVal);			
+			}else if(field.getType() == BINDVAR_TYPE[4]) {
+				variables.put(bind.value(), Double.valueOf((short)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[5]) {
+				variables.put(bind.value(), Double.valueOf((Short)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[6]) {
+				variables.put(bind.value(), Double.valueOf((int)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[7]) {
+				variables.put(bind.value(), Double.valueOf((Integer)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[8]) {
+				variables.put(bind.value(), Double.valueOf((long)fieldVal));		
+			}else if(field.getType() == BINDVAR_TYPE[9]) { 				
+				variables.put(bind.value(), Double.valueOf((Long)fieldVal));			
+			}else if(field.getType() == BINDVAR_TYPE[10]) {
+				try {
+					variables.put(bind.value(), Double.valueOf((String)fieldVal));	
+				}catch (NumberFormatException e) {
+					throw new BindException("@BindVar('" + bind.value() + "') 绑定变量值无法转换成double ：" + field.getType()
+					+ "{ }{ } :  " + field.getName(),e);
+				}				
+			}else {
+				throw new BindException("@BindVar('" + bind.value() + "') 不能绑定该变量类型上 ：" + field.getType()
+				+ "{ }{ } :  " + field.getName());
+			}
+		}
 	}
 }

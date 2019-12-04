@@ -229,14 +229,14 @@ public class Funcs {
             }
         };
         /**取最小值,支持2位**/
-        builtinFunctions[INDEX_MIN2] = new Func("min2",4) {
+        builtinFunctions[INDEX_MIN2] = new Func("min2",2) {
 			@Override
 			public double call(Object... args) {
 				return Math.min((double)args[0], (double)args[1]);
 			}
     	};
     	/**取最大值,支持2位**/
-    	builtinFunctions[INDEX_MAX2] = new Func("max2",4) {
+    	builtinFunctions[INDEX_MAX2] = new Func("max2",2) {
 			@Override
 			public double call(Object... args) {
 				return Math.max((double)args[0], (double)args[1]);
@@ -267,12 +267,15 @@ public class Funcs {
 			}
     	};
         /**
-         * 高级函数
-         * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>','=' 使用
+                * 高级函数
+                * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>','=' 使用
          */
         builtinFunctions[INDEX_IF] = new Func("if",3) {
             @Override
             public double call(Object... args) {
+            	if(!(args[0] instanceof Boolean)) {
+            		throw new ArithmeticException("三目运算符函数(if)第一位' "+args[0]+" '必须是布尔类型!");
+            	}
                 return (boolean)args[0] ? (double)args[1] : (double)args[2];
             }
         };

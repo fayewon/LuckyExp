@@ -19,7 +19,7 @@
 package org.lucky.exp.func;
 /**
  * 
-* <p>内置函数</p>
+* <p>函数</p>
 * @author FayeWong
 * @since 1.0
 * 
@@ -63,8 +63,8 @@ public abstract class Func {
     *
     * @author FayeWong
     * @param args 函数的参数，但是需要自定义函数参数数量  numArguments 自定义数量
-    * 内置函数的参数数量也是自定义的
-    * see org.lucky.exp.function.Funcs;
+       * 内置函数的参数数量也是自定义的
+    * @see org.lucky.exp.function.Funcs;
     * @return 结果
      */
     public abstract double call(Object... args);

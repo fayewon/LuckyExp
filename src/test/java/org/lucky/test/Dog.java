@@ -37,12 +37,12 @@ public class Dog implements Serializable{
 	private Rabbit rabbit;
 	@BindVar("AK")
 	private String ak;
-	@BindVar("A")
+	@BindVar(value="A",enable = true)
 	private int one;
 	@BindVar("B")
 	private Double two;
 	@BindVar("C")
-	@Calculation(formula= {"A+B","A+B*HelloKitty"},format = "##.###")
+	@Calculation(formula= {"A+J+MK","A+B*HelloKitty"},format = "##.###")
 	private Double three;
 	@BindVar("D")
 	@Calculation(formula= {"max4(if(A>B,A,B),1,2,300000)"},format = "##.###")
@@ -51,7 +51,7 @@ public class Dog implements Serializable{
 	private Double five;
 	@BindVar("F")
 	private Double six;
-	@BindVar("G")
+	@BindVar(value="G",enable = false)
 	private Double seven;
 	@BindVar("H")
 	private Double eight;

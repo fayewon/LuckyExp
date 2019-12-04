@@ -18,7 +18,7 @@
 */
 package org.lucky.exp.oper;
 /**
- * <p>内置函数池</p>
+ * <p>内置运算符</p>
  * @author FayeWong
  * @since 1.0
  */
@@ -91,7 +91,8 @@ public abstract class Opers {
             }
         };
         /**
-         * 主要为了搭配函数if设定的布尔判断取值
+                *  主要为了搭配函数if设定的布尔判断取值
+         * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_GREATER]= new Oper(">", 2, true, Oper.PRECEDENCE_UNARY_MINUS) {
             @Override
@@ -101,7 +102,8 @@ public abstract class Opers {
             }
         };
         /**
-         * 主要为了搭配函数if设定的布尔判断取值
+                * 主要为了搭配函数if设定的布尔判断取值
+         * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_LESS]= new Oper("<", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
             @Override
@@ -110,7 +112,8 @@ public abstract class Opers {
             }
         };
         /**
-         * 主要为了搭配函数if设定的布尔判断取值
+                * 主要为了搭配函数if设定的布尔判断取值
+         * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_EQUAL]= new Oper("=", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
             @Override
