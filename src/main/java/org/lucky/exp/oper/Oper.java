@@ -19,7 +19,7 @@
 package org.lucky.exp.oper;
 
 /**
- * <p>内置运算符</p>
+ * <p>运算符</p>
  * @author FayeWong
  * @since 1.0
  */

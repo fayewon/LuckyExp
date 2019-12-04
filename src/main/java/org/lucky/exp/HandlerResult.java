@@ -125,9 +125,8 @@ public class HandlerResult {
 			}
 			if (output.size() > 1) {
 				throw new CallBackException("变量 ' " + field.getName() + " ',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
-			}
-			double result = (double)output.pop();
-			setBean(configuration, result, exp);
+			} 
+			setBean(configuration, (double)output.pop(), exp);
 		};
 	}
 	/**

@@ -33,7 +33,7 @@ import org.lucky.exp.oper.Opers;
 public class Tokenizer {
 
     private final char[] expression;
-    public final int expressionLength;
+    public  final int expressionLength;
     private final Map<String, Func> userFunctions;
     private final Map<String, Oper> userOperators;       
     private final Field field;
@@ -161,6 +161,12 @@ public class Tokenizer {
                     lastValidToken = new FunctionToken(f);
                 }
             }**/
+            /**
+             * 这里返回函数名称验证，否则返回为验证名称的变量
+             * 因为从栈中推从结果的时候，会有变量名未找到的异常。
+             * 这个异常是由于关联性公式非顺序绑定导致，通过递归重算顺序计算出关联公式结果。
+             * @see org.lucky.exp.HandlerResult.java evaluate{}
+             **/
             final Func f = getFunction(name);
             if(f != null) {
             	lastValidLen = len;
