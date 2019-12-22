@@ -31,13 +31,17 @@ import org.lucky.exp.util.LinkedStack;
 * 
  */
 public class MissYaner {
+	private MissYaner() {
+		throw new Error("no instances");
+	}
 	/**
 	 * 将一组标记从中缀表达式转逆波兰表达式
 	 * 例如中缀表达式：5 + ( 6 – 4 / 2 ) * 3，逆波兰表达式：5 6 4 2 / - 3 * +
 	 * @param expression expression 表达式要转换的表达式
 	 * @param field field 抛出异常信息时使用
 	 * @param configuration 配置对象
-	 * @return 包含结果的{@link org.lucky.exp.tokenizer.Token} 数组
+	 * @return 包含结果的{@link org.lucky.exp.tokenizer#Token} 数组
+	 * @see org.lucky.exp.tokenizer#nextToken
 	 */
     public static Token[] convertToRPN(final String expression,Field field,final Configuration configuration){
         final LinkedStack<Token> stack = new LinkedStack<Token>();

@@ -26,7 +26,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 绑定计算变量
+ * 绑定计算对象
 *
 * @author FayeWong
 * 

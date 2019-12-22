@@ -17,6 +17,9 @@
 ----------------------------------------------------------------------------------
 */
 package org.lucky.exp;
+
+import static org.lucky.exp.HandlerResult.evaluateObject;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -94,7 +97,7 @@ public class Expression {
 	 */
 	public void result(){
 		try {
-			HandlerResult.evaluateObject(configuration,(HelloWorldThisIsJava)->{},true);
+			evaluateObject(configuration,(HelloWorldThisIsJava)->{},true);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e);
 		} 
@@ -110,7 +113,7 @@ public class Expression {
 		Handle handle = new Handle();
 		handle.setT(entity);
 		try {
-			handle.setSuccess(HandlerResult.evaluateObject(configuration,(HelloWorldThisIsJava)->{},false));			
+			handle.setSuccess(evaluateObject(configuration,(HelloWorldThisIsJava)->{},false));			
 		} catch (Exception e) {
 			handle.setSuccess(false);
 			throw new CallBackException(e);

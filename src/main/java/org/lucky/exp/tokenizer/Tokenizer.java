@@ -128,7 +128,7 @@ public class Tokenizer {
         return ch == ')' || ch == '}' || ch == ']';
     }
     /**
-     * <p>思路：检查字符是否是字母、 _ 、 . @see isVariableOrFunctionCharacter,
+     * <p>思路：检查字符是否是字母、 _ 、 . @see #isVariableOrFunctionCharacter,
          * 如果是则长度+1，截取该长度的字符串判断变量池是否存在，判断是否在函数池内
          * 如果存在则返回一个变量token，否则如果存在返回一个函数token。最后下标位移到该长度后面</p>
      * @author FayeWong
@@ -162,10 +162,10 @@ public class Tokenizer {
                 }
             }**/
             /**
-             * 这里返回函数名称验证，否则返回为验证名称的变量
-             * 因为从栈中推从结果的时候，会有变量名未找到的异常。
-             * 这个异常是由于关联性公式非顺序绑定导致，通过递归重算顺序计算出关联公式结果。
-             * @see org.lucky.exp.HandlerResult.java evaluate{}
+                         * 这里返回函数名称验证，否则返回为验证名称的变量
+                         * 因为从栈中推从结果的时候，会有变量名未找到的异常。
+                         * 这个异常是由于关联性公式非顺序绑定导致，通过递归重算顺序计算出关联公式结果。
+              * @see org.lucky.exp.HandlerResult#evaluate
              **/
             final Func f = getFunction(name);
             if(f != null) {

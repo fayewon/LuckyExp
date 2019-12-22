@@ -23,7 +23,7 @@ import java.util.LinkedList;
  * 链表栈
 *
 * @author FayeWong
-* @since 2019年9月16日
+* @since 1.0
 * @param <E> 泛型
  */
 public class LinkedStack<E> {

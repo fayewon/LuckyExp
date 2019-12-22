@@ -1,4 +1,6 @@
 package org.lucky.exp;
+import static org.lucky.exp.missYaner.MissYaner.convertToRPN;
+
 import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -8,7 +10,6 @@ import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.cache.Cache;
 import org.lucky.exp.cache.CacheToken;
 import org.lucky.exp.exception.CallBackException;
-import org.lucky.exp.missYaner.MissYaner;
 import org.lucky.exp.tokenizer.FunctionToken;
 import org.lucky.exp.tokenizer.NumberToken;
 import org.lucky.exp.tokenizer.OperToken;
@@ -148,11 +149,11 @@ public class HandlerResult {
 				if(cToken.openCache()) {
 					Token[] cacheTokens = cToken.getToken(expression);
 					if(cacheTokens == null) {
-						cacheTokens = MissYaner.convertToRPN(expression, field, configuration);
+						cacheTokens = convertToRPN(expression, field, configuration);
 						cToken.putTokens(expression, cacheTokens,cToken.expire());
 					}
 				}else {
-					Token[] tokens = MissYaner.convertToRPN(expression, field, configuration);
+					Token[] tokens = convertToRPN(expression, field, configuration);
 					tokensMap.put(expression, tokens);
 				}
 			});			

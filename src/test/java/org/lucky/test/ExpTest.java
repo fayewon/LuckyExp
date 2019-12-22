@@ -50,6 +50,7 @@ public class ExpTest {
 		param.put("HelloKitty", 5.0);//追加计算参数
 		Selector selector = new Selector();//创建一个公式选择器
 		selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象Dog的类信息，需要选择的变量名称，选择第二个公式
+		selector.formulaFiled(Dog.class, "five", Formula_Choose._2);
 	    Dog dog = new Dog();
 		dog.setOne(40);//计算参数 'A' = 40
 		dog.setTwo(60.0);//计算参数 'B' = 60.0
@@ -61,19 +62,22 @@ public class ExpTest {
 		.result();//获取结果
 		System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
 		System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
-		dog.getCat().setTwelve(null);
+		//dog.getCat().setTwelve(null);
 		
 		//选择cat的twelve第二个公式
 		selector.formulaFiled(Cat.class, "twelve", Formula_Choose._2);//计算对象Cat的类信息，需要选择的变量名称，选择第二个公式
-		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-		.build(dog,param,selector)//计算入口
-		.result();//获取结果
+		
+		//new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		//.build(dog,param,selector)//计算入口
+		//.result();//获取结果
 		System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
 		//给计算公式变量设置默认值 则解绑自动计算属性，结果为默认值
 		dog.setThree(123.8);
 		dog.getCat().setTwelve(520.0);
 		System.out.println(dog.getThree());//123.8
 		System.out.println(dog.getCat().getTwelve());//520.0
+		System.out.println(dog.getFour());
+		System.out.println(dog.getFive());
 	}
 	@Test
 	public void test2() {
@@ -229,33 +233,6 @@ public class ExpTest {
 		// System.out.println("简单测试一百万条计算时间："+(end-start)/1000+"秒");
 	}
 	public static void main(String[] args) {
-		Dog dog = new Dog();
-		Cat cat = new Cat();
-		cat.setSixteen(5.8);
-		cat.setEleven(3.1);
-		dog.setCat(cat);
-		Rabbit rabbit = new Rabbit();
-		cat.setRabbit(rabbit);
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		try {
-			ObjectOutput oo = new ObjectOutputStream(os);
-			oo.writeObject(dog);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		ByteArrayInputStream bis = new ByteArrayInputStream(os.toByteArray());
-		try {
-			ObjectInputStream ois = new ObjectInputStream(bis);
-			Dog dog1 = (Dog)ois.readObject();
-			//System.out.println(dog1.getCat().getSixteen());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}		
+		System.out.println(Math.pow(2, 3));
 	}	
 }
