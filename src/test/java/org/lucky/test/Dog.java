@@ -23,7 +23,6 @@ import java.io.Serializable;
 import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.BindObject;
 import org.lucky.exp.annotation.Calculation;
-import org.lucky.exp.annotation.Status;
 /**
  * 需要自动计算的对象需要实现序列化接口
 *
@@ -48,6 +47,7 @@ public class Dog implements Serializable{
 	@Calculation(formula= {"max4(if(A>B,A,B),1,2,300000)"},format = "##.###")
 	private Double four;
 	@BindVar("E")
+	@Calculation(formula= {"D","A"},format = "##.###")
 	private Double five;
 	@BindVar("F")
 	private Double six;

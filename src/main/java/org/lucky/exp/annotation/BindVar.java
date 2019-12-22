@@ -36,5 +36,6 @@ import java.lang.annotation.Target;
 public @interface BindVar {
 	String value();
 	//保留字
+	@Deprecated
 	boolean enable() default true;
 }

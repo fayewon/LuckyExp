@@ -189,28 +189,14 @@ public class ConvertToExp {
 	 * @return 是否检查通过
 	 * @throws BindException 绑定异常
 	 */
-	private static boolean checkObject(Field field, boolean valiType) throws BindException {
-		Class<?> clazz = field.getType();
-		if (clazz == VOLIOBJECT_TYPE[0]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[1]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[2]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[3]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[4]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[5]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[6]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[7]) {
-			return valiType = false;
-		} else if (clazz == VOLIOBJECT_TYPE[8]) {
-			return valiType = false;
+	private static boolean checkObject(Field field,boolean valiType) throws BindException {
+		final Class<?> clazz = field.getType();
+		for(Class<?> type : VOLIOBJECT_TYPE) {
+			if(clazz == type) {
+				valiType = false; 
+				break;
+			}
 		}
-		// .....
 		return valiType;
 	}
 	/**
@@ -223,6 +209,7 @@ public class ConvertToExp {
 	* @param variables 计算参数
 	* @throws BindException 绑定异常
 	 */
+	@SuppressWarnings("deprecation")
 	private static void bindVar(Object fieldVal, Field field, Map<String, Double> variables) throws BindException{
 		BindVar bind = (BindVar) field.getAnnotation(BindVar.class);
 		if(!bind.enable() && fieldVal != null) 
