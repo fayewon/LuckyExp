@@ -31,6 +31,7 @@ import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.annotation.Formula_Choose;
 import org.lucky.exp.exception.BindException;
 import org.lucky.exp.annotation.Calculation;
+import org.lucky.exp.annotation.BindType;
 import org.lucky.exp.annotation.BindVar;
 /**
  * <p>计算对象组装成计算变量</p>
@@ -40,23 +41,8 @@ import org.lucky.exp.annotation.BindVar;
  */
 public class ConvertToExp {
 	private static ConvertToExp convertToExp;
-	private static final Class<?>[] BINDVAR_TYPE;
 	private static final Class<?>[] VOLIOBJECT_TYPE;
 	static {
-		/*允许 @BindVar 绑定的对象支持的类型*/
-		BINDVAR_TYPE = new Class[] {
-				float.class,
-				Float.class,
-				double.class,
-				Double.class,
-				short.class,
-				Short.class,
-				int.class,
-				Integer.class,
-				long.class,
-				Long.class,
-				String.class
-	   };
 		/*常见序列化对象*/
 		VOLIOBJECT_TYPE = new Class[] {
 				String.class,
@@ -105,9 +91,24 @@ public class ConvertToExp {
 	
 	@SuppressWarnings("unchecked")
 	private   void parseCalculation(Object fieldVal,Serializable entity, Field field,final Configuration configuration) throws BindException {
-		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);			
-		if(field.getType() != Double.class) {
-			throw new BindException("@Calculation() 必须绑定Double类型的字段 ：" + field.getType()
+		Calculation calculation = (Calculation) field.getAnnotation(Calculation.class);	
+		/* 由于基本类型的默认值是0，为了避免设置为0的默认值取消自动计算的属性失效。
+		 * 故该注解暂时不支持基本类型。
+		 */
+		if(//field.getType() == BindType.f.getType() ||
+		   field.getType() == BindType.F.getType() ||
+		   //field.getType() == BindType.d.getType() ||
+		   field.getType() == BindType.D.getType() ||
+		   //field.getType() == BindType.s.getType() ||
+		   field.getType() == BindType.S.getType() ||
+		   //field.getType() == BindType.i.getType() ||
+		   field.getType() == BindType.I.getType() ||
+		   //field.getType() == BindType.l.getType() ||
+		   field.getType() == BindType.L.getType() ||
+		   field.getType() == BindType.STR.getType()) {
+			
+		}else {
+			throw new BindException("@Calculation() 不支持绑定该字段类型" + field.getType()
 			+ "{ }{ } :  " + field.getName());
 		}
 		int index = 0;//默认使用第一个公式
@@ -132,6 +133,7 @@ public class ConvertToExp {
 					    }
 			    	}
 				}	
+			/* fieldVal == null,不针对基本类型 */
 			if (calculation != null && fieldVal == null ) {
 				Map<Condition, Object> parseObj = new HashMap<Condition, Object>();
 				parseObj.put(Condition.field, field);
@@ -216,27 +218,27 @@ public class ConvertToExp {
 			throw new BindException("@BindVar('" + bind.value() + "') 未启用 ：" + field.getType()+ "{ }{ } :  " + field.getName());
 		
 		if(fieldVal != null) {
-			if(field.getType() == BINDVAR_TYPE[0]) {
+			if(field.getType() == BindType.f.getType()) {
 				variables.put(bind.value(), Double.valueOf((float)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[1]) {
+			}else if(field.getType() == BindType.F.getType()) {
 				variables.put(bind.value(), Double.valueOf((Float)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[2]) {
+			}else if(field.getType() == BindType.d.getType()) {
 				variables.put(bind.value(), (double)fieldVal);			
-			}else if(field.getType() == BINDVAR_TYPE[3]) {
+			}else if(field.getType() == BindType.D.getType()) {
 				variables.put(bind.value(), (Double)fieldVal);			
-			}else if(field.getType() == BINDVAR_TYPE[4]) {
+			}else if(field.getType() == BindType.s.getType()) {
 				variables.put(bind.value(), Double.valueOf((short)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[5]) {
+			}else if(field.getType() == BindType.S.getType()) {
 				variables.put(bind.value(), Double.valueOf((Short)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[6]) {
+			}else if(field.getType() == BindType.i.getType()) {
 				variables.put(bind.value(), Double.valueOf((int)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[7]) {
+			}else if(field.getType() == BindType.I.getType()) {
 				variables.put(bind.value(), Double.valueOf((Integer)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[8]) {
+			}else if(field.getType() == BindType.l.getType()) {
 				variables.put(bind.value(), Double.valueOf((long)fieldVal));		
-			}else if(field.getType() == BINDVAR_TYPE[9]) { 				
+			}else if(field.getType() == BindType.L.getType()) { 				
 				variables.put(bind.value(), Double.valueOf((Long)fieldVal));			
-			}else if(field.getType() == BINDVAR_TYPE[10]) {
+			}else if(field.getType() == BindType.STR.getType()) {
 				try {
 					variables.put(bind.value(), Double.valueOf((String)fieldVal));	
 				}catch (NumberFormatException e) {

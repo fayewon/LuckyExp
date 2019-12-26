@@ -6,6 +6,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import org.lucky.exp.annotation.BindVar;
+import org.lucky.exp.annotation.BindType;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.cache.Cache;
 import org.lucky.exp.cache.CacheToken;
@@ -36,9 +37,37 @@ public class HandlerResult {
 			throws CallBackException {
 		Field field = (Field) exp.get(Condition.field);
 		BindVar bind = field.getAnnotation(BindVar.class);
-		result = Double.valueOf(new DecimalFormat(exp.get(Condition.format).toString()).format(result));
+		String value = new DecimalFormat(exp.get(Condition.format).toString()).format(result);
 		try {
-			field.set(exp.get(Condition.entity), result);
+			if(field.getType() == BindType.f.getType() || field.getType() == BindType.F.getType()) {
+				try {
+					field.set(exp.get(Condition.entity), Float.valueOf(value));	
+				}catch (NumberFormatException e) {
+					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
+				}		
+			}else if(field.getType() == BindType.d.getType() || field.getType() == BindType.D.getType()) {
+				field.set(exp.get(Condition.entity), Double.valueOf(value));			
+			}else if(field.getType() == BindType.s.getType() || field.getType() == BindType.S.getType()) {
+				try {
+					field.set(exp.get(Condition.entity), Short.valueOf(value));
+				}catch (NumberFormatException e) {
+					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
+				}				
+			}else if(field.getType() == BindType.i.getType() || field.getType() == BindType.I.getType()) {
+                try {
+                	field.set(exp.get(Condition.entity), Integer.valueOf(value));
+				}catch (NumberFormatException e) {
+					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
+				}				
+			}else if(field.getType() == BindType.l.getType() || field.getType() == BindType.L.getType()) {
+               try {
+            	   field.set(exp.get(Condition.entity), Long.valueOf(value));	
+				}catch (NumberFormatException e) {
+					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
+				}		
+			}else if(field.getType() == BindType.STR.getType()) {
+				field.set(exp.get(Condition.entity), value);			
+			}
 			if (bind != null) {
 				// 从get中获取结果变量，get方法逻辑返回的值给下一个结果计算
 				//PropertyDescriptor pd = new PropertyDescriptor(field.getName(), exp.get(Condition.entity).getClass());

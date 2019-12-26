@@ -25,8 +25,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
  * 
- * 
-*
+ * 绑定的成员变量会成为自动计算字段，若需要取消自动计算属性则动手设置值即可
+* 支持绑定的类型 @see org.lucky.exp.annotation.BindType 的非基本类型
 * @author FayeWong
 * 
  */
