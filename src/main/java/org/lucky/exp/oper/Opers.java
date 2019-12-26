@@ -48,12 +48,14 @@ public abstract class Opers {
                 return args[0] - args[1];
             }
         };
+        /**负数**/
         builtinOperators[INDEX_UNARYMINUS]= new Oper("-", 1, false, Oper.PRECEDENCE_UNARY_MINUS) {
             @Override
             public Object call(final double... args) {
                 return -args[0];
             }
         };
+        /**正数**/
         builtinOperators[INDEX_UNARYPLUS]= new Oper("+", 1, false, Oper.PRECEDENCE_UNARY_PLUS) {
             @Override
             public Object call(final double... args) {
@@ -91,18 +93,17 @@ public abstract class Opers {
             }
         };
         /**
-                *  主要为了搭配函数if设定的布尔判断取值
+         *  主要为了搭配函数if设定的布尔判断取值
          * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_GREATER]= new Oper(">", 2, true, Oper.PRECEDENCE_UNARY_MINUS) {
             @Override
-            public Object call(final double... args) {
-                
+            public Object call(final double... args) {  
                 return args[0] > args[1];
             }
         };
         /**
-                * 主要为了搭配函数if设定的布尔判断取值
+         * 主要为了搭配函数if设定的布尔判断取值
          * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_LESS]= new Oper("<", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
@@ -112,7 +113,7 @@ public abstract class Opers {
             }
         };
         /**
-                * 主要为了搭配函数if设定的布尔判断取值
+         * 主要为了搭配函数if设定的布尔判断取值
          * @see {@link org.lucky.exp.func.Funcs.java {if} }
          */
         builtinOperators[INDEX_EQUAL]= new Oper("=", 2, true, Oper.PRECEDENCE_UNARY_PLUS) {
@@ -120,8 +121,7 @@ public abstract class Opers {
             public Object call(final double... args) {
             	return args[0] = args[1];
             }
-        };
-        
+        };   
     }
 
     public static Oper getBuiltinOperator(final char symbol, final int numArguments) {

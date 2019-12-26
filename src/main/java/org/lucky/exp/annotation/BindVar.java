@@ -26,8 +26,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 /**
  * 绑定的成员变量会成为计算参数
-*
+* 支持绑定的类型 @see org.lucky.exp.annotation.BindType 所有类型
 * @author FayeWong
+* 
 * 
  */
 @Target({ ElementType.FIELD})

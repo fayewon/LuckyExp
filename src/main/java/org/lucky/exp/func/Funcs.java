@@ -267,8 +267,8 @@ public class Funcs {
 			}
     	};
         /**
-                * 高级函数
-                * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>','=' 使用
+         * 高级函数
+         * 三目运算符函数，第一位boolean值。搭配boolean运算符  '<' , '>','=' 使用
          */
         builtinFunctions[INDEX_IF] = new Func("if",3) {
             @Override
