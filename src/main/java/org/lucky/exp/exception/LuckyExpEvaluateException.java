@@ -1,7 +1,7 @@
 /**
 * @Project Name : LuckyExp
 *
-* @File name : CallBackException.java
+* @File name : LuckyExpEvaluateException.java
 *
 * @Author : FayeWong
 *
@@ -23,19 +23,19 @@ package org.lucky.exp.exception;
 * @author FayeWong
 * 
  */
-public class CallBackException extends Exception{
+public class LuckyExpEvaluateException extends Exception{
 	private static final long serialVersionUID = 1L;
-	public CallBackException() {
+	public LuckyExpEvaluateException() {
         super();
     }
 
-    public CallBackException(String s) {
+    public LuckyExpEvaluateException(String s) {
         super(s);
     }
-    public CallBackException(String message, Throwable cause) {
+    public LuckyExpEvaluateException(String message, Throwable cause) {
         super(message, cause);
     }
-    public CallBackException(Throwable cause) {
+    public LuckyExpEvaluateException(Throwable cause) {
         super(cause);
     }
 }

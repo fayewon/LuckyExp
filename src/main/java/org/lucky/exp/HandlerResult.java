@@ -10,7 +10,7 @@ import org.lucky.exp.annotation.BindType;
 import org.lucky.exp.annotation.Condition;
 import org.lucky.exp.cache.Cache;
 import org.lucky.exp.cache.CacheToken;
-import org.lucky.exp.exception.CallBackException;
+import org.lucky.exp.exception.LuckyExpEvaluateException;
 import org.lucky.exp.tokenizer.FunctionToken;
 import org.lucky.exp.tokenizer.NumberToken;
 import org.lucky.exp.tokenizer.OperToken;
@@ -31,42 +31,30 @@ public class HandlerResult {
 	 * @param configuration 配置类
 	 * @param result 计算结果
 	 * @param exp 被拆分的对象
-	 * @throws CallBackException 回调异常
+	 * @throws LuckyExpEvaluateException 回调异常
 	 */
 	private static  void setBean(Configuration configuration, double result, Map<Condition, Object> exp)
-			throws CallBackException {
+			throws LuckyExpEvaluateException {
 		Field field = (Field) exp.get(Condition.field);
 		BindVar bind = field.getAnnotation(BindVar.class);
 		String value = new DecimalFormat(exp.get(Condition.format).toString()).format(result);
 		try {
-			if(field.getType() == BindType.f.getType() || field.getType() == BindType.F.getType()) {
-				try {
-					field.set(exp.get(Condition.entity), Float.valueOf(value));	
-				}catch (NumberFormatException e) {
-					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
-				}		
-			}else if(field.getType() == BindType.d.getType() || field.getType() == BindType.D.getType()) {
-				field.set(exp.get(Condition.entity), Double.valueOf(value));			
-			}else if(field.getType() == BindType.s.getType() || field.getType() == BindType.S.getType()) {
-				try {
-					field.set(exp.get(Condition.entity), Short.valueOf(value));
-				}catch (NumberFormatException e) {
-					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
-				}				
-			}else if(field.getType() == BindType.i.getType() || field.getType() == BindType.I.getType()) {
-                try {
-                	field.set(exp.get(Condition.entity), Integer.valueOf(value));
-				}catch (NumberFormatException e) {
-					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
-				}				
-			}else if(field.getType() == BindType.l.getType() || field.getType() == BindType.L.getType()) {
-               try {
-            	   field.set(exp.get(Condition.entity), Long.valueOf(value));	
-				}catch (NumberFormatException e) {
-					throw new CallBackException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
-				}		
-			}else if(field.getType() == BindType.STR.getType()) {
-				field.set(exp.get(Condition.entity), value);			
+			try {
+				if(field.getType() == BindType.f.getType() || field.getType() == BindType.F.getType()) {
+					field.set(exp.get(Condition.entity), Float.valueOf(value));			
+				}else if(field.getType() == BindType.d.getType() || field.getType() == BindType.D.getType()) {
+					field.set(exp.get(Condition.entity), Double.valueOf(value));			
+				}else if(field.getType() == BindType.s.getType() || field.getType() == BindType.S.getType()) {
+					field.set(exp.get(Condition.entity), Short.valueOf(value));				
+				}else if(field.getType() == BindType.i.getType() || field.getType() == BindType.I.getType()) {
+					field.set(exp.get(Condition.entity), Integer.valueOf(value));				
+				}else if(field.getType() == BindType.l.getType() || field.getType() == BindType.L.getType()) {
+					field.set(exp.get(Condition.entity), Long.valueOf(value));		
+				}else if(field.getType() == BindType.STR.getType()) {
+					field.set(exp.get(Condition.entity), value);			
+				}
+			}catch (NumberFormatException e) {
+				throw new LuckyExpEvaluateException("变量 ' "+field.getName()+" ',类型 ' "+field.getType()+"' ,结果 ' "+value+" ' 转换赋值失败",e);
 			}
 			if (bind != null) {
 				// 从get中获取结果变量，get方法逻辑返回的值给下一个结果计算
@@ -77,9 +65,9 @@ public class HandlerResult {
 				configuration.getVariableNames().addAll(configuration.getVariables().keySet());
 			}
 		} catch (IllegalArgumentException e) {
-			throw new CallBackException(e);
+			throw new LuckyExpEvaluateException(e);
 		} catch (IllegalAccessException e) {
-			throw new CallBackException(e);
+			throw new LuckyExpEvaluateException(e);
 		} 
 	}
 
@@ -89,10 +77,10 @@ public class HandlerResult {
 	 * @param tokensMap Tokens
 	 * @param iterator 公式对象
 	 * @param throwable 回调结果不抛找不到变量异常
-	 * @throws CallBackException 回调异常
+	 * @throws LuckyExpEvaluateException 回调异常
 	 */
 	private static  void evaluate(Configuration configuration, Map<String, Token[]> tokensMap,
-			Iterator<Map<Condition, Object>> iterator,boolean throwable) throws CallBackException {		
+			Iterator<Map<Condition, Object>> iterator,boolean throwable) throws LuckyExpEvaluateException {		
 		while (iterator.hasNext()) {
 			LinkedStack<Object> output = new LinkedStack<Object>();
 			Map<Condition, Object> exp = iterator.removeNext();
@@ -118,14 +106,14 @@ public class HandlerResult {
 					}catch (StackOverflowError error) {
 						iterator.offerLast(exp);
 						if(throwable) {
-							throw new CallBackException("重新计算失败，有未知参数 ' "+" ' "+configuration.getErrors());
+							throw new LuckyExpEvaluateException("重新计算失败，有未知参数 ' "+" ' "+configuration.getErrors());
 						}
 						return;
 					}	
 				} else if (t.getType() == Token.TOKEN_OPERATOR) {
 					OperToken op = (OperToken) t;
 					if (output.size() < op.getOper().getNumOperands()) {
-						throw new CallBackException("变量 '" + field.getName() + "',可用于的操作数无效 '"
+						throw new LuckyExpEvaluateException("变量 '" + field.getName() + "',可用于的操作数无效 '"
 								+ op.getOper().getSymbol() + "' oper(操作数只接受1或2)");
 					}
 					if (op.getOper().getNumOperands() == 2) {
@@ -142,7 +130,7 @@ public class HandlerResult {
 					FunctionToken func = (FunctionToken) t;
 					final int numArguments = func.getFunction().getNumArguments();
 					if (output.size() < numArguments) {
-						throw new CallBackException("变量' " + field.getName() + " ',无可用于计算的参数 '"
+						throw new LuckyExpEvaluateException("变量' " + field.getName() + " ',无可用于计算的参数 '"
 								+ func.getFunction().getName() + "' function");
 					}
 					/* 从堆栈收集参数 */
@@ -154,7 +142,7 @@ public class HandlerResult {
 				}
 			}
 			if (output.size() > 1) {
-				throw new CallBackException("变量 ' " + field.getName() + " ',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
+				throw new LuckyExpEvaluateException("变量 ' " + field.getName() + " ',输出队列中的参数无效。可能是函数的参数无法解析导致的.");
 			} 
 			setBean(configuration, (double)output.pop(), exp);
 		};
@@ -165,9 +153,9 @@ public class HandlerResult {
 	 * @param cacheToken 缓存对象
 	 * @param throwable 回调结果不抛找不到变量异常
 	 * @return 是否计算成
-	 * @throws CallBackException 回调异常
+	 * @throws LuckyExpEvaluateException 回调异常
 	 */
-	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken,boolean throwable) throws CallBackException {
+	public static boolean evaluateObject(Configuration configuration,CacheToken cacheToken,boolean throwable) throws LuckyExpEvaluateException {
 		final Iterator<Map<Condition, Object>> iterator = new Iterator<Map<Condition, Object>>(configuration.getPassExps());
 		final Map<String,Token[]> tokensMap = new HashMap<String,Token[]>();
 		while (iterator.hasNext()) {

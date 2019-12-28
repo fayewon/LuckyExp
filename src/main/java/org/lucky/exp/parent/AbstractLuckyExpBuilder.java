@@ -28,7 +28,7 @@ import org.lucky.exp.Configuration;
 import org.lucky.exp.ConvertToExp;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.ExceptionCode;
-import org.lucky.exp.exception.CallBackException;
+import org.lucky.exp.exception.LuckyExpEvaluateException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.oper.Oper;
@@ -237,7 +237,7 @@ public  abstract class  AbstractLuckyExpBuilder{
 	*
 	* @author FayeWong
 	* @param operResult 回调函数
-	* @throws CallBackException 回调异常
+	* @throws LuckyExpEvaluateException 回调异常
 	 */
-	public  abstract void  result(OperResult operResult) throws CallBackException;
+	public  abstract void  result(OperResult operResult) throws LuckyExpEvaluateException;
 }
