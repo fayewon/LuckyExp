@@ -19,7 +19,7 @@ import org.junit.Test;
 import org.lucky.exp.DefaultLuckyExpBuilder;
 import org.lucky.exp.Selector;
 import org.lucky.exp.annotation.Formula_Choose;
-import org.lucky.exp.exception.CallBackException;
+import org.lucky.exp.exception.LuckyExpEvaluateException;
 import org.lucky.exp.func.Func;
 import org.lucky.exp.oper.Oper;
 /**
@@ -103,11 +103,11 @@ public class ExpTest {
 	 * 缓存计算
 	*
 	* @author FayeWong
-	 * @throws CallBackException 
+	 * @throws LuckyExpEvaluateException 
 	* @date 2019年8月31日
 	 */
 	@Test
-	public void test3() throws CallBackException {
+	public void test3() throws LuckyExpEvaluateException {
 		Long start = System.currentTimeMillis();
 		for(int i=0;i<1000000;i++) {
 			Dog dog = new Dog();
@@ -161,9 +161,10 @@ public class ExpTest {
 						.addOper(oper)//自定义运算符
 						.result((h)->{
 							System.out.println(h.isSuccess());
-							System.out.println(h.getT());
+							Dog dog2 = (Dog)h.getT();
+							System.out.println(dog2.getFour());
 						});
-			} catch (CallBackException e) {
+			} catch (LuckyExpEvaluateException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}						
@@ -176,7 +177,7 @@ public class ExpTest {
 	* @date 2019年8月31日
 	 */
 	@Test
-	public <T> void test5() throws CallBackException {
+	public <T> void test5() throws LuckyExpEvaluateException {
 		Long start = System.currentTimeMillis();
 		for (int i = 0; i < 1; i++) {
 			Selector selector = new Selector();// 公式选择器

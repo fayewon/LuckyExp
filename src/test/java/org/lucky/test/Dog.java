@@ -45,7 +45,7 @@ public class Dog implements Serializable{
 	private Double three;
 	@BindVar("D")
 	@Calculation(formula= {"max4(if(A>B,A,B),1,2,300000)"},format = "##.###")
-	private Double four;
+	private Integer four;
 	@BindVar("E")
 	@Calculation(formula= {"D","A"},format = "##.###")
 	private Double five;
@@ -83,10 +83,10 @@ public class Dog implements Serializable{
 		this.two = two;
 	}
 	
-	public Double getFour() {
+	public Integer getFour() {
 		return four;
 	}
-	public void setFour(Double four) {
+	public void setFour(Integer four) {
 		this.four = four;
 	}
 	public Double getFive() {

@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.lucky.exp.exception.CallBackException;
+import org.lucky.exp.exception.LuckyExpEvaluateException;
 import org.lucky.exp.func.Funcs;
 import org.lucky.exp.parent.Handle;
 import org.lucky.exp.parent.OperResult;
@@ -106,17 +106,17 @@ public class Expression {
 	/**
 	 * 针对比较精细的业务逻辑
 	 * @param operResult 回调函数
-	 * @throws CallBackException 回调异常
+	 * @throws LuckyExpEvaluateException 回调异常
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public void result(OperResult operResult) throws CallBackException {
+	public void result(OperResult operResult) throws LuckyExpEvaluateException {
 		Handle handle = new Handle();
 		handle.setT(entity);
 		try {
 			handle.setSuccess(evaluateObject(configuration,(HelloWorldThisIsJava)->{},false));			
 		} catch (Exception e) {
 			handle.setSuccess(false);
-			throw new CallBackException(e);
+			throw new LuckyExpEvaluateException(e);
 		}finally {
 			handle.setErrors(configuration.getErrors());
 			operResult.setHandle(handle);
