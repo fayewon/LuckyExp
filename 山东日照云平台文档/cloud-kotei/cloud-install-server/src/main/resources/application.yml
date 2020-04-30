@@ -1,0 +1,21 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:1000/eureka/
+  instance:
+    prefer-ip-address: true
+server:
+  port: 8081
+  
+  
+spring:
+  application:
+    name: cloud-install-server
+  cloud:
+    discovery:
+      client:
+        simple:
+          local:
+            service-id: cloud-install-server:8081
+         
+  
