@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.1.6.RELEASE</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> 
 	</parent>
 	<!-- 项目说明 -->
 	<groupId>com.kotei</groupId>
@@ -14,17 +14,16 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<!-- 基本信息 -->
 	<name>cloud-kotei</name>
-	<description>kotel project for Spring Boot</description>
+	<description>光庭云微服务</description>
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>pom</packaging>
 	<!-- 模块说明：这里声明多个子模块 -->
     <modules>
-         <module>cloud-interfaces</module>
+         <module>cloud-interfaces-client</module>
          <module>cloud-common</module>
-         <module>cloud-service</module>
+         <module>cloud-service-client</module>
          <module>cloud-entity</module>
          <module>cloud-eureka-server</module>
-         <module>cloud-install-server</module>
   </modules>
     <!-- 使用JDK1.8进行打包 -->	
 	<properties>
@@ -42,13 +41,7 @@
           <version>Finchley.SR1</version>
           <type>pom</type>
           <scope>import</scope>
-    </dependency>
-    <!-- 测试 -->
-    <dependency>
-          <groupId>junit</groupId>
-          <artifactId>junit</artifactId>
-          <version>4.12</version>
-    </dependency>
+    </dependency>  
     <!-- 管理引入子模块 -->
     <dependency>
           <groupId>com.kotei</groupId>
@@ -57,18 +50,12 @@
     </dependency>
     <dependency>
           <groupId>com.kotei</groupId>
-          <artifactId>cloud-interfaces-server</artifactId>
+          <artifactId>cloud-interfaces-client</artifactId>
           <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
           <groupId>com.kotei</groupId>
-          <artifactId>cloud-service-server</artifactId>
-          <version>0.0.1-SNAPSHOT</version>
-    </dependency>
-    
-    <dependency>
-          <groupId>com.kotei</groupId>
-          <artifactId>cloud-install-server</artifactId>
+          <artifactId>cloud-service-client</artifactId>
           <version>0.0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
@@ -81,6 +68,18 @@
           <artifactId>cloud-entity</artifactId>
           <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    
    </dependencies>
    </dependencyManagement>
+   <!-- 注意： 这里必须要添加， 否者各种依赖有问题 -->
+  <repositories>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+  </repositories>
 </project>

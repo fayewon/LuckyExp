@@ -8,17 +8,25 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>cloud-entity</artifactId>
-  <name>cloud-entity</name>
-  <url>http://maven.apache.org</url>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <java.version>1.8</java.version>
+    <maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
   </properties>
+  
   <dependencies>
     <dependency>
-        <groupId>org.projectlombok</groupId>
-        <artifactId>lombok</artifactId>
-        <version>1.16.10</version>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.8</version>
     </dependency>
+    <!-- 添加fastjson 支持 -->
+	<dependency>
+		<groupId>com.alibaba</groupId>
+		<artifactId>fastjson</artifactId>
+		<version>1.2.15</version>
+	</dependency>
     <!-- 测试 -->
     <dependency>
           <groupId>junit</groupId>

@@ -1,0 +1,28 @@
+eureka:
+  #client:
+  #  serviceUrl:
+  #    defaultZone: http://root:123456@localhost:1000/eureka/
+  instance:
+    prefer-ip-address: true
+#server:
+#  port: 8081
+  
+  
+spring:
+  #application:
+  #  name: cloud-interfaces-client
+  cloud:
+    discovery:
+      client:
+        simple:
+          local:
+            service-id: cloud-interfaces-client:8081
+  profiles:
+    active: https
+         
+#pagehelper分页插件
+pagehelper:
+    helperDialect: mysql
+    reasonable: true
+    supportMethodsArguments: true
+    params: count=countSql

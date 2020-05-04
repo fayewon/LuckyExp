@@ -1,0 +1,15 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: cloud-service-client
+
+eureka:
+  client:
+    securePortEnabled: true
+    ssl:
+      key-store: client.p12
+      key-store-password: 123456
+    serviceUrl:
+      defaultZone: https://root:123456@localhost:1000/eureka/
