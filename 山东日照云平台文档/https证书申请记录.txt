@@ -1,0 +1,176 @@
+Microsoft Windows [版本 6.1.7601]
+版权所有 (c) 2009 Microsoft Corporation。保留所有权利。
+
+C:\Users\Administrator>keytool -genkeypair -alias server -storetype P
+lg RSA -keysize 2048 -keystore server.p12 -validity 3650
+输入密钥库口令:
+密钥库口令太短 - 至少必须为 6 个字符
+输入密钥库口令:
+再次输入新口令:
+您的名字与姓氏是什么?
+  [Unknown]:  王飞
+您的组织单位名称是什么?
+  [Unknown]:  武汉光庭科技
+您的组织名称是什么?
+  [Unknown]:  车联网
+您所在的城市或区域名称是什么?
+  [Unknown]:  武汉
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  湖北省
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  中国
+CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北省, C=中国是否正确
+  [否]:  y
+
+
+C:\Users\Administrator>keytool -genkeypair -alias client -storetype P
+lg RSA -keysize 2048 -keystore client.p12 -validity 3650
+输入密钥库口令:123456
+再次输入新口令:123456
+您的名字与姓氏是什么?
+  [Unknown]:  王飞
+您的组织单位名称是什么?
+  [Unknown]:  武汉光庭科技
+您的组织名称是什么?
+  [Unknown]:  车联网
+您所在的城市或区域名称是什么?
+  [Unknown]:  武汉
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  湖北
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  中国
+CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北, C=中国是否正确?
+  [否]:  y
+
+
+C:\Users\Administrator>keytool -export -alias server -file server.crt
+ server.p12
+输入密钥库口令:
+存储在文件 <server.crt> 中的证书
+
+C:\Users\Administrator>keytool -export -alias client -file client.crt
+ client.p12
+输入密钥库口令:
+存储在文件 <client.crt> 中的证书
+
+C:\Users\Administrator>keytool -import -alias server -file server.crt
+client.p12
+输入密钥库口令:
+所有者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北省, C=中国
+发布者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北省, C=中国
+序列号: 7da523aa
+有效期开始日期: Mon May 04 13:54:37 CST 2020, 截止日期: Thu May 02 13
+2030
+证书指纹:
+         MD5: 72:C3:E2:C6:C2:91:A8:B7:9D:66:72:F6:7B:38:E4:CB
+         SHA1: 38:96:BF:36:82:3C:06:AC:D3:D9:2E:EC:42:FD:F7:41:B5:18:
+         SHA256: 36:F4:15:B4:BC:C5:1D:20:09:2B:F4:49:FF:57:5C:46:2B:2
+9D:49:98:93:C9:87:66:14:6E:A4:EC
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: C4 F3 52 08 B6 36 02 23   18 50 74 FB 41 FE 57 30  ..R..6.#.Pt.
+0010: 5A 47 90 EE                                        ZG..
+]
+]
+
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+
+C:\Users\Administrator>keytool -import -alias client -file client.crt
+server.p12
+输入密钥库口令:
+所有者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北, C=中国
+发布者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北, C=中国
+序列号: 530756b
+有效期开始日期: Mon May 04 13:57:12 CST 2020, 截止日期: Thu May 02 13
+2030
+证书指纹:
+         MD5: FF:35:1B:29:93:D9:48:F6:28:A2:72:DD:75:27:96:5E
+         SHA1: EB:1F:48:93:6A:3A:A8:9D:73:23:42:42:29:B2:36:7F:97:18:
+         SHA256: E5:3C:A2:0A:10:CE:DC:85:98:04:1B:5C:4E:C7:8E:32:6F:3
+79:99:21:21:33:C7:E9:85:33:16:34
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: 2C 30 58 4B 75 0A 5E 77   6A 05 1A 66 E4 56 37 3A  ,0XKu.^wj..f
+0010: 0C 03 0A 47                                        ...G
+]
+]
+
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+
+C:\Users\Administrator>keytool -genkeypair -alias client -storetype P
+lg RSA -keysize 2048 -keystore client.p13 -validity 3650
+输入密钥库口令:123456
+再次输入新口令:123456
+您的名字与姓氏是什么?
+  [Unknown]:  王飞
+您的组织单位名称是什么?
+  [Unknown]:  武汉光庭科技
+您的组织名称是什么?
+  [Unknown]:  车联网
+您所在的城市或区域名称是什么?
+  [Unknown]:  武汉
+您所在的省/市/自治区名称是什么?
+  [Unknown]:  湖北
+该单位的双字母国家/地区代码是什么?
+  [Unknown]:  中国
+CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北, C=中国是否正确?
+  [否]:  y
+
+
+C:\Users\Administrator>keytool -export -alias server -file server.crt
+ server.p12
+输入密钥库口令:
+存储在文件 <server.crt> 中的证书
+
+C:\Users\Administrator>keytool -export -alias client -file client.crt
+ client.p13
+输入密钥库口令:
+存储在文件 <client.crt> 中的证书
+
+C:\Users\Administrator>keytool -import -alias server -file server.crt
+client.p13
+输入密钥库口令:
+所有者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北省, C=中国
+发布者: CN=王飞, OU=武汉光庭科技, O=车联网, L=武汉, ST=湖北省, C=中国
+序列号: 7da523aa
+有效期开始日期: Mon May 04 13:54:37 CST 2020, 截止日期: Thu May 02 13
+2030
+证书指纹:
+         MD5: 72:C3:E2:C6:C2:91:A8:B7:9D:66:72:F6:7B:38:E4:CB
+         SHA1: 38:96:BF:36:82:3C:06:AC:D3:D9:2E:EC:42:FD:F7:41:B5:18:
+         SHA256: 36:F4:15:B4:BC:C5:1D:20:09:2B:F4:49:FF:57:5C:46:2B:2
+9D:49:98:93:C9:87:66:14:6E:A4:EC
+         签名算法名称: SHA256withRSA
+         版本: 3
+
+扩展:
+
+#1: ObjectId: 2.5.29.14 Criticality=false
+SubjectKeyIdentifier [
+KeyIdentifier [
+0000: C4 F3 52 08 B6 36 02 23   18 50 74 FB 41 FE 57 30  ..R..6.#.Pt.
+0010: 5A 47 90 EE                                        ZG..
+]
+]
+
+是否信任此证书? [否]:  y
+证书已添加到密钥库中
+
+C:\Users\Administrator>keytool -import -alias client -file client.crt
+server.p12
+输入密钥库口令:
+keytool 错误: java.lang.Exception: 证书未导入, 别名 <client> 已经存在
