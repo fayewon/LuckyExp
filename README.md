@@ -81,7 +81,8 @@ public void test() {
   dog.setOne(40);//计算参数 'A'
   dog.setTwo(60.0);//计算参数 'B'
   new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param,selector)//计算入口  计算对象，追加计算参数，公式选择器
+  .build(dog,param)//计算入口  计算对象，追加计算参数，公式选择器
+  .addSelector(selector)
   .result();//获取结果
   System.out.println(dog.getThree());//A+B*HelloKitty=340.0
 }
@@ -123,7 +124,8 @@ public void test() {
   cat.setEleven(50.0);//计算参数 'K' = 50.0
   dog.setCat(cat);//使@BindObject注解生效
   new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param,selector)//计算入口
+  .build(dog,param)//计算入口
+  .addSelector(selector)
   .result();//获取结果
   System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
   System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
@@ -132,7 +134,8 @@ public void test() {
   //选择cat的twelve第二个公式
   selector.formulaFiled(Cat.class, "twelve", Formula_Choose._2);//计算对象Cat的类信息，需要选择的变量名称，选择第二个公式
   new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param,selector)//计算入口
+  .build(dog,param)//计算入口
+  .addSelector(selector)
   .result();//获取结果
   System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
   
