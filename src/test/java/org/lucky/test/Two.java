@@ -24,6 +24,10 @@ import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 
 public class Two implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@BindVar("E")
 	private Double age;
 	@BindVar("F")

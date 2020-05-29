@@ -30,6 +30,10 @@ import org.lucky.exp.annotation.Calculation;
 * @date 2019年8月31日
  */
 public class Dog implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@BindObject //绑定对象变量 当setCat的时候该注解生效
 	private Cat cat;
 	@BindObject

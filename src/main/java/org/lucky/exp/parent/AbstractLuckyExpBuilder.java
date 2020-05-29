@@ -98,33 +98,10 @@ public  abstract class  AbstractLuckyExpBuilder{
 	 */
     public AbstractLuckyExpBuilder build(Serializable entity) {
     	Objects.requireNonNull(entity);
-    	build(entity,null,null);
+    	build(entity,null);
 		return this;
 	};
-	/**
-	*
-	* @author FayeWong
-	* @param entity 对象结果集
-	* @param variables 追加变量
-	* @return this
-	 */
-	public AbstractLuckyExpBuilder build(Serializable entity,Map<String,Double> variables) {
-		Objects.requireNonNull(entity);
-		Objects.requireNonNull(variables);
-		build(entity,variables,null);
-		return this;
-	};
-	/**
-	 * @author FayeWong
-	 * @param entity 对象结果集
-	 * @param selector 公式选择器
-	 * @return
-	 */
-	public AbstractLuckyExpBuilder build(Serializable entity,Selector selector) {
-		Objects.requireNonNull(entity);
-		build(entity,null,selector);
-		return this;
-	};
+	
 	/**
 	*
 	* @author FayeWong
@@ -133,10 +110,10 @@ public  abstract class  AbstractLuckyExpBuilder{
 	* @param selector 公式选择器
 	* @return this
 	 */
-	public AbstractLuckyExpBuilder build(Serializable entity,Map<String,Double> variables,Selector selector) {
+	public AbstractLuckyExpBuilder build(Serializable entity,Map<String,Double> variables) {
 		Objects.requireNonNull(entity);
 		this.entity = entity;
-		this.configuration.setSelector(selector);
+		//this.configuration.setSelector(selector);
 		Class<?> clazz = entity.getClass();
 		Field[] fields = clazz.getDeclaredFields();
 		/* 检查是否有重复的变量/函数 */
@@ -223,6 +200,10 @@ public  abstract class  AbstractLuckyExpBuilder{
 		Objects.requireNonNull(openCache);
 		Configuration.openCache = openCache;
 		Configuration.expire = expire;
+		return this;
+	}
+	public AbstractLuckyExpBuilder addSelector(Selector selector) {
+		this.configuration.setSelector(selector);
 		return this;
 	}
 	/**

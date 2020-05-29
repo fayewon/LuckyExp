@@ -24,6 +24,10 @@ import org.lucky.exp.annotation.BindVar;
 import org.lucky.exp.annotation.Calculation;
 
 public class Rabbit implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@BindVar("U")
 	@Calculation(formula= {"A","2.1 * roundUp(max4(A,1,2,3)) * V","2.1 * roundUp(max4(A,1,2,3))"},format = "##.###")
 	private Double twentyFirst;

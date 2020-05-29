@@ -1,16 +1,5 @@
 package org.lucky.test;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -58,7 +47,8 @@ public class ExpTest {
 		cat.setEleven(50.0);//计算参数 'K' = 50.0
 		dog.setCat(cat);//使@BindObject注解生效
 		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-		.build(dog,param,selector)//计算入口
+		.build(dog,param)//计算入口
+		.addSelector(selector)
 		.result();//获取结果
 		System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
 		System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
@@ -106,6 +96,7 @@ public class ExpTest {
 	 * @throws LuckyExpEvaluateException 
 	* @date 2019年8月31日
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public void test3() throws LuckyExpEvaluateException {
 		Long start = System.currentTimeMillis();
@@ -155,7 +146,8 @@ public class ExpTest {
 			//dog.setCat(cat);
 			try {
 				new DefaultLuckyExpBuilder()
-						.build(dog,param,selector)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+						.build(dog,param)//不需要追加计算参数和只绑定一个公式  //默认使用第一个公式,param,selector
+						.addSelector(selector)
 						.addFunc(new CustomFunction().roundDown())//自定义公式
 						.addFunc(new CustomFunction().roundUp())//自定义公式
 						.addOper(oper)//自定义运算符
@@ -176,6 +168,7 @@ public class ExpTest {
 	* @author FayeWong
 	* @date 2019年8月31日
 	 */
+	@SuppressWarnings("unused")
 	@Test
 	public <T> void test5() throws LuckyExpEvaluateException {
 		Long start = System.currentTimeMillis();
@@ -201,10 +194,11 @@ public class ExpTest {
 			Rabbit rabbit = new Rabbit();
 			cat.setRabbit(rabbit);
 
-			new DefaultLuckyExpBuilder().build(dog, param, selector)// 不需要追加计算参数和只绑定一个公式 //默认使用第一个公式,param,selector
+			new DefaultLuckyExpBuilder().build(dog, param)// 不需要追加计算参数和只绑定一个公式 //默认使用第一个公式,param,selector
 					.addFunc(new CustomFunction().roundDown())// 自定义公式
 					.addFunc(new CustomFunction().roundUp())// 自定义公式
 					.addOper(oper)// 自定义运算符
+					.addSelector(selector)
 					.result((h) -> {// 回调结果
 						Dog result = (Dog) h.getT();
 						if (h.isSuccess()) {

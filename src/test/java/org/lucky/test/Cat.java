@@ -31,6 +31,10 @@ import org.lucky.exp.annotation.Calculation;
 * @date 2019年8月31日
  */
 public class Cat implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	@BindObject
 	private Rabbit rabbit;
 	@BindVar("AK")
