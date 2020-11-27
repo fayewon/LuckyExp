@@ -81,8 +81,8 @@ public void test() {
   dog.setOne(40);//计算参数 'A'
   dog.setTwo(60.0);//计算参数 'B'
   new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param)//计算入口  计算对象，追加计算参数，公式选择器
-  .addSelector(selector)
+  .build(dog,param,selector)//计算入口  计算对象，追加计算参数，公式选择器
+  //.addSelector(selector)
   .result();//获取结果
   System.out.println(dog.getThree());//A+B*HelloKitty=340.0
 }
@@ -115,35 +115,33 @@ public class Cat implements Serializable{
 public void test() {
   Map<String,Double> param = new HashMap<String,Double>();
   param.put("HelloKitty", 5.0);//追加计算参数
-  Selector selector = new Selector();//创建一个公式选择器
-  selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象Dog的类信息，需要选择的变量名称，选择第二个公式
-  Dog dog = new Dog();
-  dog.setOne(40);//计算参数 'A' = 40
-  dog.setTwo(60.0);//计算参数 'B' = 60.0
-  Cat cat = new Cat();
-  cat.setEleven(50.0);//计算参数 'K' = 50.0
-  dog.setCat(cat);//使@BindObject注解生效
-  new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param)//计算入口
-  .addSelector(selector)
-  .result();//获取结果
-  System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
-  System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
-  dog.getCat().setTwelve(null);
-		
-  //选择cat的twelve第二个公式
-  selector.formulaFiled(Cat.class, "twelve", Formula_Choose._2);//计算对象Cat的类信息，需要选择的变量名称，选择第二个公式
-  new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
-  .build(dog,param)//计算入口
-  .addSelector(selector)
-  .result();//获取结果
-  System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
-  
-  //给计算公式变量设置默认值 则解绑自动计算属性，结果为默认值
-  dog.setThree(123.8);
-  dog.getCat().setTwelve(520.0);
-  System.out.println(dog.getThree());//123.8
-  System.out.println(dog.getCat().getTwelve());//520.0
+		Selector selector = new Selector();//创建一个公式选择器
+		selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象Dog的类信息，需要选择的变量名称，选择第二个公式
+		Dog dog = new Dog();
+		dog.setOne(40.0);//计算参数 'A' = 40
+		dog.setTwo(60);//计算参数 'B' = 60.0
+		Cat cat = new Cat();
+		cat.setEleven(50.0);//计算参数 'K' = 50.0
+		dog.setCat(cat);//使@BindObject注解生效
+		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		.build(dog,param,selector)//计算入口
+		.result();//获取结果
+		System.out.println(dog.getThree());//A+B*HelloKitty=(C)340.0
+		System.out.println(dog.getCat().getTwelve());//C+K=(L)390.0
+		dog.getCat().setTwelve(null);
+				
+		//选择cat的twelve第二个公式
+		selector.formulaFiled(Cat.class, "twelve", Formula_Choose._2);//计算对象Cat的类信息，需要选择的变量名称，选择第二个公式
+		new DefaultLuckyExpBuilder()//创建一个幸运表达式对象
+		.build(dog,param)//计算入口
+		.result();//获取结果
+		System.out.println(dog.getCat().getTwelve());//max(if(A>B,A,B),1,2,3)=60
+		  
+		//给计算公式变量设置默认值 则解绑自动计算属性，结果为默认值
+		dog.setThree(123.8);
+		dog.getCat().setTwelve(520.0);
+		System.out.println(dog.getThree());//123.8
+		System.out.println(dog.getCat().getTwelve());//520.0		
 }
 ```
 #### 自定义函数和运算符
