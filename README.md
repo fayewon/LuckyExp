@@ -9,16 +9,7 @@
 * 开发者是持续维护的原动力，更多功能敬请期待。  
 # requirements:
 * JDK1.8
-# maven
-[maven仓库](https://oss.sonatype.org/content/groups/public/com/github/fayewon/LuckyExp/)  
-```java
-<mirror>  
-    <id>sonatype-nexus-snapshots</id>  
-    <mirrorOf>*</mirrorOf>  
-    <name>sonatype-nexus-snapshots</name>  
-    <url>https://oss.sonatype.org/content/groups/public/</url>  
-</mirror>
-```
+
 # pom.xml
 ```java
 <dependency>
