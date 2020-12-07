@@ -1,5 +1,5 @@
 # LuckyExp
-幸运的表达式，一个快速易用的面向对象计算的开源工具
+幸运的表达式，首款面向对象计算的开源工具。
 ![Alt text](/img/luckyExp.jpg)
 # Introduction
 * 轻量，快速，易用，面向对象计算
