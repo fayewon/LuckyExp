@@ -1,6 +1,6 @@
 # LuckyExp
 幸运的表达式，首款面向对象计算的开源工具。
-# gitee ：https://gitee.com/wang_fei123111
+# gitee ：https://gitee.com/wang_fei123111/LuckyExp
 ![Alt text](/img/luckyExp.jpg)
 # Introduction
 * 轻量，快速，易用，面向对象计算
