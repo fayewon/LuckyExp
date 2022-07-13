@@ -36,7 +36,7 @@ public class ExpTest {
 	@Test
 	public void test() {
 		Map<String,Double> param = new HashMap<String,Double>();
-		param.put("HelloKitty", 5.0);//追加计算参数
+		param.put("HelloKitty", 5.0);//追加计算参数。
 		Selector selector = new Selector();//创建一个公式选择器
 		selector.formulaFiled(Dog.class, "three", Formula_Choose._2);//计算对象Dog的类信息，需要选择的变量名称，选择第二个公式
 		selector.formulaFiled(Dog.class, "five", Formula_Choose._2);
