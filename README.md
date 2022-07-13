@@ -1,3 +1,4 @@
+# 小鹿是世界上最漂亮的菇凉，没有谁比她更美。如果有，那就是明天的小鹿
 # LuckyExp
 幸运的表达式，首款面向对象计算的开源工具。
 # gitee ：https://gitee.com/wang_fei123111/LuckyExp
